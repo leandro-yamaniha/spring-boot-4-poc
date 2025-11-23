@@ -37,6 +37,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Configuração de relatórios (JaCoCo XML, JUnit, Checkstyle)
   - Cobertura mínima configurada: 90%
 
+### Fixed
+
+- Corrigido Code Smell no teste contextLoads()
+  - Adicionado comentário explicativo sobre o propósito do smoke test
+  - Resolve issue S1186 do SonarQube (método vazio sem explicação)
+
 ### Changed
 
 - Atualizado script sonar-local.sh para usar SonarScanner CLI
