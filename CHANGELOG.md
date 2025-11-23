@@ -15,6 +15,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Ignora arquivos de IDEs (IntelliJ, Eclipse, VSCode)
   - Ignora arquivos temporários e de sistema operacional
 
+### Removed
+
+- Arquivos de build commitados por engano (app/build/, .gradle/)
+- Artefatos compilados (.class, .jar)
+- Relatórios de testes e checkstyle
+- Cache do Gradle
+
 ### Changed
 
 - Reforçada regra crítica no agents.md: build completo deve passar antes de qualquer commit
