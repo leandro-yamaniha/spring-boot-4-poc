@@ -149,6 +149,171 @@ public class CreateOrderUseCase {
 
 ---
 
+## 4.1. Boas Práticas de Design
+
+### Quando Usar Cada Tipo de Classe
+
+**DTOs (Data Transfer Objects):**
+- Transferência de dados entre camadas (API ↔ Use Cases)
+- Exemplo: `PedidoRequest`, `PedidoResponse`
+- Apenas dados, sem lógica de negócio
+- Validações básicas (@NotNull, @Size, etc)
+
+**Value Objects (VOs):**
+- Representam conceitos de domínio imutáveis
+- Exemplo: `Email`, `CPF`, `Money`, `Address`
+- Contêm validações e comportamentos relacionados ao conceito
+- Igualdade baseada em valor, não em identidade
+
+**Entities:**
+- Representam conceitos com identidade única
+- Exemplo: `Pedido`, `Cliente`, `Produto`
+- Contêm lógica de negócio relevante
+- Igualdade baseada em ID
+
+**Helpers/Utils:**
+- ⚠️ **Usar com moderação** - podem indicar falta de coesão
+- Apenas para funções verdadeiramente utilitárias e genéricas
+- Exemplo: `DateUtils.formatBrazilianDate()`, `StringUtils.removeAccents()`
+- ❌ Evitar: `PedidoHelper` com lógica de negócio → mover para o domínio
+
+**Mappers:**
+- Conversão entre camadas (Entity ↔ DTO, Domain ↔ Entity)
+- Exemplo: `PedidoMapper.toResponse(Pedido)`
+- Sem lógica de negócio, apenas transformação de estrutura
+
+### Evitar IFs Excessivos - Design Patterns
+
+**Quando encontrar múltiplos IFs, considerar:**
+
+**1. Strategy Pattern**
+```java
+// ❌ Evitar
+if (tipoPagamento.equals("CREDITO")) {
+    processarCredito();
+} else if (tipoPagamento.equals("DEBITO")) {
+    processarDebito();
+} else if (tipoPagamento.equals("PIX")) {
+    processarPix();
+}
+
+// ✅ Usar Strategy
+interface PaymentStrategy {
+    void process(Payment payment);
+}
+
+class CreditCardStrategy implements PaymentStrategy { ... }
+class DebitCardStrategy implements PaymentStrategy { ... }
+class PixStrategy implements PaymentStrategy { ... }
+```
+
+**2. Polymorphism (OOP básico)**
+```java
+// ❌ Evitar
+if (pedido.getStatus() == Status.CRIADO) {
+    // lógica para criado
+} else if (pedido.getStatus() == Status.CONFIRMADO) {
+    // lógica para confirmado
+}
+
+// ✅ Usar Polimorfismo
+abstract class PedidoState {
+    abstract void process(Pedido pedido);
+}
+
+class CriadoState extends PedidoState { ... }
+class ConfirmadoState extends PedidoState { ... }
+```
+
+**3. Factory Pattern**
+```java
+// ❌ Evitar
+if (tipo.equals("LOJA")) {
+    return new LojaValidator();
+} else if (tipo.equals("CLIENTE")) {
+    return new ClienteValidator();
+}
+
+// ✅ Usar Factory
+class ValidatorFactory {
+    public Validator create(String tipo) {
+        return switch(tipo) {
+            case "LOJA" -> new LojaValidator();
+            case "CLIENTE" -> new ClienteValidator();
+            default -> throw new IllegalArgumentException();
+        };
+    }
+}
+```
+
+**4. Chain of Responsibility**
+```java
+// Para validações sequenciais
+class ValidationChain {
+    private Validator next;
+    
+    public void validate(Request request) {
+        // valida
+        if (next != null) next.validate(request);
+    }
+}
+```
+
+**5. Specification Pattern**
+```java
+// Para regras de negócio complexas
+interface Specification<T> {
+    boolean isSatisfiedBy(T entity);
+}
+
+class PedidoPodeSerCanceladoSpec implements Specification<Pedido> {
+    public boolean isSatisfiedBy(Pedido pedido) {
+        return pedido.getStatus() == Status.CRIADO 
+            && pedido.getCreatedAt().isAfter(now().minusHours(1));
+    }
+}
+```
+
+### Princípios Gerais
+
+**Tell, Don't Ask:**
+```java
+// ❌ Evitar (perguntando)
+if (pedido.getStatus() == Status.CRIADO) {
+    pedido.setStatus(Status.CONFIRMADO);
+}
+
+// ✅ Usar (dizendo)
+pedido.confirmar();
+```
+
+**Evitar Anemia de Domínio:**
+```java
+// ❌ Modelo anêmico
+class Pedido {
+    private BigDecimal total;
+    // apenas getters/setters
+}
+
+// ✅ Modelo rico
+class Pedido {
+    private BigDecimal total;
+    
+    public void adicionarItem(Item item) {
+        validarItem(item);
+        itens.add(item);
+        recalcularTotal();
+    }
+}
+```
+
+**Composição sobre Herança:**
+- Preferir composição quando possível
+- Herança apenas quando há relação "é um" clara
+- Evitar hierarquias profundas (> 2-3 níveis)
+
+---
+
 ## 5. Lint, Formatação e Qualidade Estática
 
 - **Linter obrigatório antes de cada commit**  
