@@ -70,6 +70,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Adicionada regra de atualização de versão na seção de push do agents.md
+  - Seção 10 renomeada: "README, CHANGELOG e Versionamento"
+  - Item 2 adicionado: "Atualizar Versão" (antes do CHANGELOG)
+  - Ordem correta: 1.README → 2.Versão → 3.CHANGELOG → 4.Sincronia
+  - Referência ao Versionamento Semântico da seção 8
+  - Regras claras: feat→MINOR, fix→PATCH, BREAKING CHANGE→MAJOR
+  - Locais de atualização: build.gradle e CHANGELOG.md
+  - Versões de desenvolvimento com sufixo -SNAPSHOT
 - Expandida seção de Objetivos de Negócio no README.md
   - Adicionada descrição da abordagem ágil e incremental
   - Enfatizado foco em MVP (Minimum Viable Product) em cada fase

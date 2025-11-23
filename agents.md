@@ -222,7 +222,7 @@ Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens a
 
 ---
 
-## 10. Regras para Push: README e CHANGELOG
+## 10. Regras para Push: README, CHANGELOG e Versionamento
 
 Para **cada push** que altera comportamento observável da aplicação (features, endpoints, fluxos, contratos, performance relevante):
 
@@ -230,11 +230,22 @@ Para **cada push** que altera comportamento observável da aplicação (features
    - Documentar novos recursos importantes.  
    - Atualizar seções de instalação, execução, endpoints, ambientes ou pré-requisitos, se forem impactados.
 
-2. **Atualizar CHANGELOG**
+2. **Atualizar Versão**
+   - Seguir Versionamento Semântico conforme descrito na seção 8:
+     - **feat:** → incrementa MINOR (0.1.0 → 0.2.0)
+     - **fix:** → incrementa PATCH (0.1.0 → 0.1.1)
+     - **BREAKING CHANGE:** → incrementa MAJOR (0.1.0 → 1.0.0)
+     - **chore:, docs:, style:, refactor:, test:** → não alteram versão
+   - Atualizar versão em:
+     - `build.gradle` (ou equivalente)
+     - `CHANGELOG.md` (criar nova seção de versão ao fazer release)
+   - Versões de desenvolvimento usam sufixo `-SNAPSHOT`
+
+3. **Atualizar CHANGELOG**
    - Adicionar entrada descrevendo as mudanças mais relevantes desde a última versão/entrada.  
    - Seguir um formato consistente (por exemplo: data, tipo da mudança, breve descrição).
 
-3. **Sincronia com código**
+4. **Sincronia com código**
    - O que está no README e no CHANGELOG deve refletir o estado atual do repositório.  
    - Não deixar documentação desatualizada após merges significativos.
 
