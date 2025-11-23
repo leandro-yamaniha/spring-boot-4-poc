@@ -24,6 +24,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Atualizado README com instruções para visualizar relatórios de qualidade
+  - Comandos para executar Checkstyle e JaCoCo
+  - Como abrir relatórios HTML (main.html, index.html)
+  - Descrição das 35 regras ativas do Checkstyle
+  - Métricas disponíveis no JaCoCo (linhas, branches, métodos, classes)
 - Adicionadas regras avançadas de Clean Code ao Checkstyle
   - **Complexidade:** Complexidade ciclomática máx 10, métodos máx 50 linhas, máx 5 parâmetros
   - **Tratamento de erros:** Proíbe catch vazio, proíbe exceções genéricas (Error, RuntimeException, Throwable)

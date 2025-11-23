@@ -106,11 +106,69 @@ Para testes de integração, consulte a seção de **Testcontainers** abaixo.
 ./gradlew :app:clean :app:test
 ```
 
-- **Gerar relatório de cobertura (JaCoCo)**
+- **Build completo (compila + checkstyle + testes)**
 
 ```bash
-./gradlew :app:jacocoTestReport
+./gradlew :app:clean :app:build
 ```
+
+### Relatórios de Qualidade
+
+#### Checkstyle (Qualidade de Código)
+
+Executa verificação de padrões de código (35 regras ativas):
+
+```bash
+./gradlew :app:checkstyleMain :app:checkstyleTest
+```
+
+**Visualizar relatórios:**
+
+```bash
+# Relatório HTML (principal)
+open app/build/reports/checkstyle/main.html
+
+# Relatório HTML (testes)
+open app/build/reports/checkstyle/test.html
+
+# Relatório XML (para CI/CD)
+cat app/build/reports/checkstyle/main.xml
+```
+
+**Regras ativas:**
+- Nomenclatura (PascalCase, camelCase, UPPER_SNAKE_CASE)
+- Complexidade ciclomática ≤ 10
+- Métodos ≤ 50 linhas
+- Parâmetros ≤ 5
+- Arquivos ≤ 500 linhas
+- Tratamento de erros (sem catch vazio, exceções específicas)
+- Legibilidade (imports, @Override, declarações)
+- Segurança (sem System.out/err)
+
+#### JaCoCo (Cobertura de Testes)
+
+Gera relatório de cobertura de código:
+
+```bash
+./gradlew :app:test :app:jacocoTestReport
+```
+
+**Visualizar relatórios:**
+
+```bash
+# Relatório HTML (navegável)
+open app/build/reports/jacoco/test/html/index.html
+
+# Relatório XML (para CI/CD e SonarQube)
+cat app/build/reports/jacoco/test/jacocoTestReport.xml
+```
+
+**Métricas disponíveis:**
+- Cobertura de linhas
+- Cobertura de branches (condicionais)
+- Cobertura de métodos
+- Cobertura de classes
+- Complexidade ciclomática coberta
 
 ### Executar a aplicação com profile `local`
 
