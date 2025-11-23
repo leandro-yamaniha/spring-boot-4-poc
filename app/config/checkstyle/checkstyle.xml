@@ -25,6 +25,89 @@
         <module name="RightCurly"/>
         <module name="WhitespaceAfter"/>
         <module name="WhitespaceAround"/>
+
+        <!-- Convenções de Nomenclatura (Naming Conventions) -->
+        <!-- Classes, Interfaces, Enums, Records, Annotations -->
+        <module name="TypeName">
+            <property name="format" value="^[A-Z][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern"
+                     value="Nome de tipo ''{0}'' deve seguir PascalCase (ex: MinhaClasse, MeuRecord)"/>
+        </module>
+
+        <!-- Métodos -->
+        <module name="MethodName">
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern"
+                     value="Nome de método ''{0}'' deve seguir camelCase (ex: meuMetodo, calcularTotal)"/>
+        </module>
+
+        <!-- Parâmetros de métodos -->
+        <module name="ParameterName">
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern"
+                     value="Nome de parâmetro ''{0}'' deve seguir camelCase (ex: nomeCliente, valorTotal)"/>
+        </module>
+
+        <!-- Variáveis locais -->
+        <module name="LocalVariableName">
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern"
+                     value="Nome de variável local ''{0}'' deve seguir camelCase (ex: contador, valorFinal)"/>
+        </module>
+
+        <!-- Atributos de classe (não-estáticos, não-finais) -->
+        <module name="MemberName">
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern"
+                     value="Nome de atributo ''{0}'' deve seguir camelCase (ex: nomeUsuario, dataInicio)"/>
+        </module>
+
+        <!-- Constantes (static final) -->
+        <module name="ConstantName">
+            <property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
+            <message key="name.invalidPattern"
+                     value="Nome de constante ''{0}'' deve seguir UPPER_SNAKE_CASE (ex: MAX_VALUE, DEFAULT_TIMEOUT)"/>
+        </module>
+
+        <!-- Atributos estáticos (static não-final) -->
+        <module name="StaticVariableName">
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern"
+                     value="Nome de variável estática ''{0}'' deve seguir camelCase (ex: instanciaUnica, contador)"/>
+        </module>
+
+        <!-- Nomes de pacotes -->
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+            <message key="name.invalidPattern"
+                     value="Nome de pacote ''{0}'' deve seguir lowercase separado por pontos (ex: com.poc.delivery.domain)"/>
+        </module>
+
+        <!-- Type parameters (generics) -->
+        <module name="ClassTypeParameterName">
+            <property name="format" value="^[A-Z]$"/>
+            <message key="name.invalidPattern"
+                     value="Type parameter de classe ''{0}'' deve ser uma única letra maiúscula (ex: T, E, K, V)"/>
+        </module>
+
+        <module name="MethodTypeParameterName">
+            <property name="format" value="^[A-Z]$"/>
+            <message key="name.invalidPattern"
+                     value="Type parameter de método ''{0}'' deve ser uma única letra maiúscula (ex: T, E, K, V)"/>
+        </module>
+
+        <module name="InterfaceTypeParameterName">
+            <property name="format" value="^[A-Z]$"/>
+            <message key="name.invalidPattern"
+                     value="Type parameter de interface ''{0}'' deve ser uma única letra maiúscula (ex: T, E, K, V)"/>
+        </module>
+
+        <!-- Record Components (Java 14+) -->
+        <module name="RecordComponentName">
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+            <message key="name.invalidPattern"
+                     value="Componente de record ''{0}'' deve seguir camelCase (ex: nomeCompleto, dataNascimento)"/>
+        </module>
     </module>
 
     <!-- Limite razoável de tamanho de linha -->

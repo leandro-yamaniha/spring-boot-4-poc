@@ -24,6 +24,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Adicionadas regras de nomenclatura (naming conventions) ao Checkstyle
+  - Classes/Interfaces/Enums/Records: PascalCase (ex: MinhaClasse)
+  - Métodos/Parâmetros/Variáveis/Atributos: camelCase (ex: meuMetodo)
+  - Constantes (static final): UPPER_SNAKE_CASE (ex: MAX_VALUE)
+  - Pacotes: lowercase com pontos (ex: com.poc.delivery)
+  - Type parameters (generics): letra maiúscula única (ex: T, E, K, V)
+  - Record components: camelCase (ex: nomeCompleto)
+  - Mensagens de erro personalizadas em português com exemplos
 - Configurado Checkstyle para falhar o build em caso de violações
   - maxWarnings = 0 (nenhum warning permitido)
   - ignoreFailures = false (não ignora falhas)
