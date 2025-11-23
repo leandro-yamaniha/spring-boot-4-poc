@@ -121,7 +121,6 @@ public class Pedido {
         this.updatedAt = LocalDateTime.now();
     }
     
-    // Getters
     public UUID getId() {
         return id;
     }
@@ -166,7 +165,6 @@ public class Pedido {
         return updatedAt;
     }
     
-    // Setter para ID (usado pela camada de persistência)
     public void setId(UUID id) {
         this.id = id;
     }
@@ -200,7 +198,6 @@ public class Pedido {
                '}';
     }
     
-    // Builder Pattern
     public static Builder builder() {
         return new Builder();
     }

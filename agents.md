@@ -61,9 +61,14 @@ Este documento define regras mínimas para qualquer alteração automatizada ou 
   - Não engolir exceções silenciosamente.
   - Propagar erros com contexto útil (mensagens claras) sem vazar informações sensíveis.
 
-- **Comentários mínimos e úteis**  
-  - Explicar apenas o *porquê* em casos não óbvios.  
-  - Nunca usar comentários para encobrir código confuso: prefira refatorar.
+- **Código auto-explicativo - SEM comentários**  
+  - ❌ **PROIBIDO**: Comentários de código (`//`, `/* */`)
+  - ✅ **PERMITIDO**: Javadoc em APIs públicas (classes, métodos públicos)
+  - ✅ **OBRIGATÓRIO**: Nomes descritivos que eliminam necessidade de comentários
+  - **Razão**: Código deve ser claro o suficiente para dispensar comentários
+  - **Exceção**: Javadoc para documentação de API pública
+  - Se sentir necessidade de comentar, refatore o código para ser mais claro
+  - Comentários mentem com o tempo; código bem escrito não
 
 ---
 

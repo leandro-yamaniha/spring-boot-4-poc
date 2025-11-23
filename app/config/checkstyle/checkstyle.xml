@@ -238,6 +238,21 @@
             <property name="illegalPattern" value="true"/>
             <property name="message" value="Não use System.out/err. Use um logger (SLF4J) para rastreabilidade e controle."/>
         </module>
+
+        <!-- Clean Code: Proibir Comentários Inline -->
+        <!-- Comentários de linha única (//) -->
+        <module name="Regexp">
+            <property name="format" value="^\s*//(?!\s*@)(?!\s*TODO)(?!\s*FIXME)(?!\s*checkstyle)"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="message" value="Comentários inline (//) são proibidos. Use nomes descritivos e código auto-explicativo. Javadoc é permitido para APIs públicas."/>
+        </module>
+
+        <!-- Comentários de bloco (/* */) que não sejam Javadoc -->
+        <module name="Regexp">
+            <property name="format" value="/\*(?!\*)"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="message" value="Comentários de bloco (/* */) são proibidos. Use nomes descritivos e código auto-explicativo. Apenas Javadoc (/** */) é permitido para APIs públicas."/>
+        </module>
     </module>
 
     <!-- Limite razoável de tamanho de linha -->

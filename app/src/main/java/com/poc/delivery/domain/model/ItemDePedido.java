@@ -44,7 +44,6 @@ public class ItemDePedido {
         return precoUnitario.multiply(BigDecimal.valueOf(quantidade));
     }
     
-    // Getters
     public UUID getProdutoId() {
         return produtoId;
     }
@@ -69,7 +68,6 @@ public class ItemDePedido {
         return observacoes;
     }
     
-    // Equals e HashCode baseados em valor
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -103,7 +101,6 @@ public class ItemDePedido {
                '}';
     }
     
-    // Builder Pattern
     public static Builder builder() {
         return new Builder();
     }
