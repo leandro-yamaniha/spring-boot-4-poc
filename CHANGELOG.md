@@ -70,6 +70,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Expandida seção de Objetivos de Negócio no README.md
+  - Adicionada descrição da abordagem ágil e incremental
+  - Enfatizado foco em MVP (Minimum Viable Product) em cada fase
+  - Criada seção "Metodologia Ágil" com links para documentação
+  - Links para planejamento/ (documento executivo, gestão ágil, ambiente)
+  - Links para historias/ organizadas por fase (Fase 1-4)
+  - Descrição de cada fase (MVP inicial, escalabilidade, integrações, analytics)
+  - Princípios ágeis: MVP First, User Stories, Iterativo, Qualidade
 - Atualizado .gitignore para ignorar arquivos do SonarQube
   - .scannerwork/ (diretório de trabalho do scanner)
   - .sonar/ (cache do SonarQube)

@@ -32,8 +32,31 @@ Este projeto é um Proof of Concept (POC) para um backend de entrega de pedidos,
 
 ### Objetivos de Negócio
 
+O projeto segue uma abordagem **ágil e incremental**, com foco em **MVP (Minimum Viable Product)** em cada fase:
+
 - **Fase 1**: Viabilizar operação em uma região/cidade com fluxo completo de pedido → entrega
 - **Fase 2+**: Escalar para múltiplas regiões, aumentar automação e robustez
+
+### Metodologia Ágil
+
+O desenvolvimento é organizado através de **Features** e **User Stories**:
+
+- 📋 **Planejamento**: Documentação completa em [`planejamento/`](planejamento/)
+  - [Documento Executivo](planejamento/documento-executivo-backend-entregas.md)
+  - [Gestão Ágil de Tarefas](planejamento/agilidade-gestao-tarefas.md)
+  - [Ambiente de Desenvolvimento](planejamento/ambiente-desenvolvimento-local.md)
+
+- 📖 **Features e Histórias**: Organizadas por fase em [`historias/`](historias/)
+  - [Fase 1](historias/fase1/) - MVP inicial (criação de pedidos, gestão básica)
+  - [Fase 2](historias/fase2/) - Escalabilidade e automação
+  - [Fase 3](historias/fase3/) - Integrações avançadas
+  - [Fase 4](historias/fase4/) - Otimizações e analytics
+
+**Princípios:**
+- ✅ **MVP First** - Entregar valor incremental a cada fase
+- ✅ **User Stories** - Foco em valor de negócio e experiência do usuário
+- ✅ **Iterativo** - Feedback contínuo e ajustes rápidos
+- ✅ **Qualidade** - Quality Gate rigoroso em cada entrega
 
 ## 🚀 Tecnologias
 
