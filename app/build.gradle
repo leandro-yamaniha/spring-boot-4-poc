@@ -66,4 +66,16 @@ jacocoTestReport {
 checkstyle {
     toolVersion = '10.14.0'
     configDirectory = file("config/checkstyle")
+    maxWarnings = 0  // Falha o build se houver warnings
+    ignoreFailures = false  // Não ignora falhas do checkstyle
+}
+
+// Garante que checkstyle rode antes dos testes
+tasks.named('test') {
+    dependsOn 'checkstyleMain', 'checkstyleTest'
+}
+
+// Garante que checkstyle rode no build
+tasks.named('check') {
+    dependsOn 'checkstyleMain', 'checkstyleTest'
 }

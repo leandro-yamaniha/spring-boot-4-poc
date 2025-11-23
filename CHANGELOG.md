@@ -24,6 +24,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Configurado Checkstyle para falhar o build em caso de violações
+  - maxWarnings = 0 (nenhum warning permitido)
+  - ignoreFailures = false (não ignora falhas)
+  - Checkstyle executa automaticamente antes dos testes
+  - Checkstyle incluído na task 'check' e 'build'
 - Adicionada regra de versionamento semântico no agents.md
   - Seguir Semantic Versioning 2.0.0 (MAJOR.MINOR.PATCH)
   - Atualizar versão conforme tipo de commit (Conventional Commits)
