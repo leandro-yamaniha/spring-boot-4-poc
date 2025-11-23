@@ -39,6 +39,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Adicionada regra obrigatória no agents.md: executar análise SonarQube antes de commit
+  - Executar ./scripts/sonar-local.sh antes de cada commit
+  - Quality Gate "Zero Tolerance" deve passar (cobertura 100%, bugs 0, code smells 0)
+  - Nunca commitar código que não passe no Quality Gate
+  - Renumerada lista de regras (item 2 adicionado)
 - Configurado JaCoCo para falhar build se cobertura < 95%
   - jacocoTestCoverageVerification com regra de 95% mínimo de linhas
   - Regra por classe: 90% mínimo

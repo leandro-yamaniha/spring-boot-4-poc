@@ -151,6 +151,8 @@ Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens a
 
 **⚠️ CRÍTICO: Executar `./gradlew clean build` (ou comando equivalente) e garantir sucesso ANTES de criar o commit.**
 
+**🔍 OBRIGATÓRIO: Executar `./scripts/sonar-local.sh` para verificar compliance de qualidade ANTES de criar o commit.**
+
 1. **Build completo com sucesso**
    - Executar build completo do projeto (`./gradlew clean build` ou equivalente).
    - Build deve completar sem erros (exit code 0).
@@ -158,30 +160,39 @@ Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens a
    - Aplicação (ou serviços afetados) devem iniciar sem erros em ambiente local ou de teste configurado.
    - **Nunca commitar código que não builda com sucesso.**
 
-2. **Testes passando**
+2. **Análise de qualidade SonarQube (OBRIGATÓRIO)**
+   - Executar `./scripts/sonar-local.sh` antes de cada commit.
+   - Quality Gate "Zero Tolerance" deve passar:
+     - Cobertura de testes: 100%
+     - Bugs: 0
+     - Code Smells: 0
+   - Se a análise falhar, corrigir os problemas antes de commitar.
+   - **Nunca commitar código que não passe no Quality Gate.**
+
+3. **Testes passando**
    - Testes unitários relevantes executam com sucesso.  
    - Testes de integração impactados pela mudança também passam.  
    - Não adicionar commits que quebrem o pipeline de CI.
 
-3. **Lint sem erros**
+4. **Lint sem erros**
    - Nenhum erro de linter pendente.  
    - Warnings relevantes avaliados e, se possível, eliminados.
 
-4. **Escopo pequeno e coeso**
+5. **Escopo pequeno e coeso**
    - Cada commit deve focar em uma mudança lógica (feature, bugfix, refactor) bem definida.  
    - Evitar commits misturando refactor grande com mudança funcional.
 
-5. **Mensagem de commit clara**
+6. **Mensagem de commit clara**
    - Descrever o que foi feito e, se relevante, o porquê.  
    - Se houver padrão de mensagem (ex.: Conventional Commits), segui-lo.
 
-6. **CHANGELOG atualizado**
+7. **CHANGELOG atualizado**
    - **Obrigatório**: Atualizar o CHANGELOG.md a cada commit que adiciona, modifica ou remove funcionalidades.
    - Adicionar entrada com data, tipo da mudança (Added/Changed/Fixed/Removed) e descrição concisa.
    - Manter formato consistente (sugestão: [Keep a Changelog](https://keepachangelog.com/)).
    - Commits de refactor interno sem impacto funcional podem omitir entrada no CHANGELOG.
 
-7. **Versionamento Semântico**
+8. **Versionamento Semântico**
    - Seguir [Semantic Versioning 2.0.0](https://semver.org/lang/pt-BR/) (MAJOR.MINOR.PATCH).
    - Atualizar versão conforme o tipo de commit (Conventional Commits):
      - **feat:** → incrementa MINOR (0.1.0 → 0.2.0)
