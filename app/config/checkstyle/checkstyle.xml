@@ -108,11 +108,146 @@
             <message key="name.invalidPattern"
                      value="Componente de record ''{0}'' deve seguir camelCase (ex: nomeCompleto, dataNascimento)"/>
         </module>
+
+        <!-- Clean Code: Complexidade e Tamanho -->
+        <!-- Limita complexidade ciclomática (número de caminhos independentes) -->
+        <module name="CyclomaticComplexity">
+            <property name="max" value="10"/>
+            <message key="cyclomaticComplexity"
+                     value="Complexidade ciclomática de {0} ({1}) excede o máximo permitido (10). Considere refatorar em métodos menores."/>
+        </module>
+
+        <!-- Limita tamanho de métodos (linhas de código) -->
+        <module name="MethodLength">
+            <property name="max" value="50"/>
+            <property name="tokens" value="METHOD_DEF"/>
+            <message key="maxLen.method"
+                     value="Método com {0} linhas excede o máximo permitido (50). Funções devem ser curtas e com fluxo claro."/>
+        </module>
+
+        <!-- Limita número de parâmetros em métodos -->
+        <module name="ParameterNumber">
+            <property name="max" value="5"/>
+            <property name="tokens" value="METHOD_DEF"/>
+            <message key="maxParam"
+                     value="Método com {0} parâmetros excede o máximo permitido (5). Considere usar objetos de transferência (DTOs)."/>
+        </module>
+
+        <!-- Clean Code: Tratamento de Erros -->
+        <!-- Proíbe catch vazio (engolir exceções) -->
+        <module name="EmptyCatchBlock">
+            <property name="exceptionVariableName" value="expected|ignore"/>
+            <message key="catch.block.empty"
+                     value="Bloco catch vazio. Não engolir exceções silenciosamente - trate ou propague com contexto."/>
+        </module>
+
+        <!-- Evita throw de Exception genérica -->
+        <module name="IllegalThrows">
+            <property name="illegalClassNames" value="java.lang.Error, java.lang.RuntimeException, java.lang.Throwable"/>
+            <message key="illegal.throw"
+                     value="Não lance exceções genéricas ({0}). Use exceções específicas para melhor tratamento de erros."/>
+        </module>
+
+        <!-- Clean Code: Evitar Duplicação -->
+        <!-- Detecta strings literais duplicadas (magic strings) -->
+        <module name="MultipleStringLiterals">
+            <property name="allowedDuplicates" value="2"/>
+            <property name="ignoreStringsRegexp" value='^("")|(" ")|(",")$'/>
+            <message key="multiple.string.literal"
+                     value="String literal ''{0}'' aparece {1} vezes. Extraia para constante para evitar duplicação."/>
+        </module>
+
+        <!-- Clean Code: Simplicidade -->
+        <!-- Evita modificadores redundantes -->
+        <module name="RedundantModifier">
+            <message key="redundantModifier"
+                     value="Modificador ''{0}'' é redundante. Mantenha o código simples e direto."/>
+        </module>
+
+        <!-- Evita imports não utilizados (já temos, mas reforçando) -->
+        <module name="UnusedImports">
+            <message key="import.unused"
+                     value="Import não utilizado: {0}. Remova código desnecessário."/>
+        </module>
+
+        <!-- Evita imports com * (wildcard) -->
+        <module name="AvoidStarImport">
+            <message key="import.avoidStar"
+                     value="Import com asterisco (*). Use imports explícitos para melhor legibilidade."/>
+        </module>
+
+        <!-- Clean Code: Legibilidade -->
+        <!-- Força uso de @Override quando sobrescrever métodos -->
+        <module name="MissingOverride">
+            <message key="tag.missing"
+                     value="Método sobrescrito sem @Override. Adicione a anotação para clareza e segurança."/>
+        </module>
+
+        <!-- Evita declarações múltiplas na mesma linha -->
+        <module name="MultipleVariableDeclarations">
+            <message key="multiple.variable.declarations"
+                     value="Múltiplas declarações na mesma linha. Declare uma variável por linha para melhor legibilidade."/>
+        </module>
+
+        <!-- Força uma declaração por linha -->
+        <module name="OneStatementPerLine">
+            <message key="multiple.statements"
+                     value="Múltiplos statements na mesma linha. Use uma linha por statement para melhor legibilidade."/>
+        </module>
+
+        <!-- Clean Code: Boas Práticas -->
+        <!-- Evita equals() com literais no lado esquerdo -->
+        <module name="EqualsAvoidNull">
+            <message key="equals.avoid.null"
+                     value="Use literal.equals(variavel) em vez de variavel.equals(literal) para evitar NullPointerException."/>
+        </module>
+
+        <!-- Força uso de {} mesmo em blocos de uma linha -->
+        <module name="NeedBraces">
+            <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_IF, LITERAL_WHILE"/>
+            <message key="needBraces"
+                     value="Bloco sem chaves. Use chaves mesmo em statements de uma linha para evitar erros."/>
+        </module>
+
+        <!-- Evita declaração de variáveis longe do primeiro uso -->
+        <module name="VariableDeclarationUsageDistance">
+            <property name="allowedDistance" value="5"/>
+            <message key="variable.declaration.usage.distance"
+                     value="Variável declarada {0} linhas antes do primeiro uso. Declare próximo ao uso para melhor legibilidade."/>
+        </module>
+
+        <!-- Clean Code: Simplicidade (evita aninhamento excessivo) -->
+        <module name="NestedIfDepth">
+            <property name="max" value="3"/>
+            <message key="nested.if.depth"
+                     value="Aninhamento de if com profundidade {0} excede o máximo (3). Refatore para reduzir complexidade."/>
+        </module>
+
+        <module name="NestedTryDepth">
+            <property name="max" value="2"/>
+            <message key="nested.try.depth"
+                     value="Aninhamento de try com profundidade {0} excede o máximo (2). Refatore para simplificar tratamento de erros."/>
+        </module>
+
+        <!-- OWASP: Segurança -->
+        <!-- Evita System.out/err (usar logger) -->
+        <module name="Regexp">
+            <property name="format" value="System\.(out|err)\.print"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="message" value="Não use System.out/err. Use um logger (SLF4J) para rastreabilidade e controle."/>
+        </module>
     </module>
 
     <!-- Limite razoável de tamanho de linha -->
     <module name="LineLength">
         <property name="max" value="120"/>
         <property name="ignorePattern" value="^package|^import|a href|href|http://|https://"/>
+    </module>
+
+    <!-- Limite de tamanho de arquivo -->
+    <module name="FileLength">
+        <property name="max" value="500"/>
+        <message key="maxLen.file"
+                 value="Arquivo com {0} linhas excede o máximo permitido (500). Classes grandes violam Single Responsibility Principle."/>
     </module>
 </module>

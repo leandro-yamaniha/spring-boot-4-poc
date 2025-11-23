@@ -24,6 +24,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Adicionadas regras avançadas de Clean Code ao Checkstyle
+  - **Complexidade:** Complexidade ciclomática máx 10, métodos máx 50 linhas, máx 5 parâmetros
+  - **Tratamento de erros:** Proíbe catch vazio, proíbe exceções genéricas (Error, RuntimeException, Throwable)
+  - **Evitar duplicação:** Detecta strings literais duplicadas (magic strings)
+  - **Simplicidade:** Remove modificadores redundantes, imports não usados, imports com *
+  - **Legibilidade:** Força @Override, uma declaração por linha, variáveis próximas ao uso
+  - **Aninhamento:** Máx 3 níveis de if, máx 2 níveis de try
+  - **Segurança (OWASP):** Proíbe System.out/err (usar logger)
+  - **Tamanho:** Arquivos máx 500 linhas (Single Responsibility Principle)
 - Adicionadas regras de nomenclatura (naming conventions) ao Checkstyle
   - Classes/Interfaces/Enums/Records: PascalCase (ex: MinhaClasse)
   - Métodos/Parâmetros/Variáveis/Atributos: camelCase (ex: meuMetodo)
