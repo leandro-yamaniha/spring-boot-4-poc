@@ -54,9 +54,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport  // Gera relatório automaticamente após os testes
 }
 
 jacocoTestReport {
+    dependsOn test  // Garante que os testes rodem antes
     reports {
         xml.required = true
         html.required = true

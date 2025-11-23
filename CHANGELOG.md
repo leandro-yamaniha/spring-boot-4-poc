@@ -24,6 +24,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Configurado JaCoCo para gerar relatório automaticamente após testes
+  - test.finalizedBy jacocoTestReport
+  - Agora ./gradlew test gera o relatório HTML automaticamente
+  - Não é mais necessário executar jacocoTestReport manualmente
 - Atualizado README com instruções para visualizar relatórios de qualidade
   - Comandos para executar Checkstyle e JaCoCo
   - Como abrir relatórios HTML (main.html, index.html)
