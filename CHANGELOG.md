@@ -33,6 +33,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Configurado JaCoCo para falhar build se cobertura < 95%
+  - jacocoTestCoverageVerification com regra de 95% mínimo de linhas
+  - Regra por classe: 90% mínimo
+  - Exclusão de DeliveryApplication (entry point)
+  - Verificação automática na task 'check' e 'build'
 - Aumentada cobertura de testes de 66% para 100%
   - GlobalExceptionHandler: 0% → 100%
   - GlobalExceptionHandler.ApiError: 0% → 100%

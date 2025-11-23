@@ -72,6 +72,42 @@ jacocoTestReport {
     }
 }
 
+jacocoTestCoverageVerification {
+    dependsOn jacocoTestReport
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.95  // 95% de cobertura mínima de linhas
+            }
+        }
+        rule {
+            element = 'CLASS'
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.90  // 90% por classe
+            }
+            excludes = [
+                'com.poc.delivery.DeliveryApplication'  // Exclui entry point
+            ]
+        }
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                '**/DeliveryApplication.class'  // Exclui entry point da verificação
+            ])
+        }))
+    }
+}
+
+// Garante que a verificação de cobertura rode no build
+tasks.named('check') {
+    dependsOn jacocoTestCoverageVerification
+}
+
 checkstyle {
     toolVersion = '10.14.0'
     configDirectory = file("config/checkstyle")
