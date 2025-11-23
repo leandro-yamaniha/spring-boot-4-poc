@@ -181,6 +181,18 @@ Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens a
    - Manter formato consistente (sugestão: [Keep a Changelog](https://keepachangelog.com/)).
    - Commits de refactor interno sem impacto funcional podem omitir entrada no CHANGELOG.
 
+7. **Versionamento Semântico**
+   - Seguir [Semantic Versioning 2.0.0](https://semver.org/lang/pt-BR/) (MAJOR.MINOR.PATCH).
+   - Atualizar versão conforme o tipo de commit (Conventional Commits):
+     - **feat:** → incrementa MINOR (0.1.0 → 0.2.0)
+     - **fix:** → incrementa PATCH (0.1.0 → 0.1.1)
+     - **BREAKING CHANGE:** → incrementa MAJOR (0.1.0 → 1.0.0)
+     - **chore:, docs:, style:, refactor:, test:** → não alteram versão
+   - Atualizar versão em:
+     - `build.gradle` (ou equivalente)
+     - `CHANGELOG.md` (criar nova seção de versão ao fazer release)
+   - Versões de desenvolvimento usam sufixo `-SNAPSHOT`
+
 ---
 
 ## 9. Regras para Push: README e CHANGELOG

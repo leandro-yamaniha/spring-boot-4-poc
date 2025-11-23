@@ -24,6 +24,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Adicionada regra de versionamento semântico no agents.md
+  - Seguir Semantic Versioning 2.0.0 (MAJOR.MINOR.PATCH)
+  - Atualizar versão conforme tipo de commit (Conventional Commits)
+  - feat: incrementa MINOR, fix: incrementa PATCH, BREAKING CHANGE: incrementa MAJOR
+  - Versões de desenvolvimento usam sufixo -SNAPSHOT
 - Reforçada regra crítica no agents.md: build completo deve passar antes de qualquer commit
 - Adicionado aviso explícito para executar `./gradlew clean build` antes de commitar
 
