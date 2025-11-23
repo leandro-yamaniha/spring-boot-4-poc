@@ -170,6 +170,12 @@ Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens a
    - Descrever o que foi feito e, se relevante, o porquê.  
    - Se houver padrão de mensagem (ex.: Conventional Commits), segui-lo.
 
+6. **CHANGELOG atualizado**
+   - **Obrigatório**: Atualizar o CHANGELOG.md a cada commit que adiciona, modifica ou remove funcionalidades.
+   - Adicionar entrada com data, tipo da mudança (Added/Changed/Fixed/Removed) e descrição concisa.
+   - Manter formato consistente (sugestão: [Keep a Changelog](https://keepachangelog.com/)).
+   - Commits de refactor interno sem impacto funcional podem omitir entrada no CHANGELOG.
+
 ---
 
 ## 9. Regras para Push: README e CHANGELOG
