@@ -45,6 +45,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Added
 
+- Regras de verificação de histórias e workflow de branches no agents.md
+  - Item 4 na seção 10: "Verificar conclusão de histórias" (obrigatório a cada push)
+  - Marcar histórias como concluídas quando critérios de aceitação forem atendidos
+  - Atualizar status das features (em andamento, concluída, bloqueada)
+  - Documentar decisões técnicas durante implementação
+  - Atualizar planejamento e roadmap conforme necessário
+  - Nova seção 10.1: "Regras para Branches e Histórias"
+  - Nomenclatura de branches: feature/HIST-XXX-descricao ou fix/HIST-XXX-descricao
+  - Commits devem referenciar história: feat(HIST-001): descrição
+  - Pull Requests devem incluir: link história, critérios atendidos, testes
+  - Merge apenas após aprovação e quality gates
+  - Benefícios: rastreabilidade, histórico organizado, code review facilitado
 - Arquivo LICENSE com licença MIT
   - Copyright (c) 2025 Leandro Yamaniha
   - Permissão para uso, modificação e distribuição

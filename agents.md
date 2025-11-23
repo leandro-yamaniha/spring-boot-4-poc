@@ -245,9 +245,61 @@ Para **cada push** que altera comportamento observável da aplicação (features
    - Adicionar entrada descrevendo as mudanças mais relevantes desde a última versão/entrada.  
    - Seguir um formato consistente (por exemplo: data, tipo da mudança, breve descrição).
 
-4. **Sincronia com código**
+4. **Verificar conclusão de histórias**
+   - **Obrigatório**: A cada push, verificar se alguma fase/história foi completada
+   - Revisar documentação em [`historias/`](historias/):
+     - Marcar histórias como concluídas se todos os critérios de aceitação foram atendidos
+     - Atualizar status das features (em andamento, concluída, bloqueada)
+     - Documentar decisões técnicas tomadas durante a implementação
+   - Atualizar documentação de planejamento se necessário:
+     - [`planejamento/documento-executivo-backend-entregas.md`](planejamento/documento-executivo-backend-entregas.md)
+     - Roadmap e marcos do projeto
+   - Garantir rastreabilidade entre código e histórias
+
+5. **Sincronia com código**
    - O que está no README e no CHANGELOG deve refletir o estado atual do repositório.  
    - Não deixar documentação desatualizada após merges significativos.
+
+---
+
+## 10.1. Regras para Branches e Histórias
+
+**Toda implementação deve seguir o fluxo de branches vinculadas às histórias:**
+
+1. **Criar branch a partir da história**
+   - Nomenclatura: `feature/HIST-XXX-descricao-curta` ou `fix/HIST-XXX-descricao-curta`
+   - Exemplos:
+     - `feature/HIST-001-criacao-pedido`
+     - `fix/HIST-002-validacao-endereco`
+     - `feature/HIST-003-integracao-pagamento`
+   - Branch deve referenciar a história em [`historias/`](historias/)
+
+2. **Desenvolvimento na branch**
+   - Commits devem referenciar a história: `feat(HIST-001): adicionar endpoint de criação de pedido`
+   - Seguir todas as regras de commit da seção 8
+   - Manter branch atualizada com `main`
+
+3. **Pull Request**
+   - Título deve incluir referência à história: `[HIST-001] Implementar criação de pedido`
+   - Descrição deve incluir:
+     - Link para a história
+     - Critérios de aceitação atendidos
+     - Testes implementados
+     - Screenshots/evidências (se aplicável)
+   - Passar por code review
+   - Passar em todos os quality gates
+
+4. **Merge para main**
+   - Apenas após aprovação do PR
+   - Squash commits se necessário para manter histórico limpo
+   - Atualizar status da história como concluída
+   - Deletar branch após merge
+
+**Benefícios:**
+- ✅ Rastreabilidade completa entre código e requisitos
+- ✅ Histórico organizado e navegável
+- ✅ Facilita code review e auditoria
+- ✅ Permite trabalho paralelo em múltiplas histórias
 
 ---
 
