@@ -204,9 +204,25 @@ Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens a
      - `CHANGELOG.md` (criar nova seção de versão ao fazer release)
    - Versões de desenvolvimento usam sufixo `-SNAPSHOT`
 
+9. **Verificação e atualização do README.md**
+   - **Obrigatório**: Antes de cada commit, verificar o que está sendo commitado.
+   - Avaliar se as mudanças impactam a documentação do usuário:
+     - Novos recursos, endpoints, comandos ou funcionalidades
+     - Mudanças em configuração, instalação ou uso
+     - Novos scripts, ferramentas ou dependências
+     - Alterações em comportamento existente
+     - Novos requisitos ou pré-requisitos
+   - Se houver impacto, **atualizar o README.md** antes do commit:
+     - Adicionar instruções de uso para novos recursos
+     - Atualizar comandos ou exemplos
+     - Documentar novas configurações
+     - Atualizar seções de instalação/setup se necessário
+   - O README deve sempre refletir o estado atual do código
+   - **Nunca commitar código sem documentação adequada**
+
 ---
 
-## 9. Regras para Push: README e CHANGELOG
+## 10. Regras para Push: README e CHANGELOG
 
 Para **cada push** que altera comportamento observável da aplicação (features, endpoints, fluxos, contratos, performance relevante):
 
@@ -224,7 +240,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
 
 ---
 
-## 10. Regras Específicas para Agents Automatizados
+## 11. Regras Específicas para Agents Automatizados
 
 Agents (como este) **devem SEMPRE**:
 

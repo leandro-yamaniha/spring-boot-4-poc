@@ -45,6 +45,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Added
 
+- Regra obrigatória no agents.md: verificar e atualizar README.md antes de commit
+  - Item 9 na seção "Regras Mínimas para Cada Commit"
+  - Avaliar se mudanças impactam documentação do usuário
+  - Atualizar README se houver novos recursos, comandos, configurações, etc
+  - README deve sempre refletir o estado atual do código
+  - Nunca commitar código sem documentação adequada
 - Validação de 0 issues no script sonar-local.sh
   - Verifica issues não resolvidos após análise
   - Falha o build se houver qualquer issue (bugs, code smells, vulnerabilities)
