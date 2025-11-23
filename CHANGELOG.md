@@ -22,8 +22,24 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Relatórios de testes e checkstyle
 - Cache do Gradle
 
+### Added
+
+- Testes unitários para GlobalExceptionHandler (2 testes, 100% cobertura)
+- Arquivo sonar-project.properties para integração com SonarQube
+  - Exclusões alinhadas com JaCoCo (DeliveryApplication)
+  - Regras de qualidade alinhadas com Checkstyle (complexidade ≤10, métodos ≤50 linhas, etc)
+  - Configuração de relatórios (JaCoCo XML, JUnit, Checkstyle)
+  - Cobertura mínima configurada: 90%
+
 ### Changed
 
+- Aumentada cobertura de testes de 66% para 100%
+  - GlobalExceptionHandler: 0% → 100%
+  - GlobalExceptionHandler.ApiError: 0% → 100%
+  - GlobalExceptionHandler.ApiErrorResponse: 0% → 100%
+- Configurado JaCoCo para excluir DeliveryApplication (entry point) da cobertura
+- Configurado ImportOrder do Checkstyle para aceitar static imports no topo
+  - Adicionado option="top" e sortStaticImportsAlphabetically="true"
 - Configurado JaCoCo para gerar relatório automaticamente após testes
   - test.finalizedBy jacocoTestReport
   - Agora ./gradlew test gera o relatório HTML automaticamente
