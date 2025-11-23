@@ -7,12 +7,20 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+### Added
+
+- Arquivo .gitignore configurado para projetos Spring Boot com Gradle
+  - Ignora diretórios de build e cache (.gradle/, build/)
+  - Mantém Gradle Wrapper (essencial para builds reproduzíveis)
+  - Ignora arquivos de IDEs (IntelliJ, Eclipse, VSCode)
+  - Ignora arquivos temporários e de sistema operacional
+
 ### Changed
 
 - Reforçada regra crítica no agents.md: build completo deve passar antes de qualquer commit
 - Adicionado aviso explícito para executar `./gradlew clean build` antes de commitar
 
-### Added
+### Previously Added
 
 - Scaffold inicial do backend Spring Boot 4.0.0 com Java 25
 - Configuração do projeto Gradle multi-módulo
