@@ -4,10 +4,6 @@ import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Value Object representando um item de pedido.
- * Imutável após criação.
- */
 public class ItemDePedido {
     
     private final UUID produtoId;

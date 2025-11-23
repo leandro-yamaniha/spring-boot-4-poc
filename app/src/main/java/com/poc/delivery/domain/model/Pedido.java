@@ -8,10 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Aggregate Root representando um Pedido.
- * Contém lógica de negócio e garante invariantes do domínio.
- */
 public class Pedido {
     
     private UUID id;
@@ -63,9 +59,6 @@ public class Pedido {
             .subtract(desconto);
     }
     
-    /**
-     * Confirma o pedido (transição de estado)
-     */
     public void confirmar() {
         if (status != StatusPedido.CRIADO) {
             throw new IllegalStateException("Apenas pedidos criados podem ser confirmados");
@@ -74,9 +67,6 @@ public class Pedido {
         this.updatedAt = LocalDateTime.now();
     }
     
-    /**
-     * Cancela o pedido
-     */
     public void cancelar() {
         if (status == StatusPedido.ENTREGUE) {
             throw new IllegalStateException("Pedido já entregue não pode ser cancelado");
@@ -88,9 +78,6 @@ public class Pedido {
         this.updatedAt = LocalDateTime.now();
     }
     
-    /**
-     * Marca pedido como pronto
-     */
     public void marcarComoPronto() {
         if (status != StatusPedido.CONFIRMADO) {
             throw new IllegalStateException("Apenas pedidos confirmados podem ser marcados como prontos");
@@ -99,9 +86,6 @@ public class Pedido {
         this.updatedAt = LocalDateTime.now();
     }
     
-    /**
-     * Inicia entrega do pedido
-     */
     public void iniciarEntrega() {
         if (status != StatusPedido.PRONTO) {
             throw new IllegalStateException("Apenas pedidos prontos podem iniciar entrega");
@@ -110,9 +94,6 @@ public class Pedido {
         this.updatedAt = LocalDateTime.now();
     }
     
-    /**
-     * Finaliza entrega do pedido
-     */
     public void finalizarEntrega() {
         if (status != StatusPedido.EM_ENTREGA) {
             throw new IllegalStateException("Apenas pedidos em entrega podem ser finalizados");

@@ -62,11 +62,14 @@ Este documento define regras mínimas para qualquer alteração automatizada ou 
   - Propagar erros com contexto útil (mensagens claras) sem vazar informações sensíveis.
 
 - **Código auto-explicativo - SEM comentários**  
-  - ❌ **PROIBIDO**: Comentários de código (`//`, `/* */`)
-  - ✅ **PERMITIDO**: Javadoc em APIs públicas (classes, métodos públicos)
+  - ❌ **PROIBIDO**: Todos os tipos de comentários (`//`, `/* */`, `/** */`)
   - ✅ **OBRIGATÓRIO**: Nomes descritivos que eliminam necessidade de comentários
   - **Razão**: Código deve ser claro o suficiente para dispensar comentários
-  - **Exceção**: Javadoc para documentação de API pública
+  - **Documentação externa**: Use `app/docs/` para guias e padrões
+  - **Antes de documentar, pergunte**:
+    1. O código está seguindo Clean Code? Nomes claros?
+    2. Já está documentado em outro lugar? (README, docs/, planejamento/)
+    3. É um design pattern que serve de guia? → Documente em `app/docs/patterns/`
   - Se sentir necessidade de comentar, refatore o código para ser mais claro
   - Comentários mentem com o tempo; código bem escrito não
 
