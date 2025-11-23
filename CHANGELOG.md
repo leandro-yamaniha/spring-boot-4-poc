@@ -45,6 +45,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Added
 
+- Arquivo LICENSE com licença MIT
+  - Copyright (c) 2025 Leandro Yamaniha
+  - Permissão para uso, modificação e distribuição
+  - Atualizada seção de licença no README.md
 - README.md na raiz do projeto
   - Visão geral completa do projeto
   - Badges de tecnologias e quality gate

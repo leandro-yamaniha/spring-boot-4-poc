@@ -353,7 +353,11 @@ Seguimos [Semantic Versioning 2.0.0](https://semver.org/):
 
 ## 📄 Licença
 
-Este projeto é um POC (Proof of Concept) para fins de demonstração.
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+Copyright (c) 2025 Leandro Yamaniha
+
+Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
