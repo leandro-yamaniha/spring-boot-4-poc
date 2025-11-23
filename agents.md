@@ -67,7 +67,89 @@ Este documento define regras mínimas para qualquer alteração automatizada ou 
 
 ---
 
-## 4. Lint, Formatação e Qualidade Estática
+## 4. Princípios SOLID e Arquitetura
+
+### SOLID Principles
+
+- **S - Single Responsibility Principle (SRP)**  
+  - Cada classe/módulo deve ter uma única responsabilidade.
+  - Use Cases devem ter uma única ação (ex: `CreateOrderUseCase`, não `OrderService` genérico).
+  - Facilita testes, manutenção e compreensão do código.
+
+- **O - Open/Closed Principle (OCP)**  
+  - Aberto para extensão, fechado para modificação.
+  - Usar interfaces e abstrações para permitir novos comportamentos sem alterar código existente.
+
+- **L - Liskov Substitution Principle (LSP)**  
+  - Subtipos devem ser substituíveis por seus tipos base.
+  - Implementações de interfaces devem respeitar o contrato esperado.
+
+- **I - Interface Segregation Principle (ISP)**  
+  - Interfaces específicas são melhores que interfaces genéricas.
+  - Não forçar clientes a depender de métodos que não usam.
+
+- **D - Dependency Inversion Principle (DIP)**  
+  - Depender de abstrações, não de implementações concretas.
+  - Usar injeção de dependências via construtor.
+
+### Arquitetura: Use Cases vs Services
+
+**Usar Use Cases em vez de Services tradicionais:**
+
+- **Use Case** = Uma ação específica do usuário
+  - Exemplo: `CreateOrderUseCase`, `CancelOrderUseCase`, `GetOrderByIdUseCase`
+  - Método principal: `execute(request)` ou `execute(id)`
+  - Responsabilidade única e bem definida
+
+- **Evitar Services genéricos** que acumulam múltiplas responsabilidades
+  - ❌ `OrderService` com 20 métodos diferentes
+  - ✅ Múltiplos use cases, cada um com sua responsabilidade
+
+**Estrutura de um Use Case:**
+
+```java
+@Component
+public class CreateOrderUseCase {
+    private final OrderValidator validator;
+    private final PriceCalculator calculator;
+    private final OrderRepository repository;
+    
+    // Injeção via construtor (DIP)
+    public CreateOrderUseCase(
+        OrderValidator validator,
+        PriceCalculator calculator,
+        OrderRepository repository
+    ) {
+        this.validator = validator;
+        this.calculator = calculator;
+        this.repository = repository;
+    }
+    
+    // Método execute - ponto de entrada único (SRP)
+    public PedidoResponse execute(PedidoRequest request) {
+        validator.validate(request);
+        BigDecimal total = calculator.calculate(request);
+        Pedido pedido = Pedido.create(request, total);
+        Pedido saved = repository.save(pedido);
+        return PedidoResponse.from(saved);
+    }
+}
+```
+
+**Benefícios:**
+- ✅ Testabilidade: cada use case testado independentemente
+- ✅ Manutenibilidade: mudanças isoladas, sem efeitos colaterais
+- ✅ Legibilidade: código auto-documentado
+- ✅ Escalabilidade: fácil adicionar novos use cases
+- ✅ Alinhamento com Clean Architecture e DDD
+
+**Referências:**
+- Ver `planejamento/analise-arquiteturas-backend.md` para detalhes da decisão arquitetural
+- Ver `historias/fase1/HIST-001-modelagem.md` para exemplos práticos
+
+---
+
+## 5. Lint, Formatação e Qualidade Estática
 
 - **Linter obrigatório antes de cada commit**  
   Sempre executar o(s) linter(s) configurado(s) no projeto (frontend, backend(s), scripts) antes de commitar.
@@ -83,7 +165,7 @@ Este documento define regras mínimas para qualquer alteração automatizada ou 
 
 ---
 
-## 5. Segurança – Diretrizes OWASP
+## 6. Segurança – Diretrizes OWASP
 
 Toda contribuição deve respeitar, no mínimo, os princípios básicos do **OWASP Top 10**. Entre eles:
 
@@ -111,7 +193,7 @@ Toda contribuição deve respeitar, no mínimo, os princípios básicos do **OWA
 
 ---
 
-## 6. Testes Unitários
+## 7. Testes Unitários
 
 - **Obrigatórios para lógica de negócio**  
   Toda função/método com regra de negócio relevante deve ter testes unitários cobrindo:
@@ -127,7 +209,7 @@ Toda contribuição deve respeitar, no mínimo, os princípios básicos do **OWA
 
 ---
 
-## 7. Testes de Integração
+## 8. Testes de Integração
 
 - **Cobertura de fluxos entre componentes**  
   Escrever testes de integração para:
@@ -145,7 +227,7 @@ Toda contribuição deve respeitar, no mínimo, os princípios básicos do **OWA
 
 ---
 
-## 8. Regras Mínimas para Cada Commit
+## 9. Regras Mínimas para Cada Commit
 
 Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens abaixo** **antes de ser criado**:
 
@@ -222,7 +304,7 @@ Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens a
 
 ---
 
-## 10. Regras para Push: README, CHANGELOG e Versionamento
+## 11. Regras para Push: README, CHANGELOG e Versionamento
 
 Para **cada push** que altera comportamento observável da aplicação (features, endpoints, fluxos, contratos, performance relevante):
 
@@ -262,7 +344,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
 
 ---
 
-## 10.1. Regras para Branches e Histórias
+## 11.1. Regras para Branches e Histórias
 
 **Toda implementação deve seguir o fluxo de branches vinculadas às histórias:**
 
@@ -303,7 +385,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
 
 ---
 
-## 11. Regras Específicas para Agents Automatizados
+## 12. Regras Específicas para Agents Automatizados
 
 Agents (como este) **devem SEMPRE**:
 
