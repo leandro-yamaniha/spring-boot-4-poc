@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.14.0">
+<file name="/Volumes/Dock/ai/ide/windsurf/spring-boot-4-poc/app/src/main/java/com/poc/delivery/DeliveryApplication.java">
+</file>
+<file name="/Volumes/Dock/ai/ide/windsurf/spring-boot-4-poc/app/src/main/java/com/poc/delivery/api/OpenApiConfig.java">
+</file>
+<file name="/Volumes/Dock/ai/ide/windsurf/spring-boot-4-poc/app/src/main/java/com/poc/delivery/api/GlobalExceptionHandler.java">
+</file>
+<file name="/Volumes/Dock/ai/ide/windsurf/spring-boot-4-poc/app/src/main/java/com/poc/delivery/api/package-info.java">
+</file>
+<file name="/Volumes/Dock/ai/ide/windsurf/spring-boot-4-poc/app/src/main/java/com/poc/delivery/application/package-info.java">
+</file>
+<file name="/Volumes/Dock/ai/ide/windsurf/spring-boot-4-poc/app/src/main/java/com/poc/delivery/infrastructure/package-info.java">
+</file>
+<file name="/Volumes/Dock/ai/ide/windsurf/spring-boot-4-poc/app/src/main/java/com/poc/delivery/domain/package-info.java">
+</file>
+</checkstyle>

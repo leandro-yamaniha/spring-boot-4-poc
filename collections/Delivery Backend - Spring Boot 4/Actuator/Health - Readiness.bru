@@ -1,0 +1,15 @@
+meta {
+  name: Health - Readiness
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{base_path}}/actuator/health/readiness
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}

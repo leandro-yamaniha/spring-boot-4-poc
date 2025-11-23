@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.0.0'
+    id 'io.spring.dependency-management' version '1.1.5'
+    id 'jacoco'
+    id 'checkstyle'
+}
+
+group = 'com.poc'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+def testcontainersVersion = '1.21.3'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    
+    // TODO: Avaliar troca para Undertow quando houver suporte estável no Spring Boot 4.0.0
+    // Undertow oferece melhor performance com virtual threads, mas pode ter incompatibilidades
+    // com versões early do Boot 4.x
+    // Comentado temporariamente até implementarmos HIST-001 (entidades JPA)
+    // implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    
+    // SpringDoc OpenAPI 3 - Documentação automática da API (v3.0.0 para Spring Boot 4)
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0'
+    // implementation 'org.springframework.boot:spring-boot-starter-cache'
+    // implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // runtimeOnly 'org.postgresql:postgresql'
+
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+    testImplementation "org.testcontainers:postgresql:${testcontainersVersion}"
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+    testImplementation 'io.cucumber:cucumber-java:7.14.0'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.14.0'
+    testImplementation 'org.instancio:instancio-junit:3.6.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+checkstyle {
+    toolVersion = '10.14.0'
+    configDirectory = file("config/checkstyle")
+}

@@ -1,0 +1,24 @@
+meta {
+  name: OpenAPI Spec (YAML)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/v3/api-docs.yaml
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/yaml
+}
+
+docs {
+  Especificação OpenAPI 3.0 da API em formato YAML.
+  
+  Formato mais legível para humanos, ideal para:
+  - Versionamento no Git
+  - Documentação
+  - Geração de código (client SDKs)
+}

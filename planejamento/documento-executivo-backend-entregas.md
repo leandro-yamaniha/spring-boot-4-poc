@@ -144,7 +144,7 @@
 (Alinhando com um cenário com Java/Spring, que combina bem com projetos corporativos.)
 
 - **Linguagem & Framework**
-  - Java + **Spring Boot** (REST, segurança, dados).
+  - Java 25 LTS + **Spring Boot 4.x** (REST, segurança, dados).
 - **Banco de Dados**
   - PostgreSQL + ORM (Hibernate/JPA; Migrations via Flyway/Liquibase).
 - **Cache**

@@ -1,0 +1,25 @@
+meta {
+  name: Application Info
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{base_url}}/actuator/info
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Informações sobre a aplicação (versão, build, etc).
+  
+  Pode ser configurado no application.yml para incluir:
+  - Versão da aplicação
+  - Data do build
+  - Commit Git
+  - Informações customizadas
+}

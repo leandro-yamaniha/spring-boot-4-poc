@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.poc.delivery.DeliveryApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-11-23T11:52:06.962Z" hostname="Mini-de-Leandro" time="0.356">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.poc.delivery.DeliveryApplicationTests" time="0.356"/>
+  <system-out><![CDATA[08:52:05.374 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.poc.delivery.DeliveryApplicationTests]: DeliveryApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+08:52:05.476 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.poc.delivery.DeliveryApplication for test class com.poc.delivery.DeliveryApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.0)
+
+2025-11-23T08:52:05.871-03:00  INFO 9978 --- [delivery-backend] [    Test worker] c.poc.delivery.DeliveryApplicationTests  : Starting DeliveryApplicationTests using Java 25.0.1 with PID 9978 (started by leandro.yamaniha in /Volumes/Dock/ai/ide/windsurf/spring-boot-4-poc/app)
+2025-11-23T08:52:05.872-03:00  INFO 9978 --- [delivery-backend] [    Test worker] c.poc.delivery.DeliveryApplicationTests  : The following 1 profile is active: "local"
+2025-11-23T08:52:06.902-03:00  INFO 9978 --- [delivery-backend] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 12 endpoints beneath base path '/actuator'
+2025-11-23T08:52:06.927-03:00  INFO 9978 --- [delivery-backend] [    Test worker] c.poc.delivery.DeliveryApplicationTests  : Started DeliveryApplicationTests in 1.248 seconds (process running for 2.47)
+2025-11-23T08:52:06.956-03:00  WARN 9978 --- [delivery-backend] [    Test worker] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2025-11-23T08:52:06.956-03:00  WARN 9978 --- [delivery-backend] [    Test worker] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+]]></system-out>
+  <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/leandro.yamaniha/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.17.8/f09415827a71be7ed621c7bd02550678f28bc81c/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>
