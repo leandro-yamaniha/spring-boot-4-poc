@@ -238,6 +238,21 @@
             <property name="illegalPattern" value="true"/>
             <property name="message" value="Não use System.out/err. Use um logger (SLF4J) para rastreabilidade e controle."/>
         </module>
+
+        <!-- Clean Code: Proibir TODOS os Comentários -->
+        <!-- Comentários de linha única (//) -->
+        <module name="Regexp">
+            <property name="format" value="^\s*//(?!\s*@)(?!\s*TODO)(?!\s*FIXME)(?!\s*checkstyle)"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="message" value="Comentários (//) são proibidos. Use nomes descritivos e código auto-explicativo. Para guias, use app/docs/"/>
+        </module>
+
+        <!-- Comentários de bloco (/* */ e /** */) -->
+        <module name="Regexp">
+            <property name="format" value="/\*"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="message" value="Comentários (/* */ e /** */) são proibidos. Use nomes descritivos e código auto-explicativo. Para design patterns, documente em app/docs/patterns/"/>
+        </module>
     </module>
 
     <!-- Limite razoável de tamanho de linha -->

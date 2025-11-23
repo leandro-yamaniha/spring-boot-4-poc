@@ -124,13 +124,16 @@ Considerando:
 
 Decisão inicial:
 
-- Adotar uma **arquitetura em camadas inspirada em princípios de DDD e Hexagonal**, sem implementar um CQRS completo neste momento.
+- Adotar uma **arquitetura baseada em Clean Architecture com Use Cases**, inspirada em princípios de DDD e Hexagonal, sem implementar um CQRS completo neste momento.
   - Camadas principais:
     - **API** (`...api`): controllers REST, DTOs, mapeamento de entrada/saída.
-    - **Aplicação** (`...application`): casos de uso/serviços de aplicação, orquestrando o domínio.
-    - **Domínio** (`...domain`): entidades de domínio, agregados, value objects, regras de negócio.
+    - **Domínio** (`...domain`): 
+      - **Use Cases** (`...domain.usecase`): casos de uso específicos (ex: CreateOrderUseCase), cada um com responsabilidade única.
+      - **Model** (`...domain.model`): entidades de domínio, agregados, value objects, regras de negócio.
+      - **Exception** (`...domain.exception`): exceções de domínio.
     - **Infraestrutura** (`...infrastructure`): persistência (JPA/Repositories), integrações externas, mapeadores para DB.
-  - Utilizar **ports & adapters** de forma leve onde fizer sentido (por exemplo, interfaces de repositório no domínio/aplicação com implementações em infraestrutura).
+  - Utilizar **ports & adapters** de forma leve onde fizer sentido (por exemplo, interfaces de repositório no domínio com implementações em infraestrutura).
+  - **Use Cases** seguem o princípio de Single Responsibility: cada use case representa uma ação específica do usuário.
 - Não adotar CQRS completo na Fase 1:
   - Manter leitura/escrita no mesmo modelo por enquanto.
   - Deixar CQRS como opção futura, caso surjam requisitos de escala/performance/leitura complexa.
@@ -147,10 +150,72 @@ Decisão inicial:
 
 ---
 
-## 9. Próximos Passos
+## 9. Benefícios da Abordagem de Use Cases
+
+### Por que Use Cases em vez de Services tradicionais?
+
+**Single Responsibility Principle:**
+- Cada use case tem uma responsabilidade única e bem definida
+- Exemplo: `CreateOrderUseCase`, `CancelOrderUseCase`, `GetOrderUseCase`
+- Evita "God Services" com múltiplas responsabilidades
+
+**Alinhamento com Clean Architecture:**
+- Use cases representam as regras de negócio da aplicação
+- Ficam na camada de domínio, não na camada de infraestrutura
+- Independentes de frameworks e detalhes técnicos
+
+**Testabilidade:**
+- Testes mais focados e isolados
+- Cada use case pode ser testado independentemente
+- Mocks e stubs mais simples
+
+**Manutenibilidade:**
+- Código mais fácil de entender (cada arquivo faz uma coisa)
+- Mudanças em um use case não afetam outros
+- Facilita onboarding de novos desenvolvedores
+
+**Escalabilidade:**
+- Fácil adicionar novos use cases sem modificar existentes
+- Permite trabalho paralelo em diferentes funcionalidades
+- Preparado para evolução futura (microserviços, modularização)
+
+### Estrutura de um Use Case
+
+```java
+public class CreateOrderUseCase {
+    private final OrderValidator validator;
+    private final PriceCalculator calculator;
+    private final OrderRepository repository;
+    
+    public PedidoResponse execute(PedidoRequest request) {
+        // 1. Validar
+        validator.validate(request);
+        
+        // 2. Calcular
+        BigDecimal total = calculator.calculate(request);
+        
+        // 3. Criar domínio
+        Pedido pedido = Pedido.create(request, total);
+        
+        // 4. Persistir
+        Pedido saved = repository.save(pedido);
+        
+        // 5. Retornar
+        return PedidoResponse.from(saved);
+    }
+}
+```
+
+---
+
+## 10. Próximos Passos
 
 - Refletir esta organização de camadas e contexto de DDD na criação do scaffold (HIST-000).
 - Ao modelar o domínio de pedidos, identificar possíveis agregados (ex.: `Pedido` como agregado raiz com itens).
+- Implementar use cases seguindo o padrão estabelecido:
+  - Um use case por ação do usuário
+  - Método `execute()` como ponto de entrada
+  - Colaboradores injetados via construtor
 - Se, em fases futuras, o volume/complexidade justificar, considerar:
   - Introduzir CQRS em áreas específicas (por exemplo, relatórios/consultas analíticas).
   - Aumentar o uso de ports & adapters e, se necessário, modularizar o projeto.

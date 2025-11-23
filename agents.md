@@ -61,13 +61,278 @@ Este documento define regras mínimas para qualquer alteração automatizada ou 
   - Não engolir exceções silenciosamente.
   - Propagar erros com contexto útil (mensagens claras) sem vazar informações sensíveis.
 
-- **Comentários mínimos e úteis**  
-  - Explicar apenas o *porquê* em casos não óbvios.  
-  - Nunca usar comentários para encobrir código confuso: prefira refatorar.
+- **Código auto-explicativo - SEM comentários**  
+  - ❌ **PROIBIDO**: Todos os tipos de comentários (`//`, `/* */`, `/** */`)
+  - ✅ **OBRIGATÓRIO**: Nomes descritivos que eliminam necessidade de comentários
+  - **Razão**: Código deve ser claro o suficiente para dispensar comentários
+  - **Documentação externa**: Use `app/docs/` para guias e padrões
+  - **Antes de documentar, pergunte**:
+    1. O código está seguindo Clean Code? Nomes claros?
+    2. Já está documentado em outro lugar? (README, docs/, planejamento/)
+    3. É um design pattern que serve de guia? → Documente em `app/docs/patterns/`
+  - Se sentir necessidade de comentar, refatore o código para ser mais claro
+  - Comentários mentem com o tempo; código bem escrito não
 
 ---
 
-## 4. Lint, Formatação e Qualidade Estática
+## 4. Princípios SOLID e Arquitetura
+
+### SOLID Principles
+
+- **S - Single Responsibility Principle (SRP)**  
+  - Cada classe/módulo deve ter uma única responsabilidade.
+  - Use Cases devem ter uma única ação (ex: `CreateOrderUseCase`, não `OrderService` genérico).
+  - Facilita testes, manutenção e compreensão do código.
+
+- **O - Open/Closed Principle (OCP)**  
+  - Aberto para extensão, fechado para modificação.
+  - Usar interfaces e abstrações para permitir novos comportamentos sem alterar código existente.
+
+- **L - Liskov Substitution Principle (LSP)**  
+  - Subtipos devem ser substituíveis por seus tipos base.
+  - Implementações de interfaces devem respeitar o contrato esperado.
+
+- **I - Interface Segregation Principle (ISP)**  
+  - Interfaces específicas são melhores que interfaces genéricas.
+  - Não forçar clientes a depender de métodos que não usam.
+
+- **D - Dependency Inversion Principle (DIP)**  
+  - Depender de abstrações, não de implementações concretas.
+  - Usar injeção de dependências via construtor.
+
+### Arquitetura: Use Cases vs Services
+
+**Usar Use Cases em vez de Services tradicionais:**
+
+- **Use Case** = Uma ação específica do usuário
+  - Exemplo: `CreateOrderUseCase`, `CancelOrderUseCase`, `GetOrderByIdUseCase`
+  - Método principal: `execute(request)` ou `execute(id)`
+  - Responsabilidade única e bem definida
+
+- **Evitar Services genéricos** que acumulam múltiplas responsabilidades
+  - ❌ `OrderService` com 20 métodos diferentes
+  - ✅ Múltiplos use cases, cada um com sua responsabilidade
+
+**Estrutura de um Use Case:**
+
+```java
+@Component
+public class CreateOrderUseCase {
+    private final OrderValidator validator;
+    private final PriceCalculator calculator;
+    private final OrderRepository repository;
+    
+    // Injeção via construtor (DIP)
+    public CreateOrderUseCase(
+        OrderValidator validator,
+        PriceCalculator calculator,
+        OrderRepository repository
+    ) {
+        this.validator = validator;
+        this.calculator = calculator;
+        this.repository = repository;
+    }
+    
+    // Método execute - ponto de entrada único (SRP)
+    public PedidoResponse execute(PedidoRequest request) {
+        validator.validate(request);
+        BigDecimal total = calculator.calculate(request);
+        Pedido pedido = Pedido.create(request, total);
+        Pedido saved = repository.save(pedido);
+        return PedidoResponse.from(saved);
+    }
+}
+```
+
+**Benefícios:**
+- ✅ Testabilidade: cada use case testado independentemente
+- ✅ Manutenibilidade: mudanças isoladas, sem efeitos colaterais
+- ✅ Legibilidade: código auto-documentado
+- ✅ Escalabilidade: fácil adicionar novos use cases
+- ✅ Alinhamento com Clean Architecture e DDD
+
+**Referências:**
+- Ver `planejamento/analise-arquiteturas-backend.md` para detalhes da decisão arquitetural
+- Ver `historias/fase1/HIST-001-modelagem.md` para exemplos práticos
+
+---
+
+## 4.1. Boas Práticas de Design
+
+### Quando Usar Cada Tipo de Classe
+
+**DTOs (Data Transfer Objects):**
+- Transferência de dados entre camadas (API ↔ Use Cases)
+- Exemplo: `PedidoRequest`, `PedidoResponse`
+- Apenas dados, sem lógica de negócio
+- Validações básicas (@NotNull, @Size, etc)
+
+**Uso de record vs class:**
+- `record` para DTOs de entrada/saída e projeções de leitura sem comportamento
+- `class` para:
+  - Entidades e agregados de domínio ricos (com comportamento e invariantes)
+  - Value Objects com validações mais complexas
+  - Entidades JPA/anotações de infraestrutura (requer construtor padrão, setters, proxies)
+
+**Value Objects (VOs):**
+- Representam conceitos de domínio imutáveis
+- Exemplo: `Email`, `CPF`, `Money`, `Address`
+- Contêm validações e comportamentos relacionados ao conceito
+- Igualdade baseada em valor, não em identidade
+
+**Entities:**
+- Representam conceitos com identidade única
+- Exemplo: `Pedido`, `Cliente`, `Produto`
+- Contêm lógica de negócio relevante
+- Igualdade baseada em ID
+
+**Helpers/Utils:**
+- ⚠️ **Usar com moderação** - podem indicar falta de coesão
+- Apenas para funções verdadeiramente utilitárias e genéricas
+- Exemplo: `DateUtils.formatBrazilianDate()`, `StringUtils.removeAccents()`
+- ❌ Evitar: `PedidoHelper` com lógica de negócio → mover para o domínio
+
+**Mappers:**
+- Conversão entre camadas (Entity ↔ DTO, Domain ↔ Entity)
+- Exemplo: `PedidoMapper.toResponse(Pedido)`
+- Sem lógica de negócio, apenas transformação de estrutura
+- Preferir **MapStruct** para mapeamentos estruturais sem regra de negócio
+- componentModel padrão: `spring`
+- Se a conversão envolver regra de negócio, manter essa lógica no domínio/use case, não no mapper
+
+### Evitar IFs Excessivos - Design Patterns
+
+**Quando encontrar múltiplos IFs, considerar:**
+
+**1. Strategy Pattern**
+```java
+// ❌ Evitar
+if (tipoPagamento.equals("CREDITO")) {
+    processarCredito();
+} else if (tipoPagamento.equals("DEBITO")) {
+    processarDebito();
+} else if (tipoPagamento.equals("PIX")) {
+    processarPix();
+}
+
+// ✅ Usar Strategy
+interface PaymentStrategy {
+    void process(Payment payment);
+}
+
+class CreditCardStrategy implements PaymentStrategy { ... }
+class DebitCardStrategy implements PaymentStrategy { ... }
+class PixStrategy implements PaymentStrategy { ... }
+```
+
+**2. Polymorphism (OOP básico)**
+```java
+// ❌ Evitar
+if (pedido.getStatus() == Status.CRIADO) {
+    // lógica para criado
+} else if (pedido.getStatus() == Status.CONFIRMADO) {
+    // lógica para confirmado
+}
+
+// ✅ Usar Polimorfismo
+abstract class PedidoState {
+    abstract void process(Pedido pedido);
+}
+
+class CriadoState extends PedidoState { ... }
+class ConfirmadoState extends PedidoState { ... }
+```
+
+**3. Factory Pattern**
+```java
+// ❌ Evitar
+if (tipo.equals("LOJA")) {
+    return new LojaValidator();
+} else if (tipo.equals("CLIENTE")) {
+    return new ClienteValidator();
+}
+
+// ✅ Usar Factory
+class ValidatorFactory {
+    public Validator create(String tipo) {
+        return switch(tipo) {
+            case "LOJA" -> new LojaValidator();
+            case "CLIENTE" -> new ClienteValidator();
+            default -> throw new IllegalArgumentException();
+        };
+    }
+}
+```
+
+**4. Chain of Responsibility**
+```java
+// Para validações sequenciais
+class ValidationChain {
+    private Validator next;
+    
+    public void validate(Request request) {
+        // valida
+        if (next != null) next.validate(request);
+    }
+}
+```
+
+**5. Specification Pattern**
+```java
+// Para regras de negócio complexas
+interface Specification<T> {
+    boolean isSatisfiedBy(T entity);
+}
+
+class PedidoPodeSerCanceladoSpec implements Specification<Pedido> {
+    public boolean isSatisfiedBy(Pedido pedido) {
+        return pedido.getStatus() == Status.CRIADO 
+            && pedido.getCreatedAt().isAfter(now().minusHours(1));
+    }
+}
+```
+
+### Princípios Gerais
+
+**Tell, Don't Ask:**
+```java
+// ❌ Evitar (perguntando)
+if (pedido.getStatus() == Status.CRIADO) {
+    pedido.setStatus(Status.CONFIRMADO);
+}
+
+// ✅ Usar (dizendo)
+pedido.confirmar();
+```
+
+**Evitar Anemia de Domínio:**
+```java
+// ❌ Modelo anêmico
+class Pedido {
+    private BigDecimal total;
+    // apenas getters/setters
+}
+
+// ✅ Modelo rico
+class Pedido {
+    private BigDecimal total;
+    
+    public void adicionarItem(Item item) {
+        validarItem(item);
+        itens.add(item);
+        recalcularTotal();
+    }
+}
+```
+
+**Composição sobre Herança:**
+- Preferir composição quando possível
+- Herança apenas quando há relação "é um" clara
+- Evitar hierarquias profundas (> 2-3 níveis)
+
+---
+
+## 5. Lint, Formatação e Qualidade Estática
 
 - **Linter obrigatório antes de cada commit**  
   Sempre executar o(s) linter(s) configurado(s) no projeto (frontend, backend(s), scripts) antes de commitar.
@@ -83,7 +348,7 @@ Este documento define regras mínimas para qualquer alteração automatizada ou 
 
 ---
 
-## 5. Segurança – Diretrizes OWASP
+## 6. Segurança – Diretrizes OWASP
 
 Toda contribuição deve respeitar, no mínimo, os princípios básicos do **OWASP Top 10**. Entre eles:
 
@@ -111,7 +376,7 @@ Toda contribuição deve respeitar, no mínimo, os princípios básicos do **OWA
 
 ---
 
-## 6. Testes Unitários
+## 7. Testes Unitários
 
 - **Obrigatórios para lógica de negócio**  
   Toda função/método com regra de negócio relevante deve ter testes unitários cobrindo:
@@ -127,7 +392,7 @@ Toda contribuição deve respeitar, no mínimo, os princípios básicos do **OWA
 
 ---
 
-## 7. Testes de Integração
+## 8. Testes de Integração
 
 - **Cobertura de fluxos entre componentes**  
   Escrever testes de integração para:
@@ -145,7 +410,7 @@ Toda contribuição deve respeitar, no mínimo, os princípios básicos do **OWA
 
 ---
 
-## 8. Regras Mínimas para Cada Commit
+## 9. Regras Mínimas para Cada Commit
 
 Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens abaixo** **antes de ser criado**:
 
@@ -222,7 +487,7 @@ Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens a
 
 ---
 
-## 10. Regras para Push: README, CHANGELOG e Versionamento
+## 11. Regras para Push: README, CHANGELOG e Versionamento
 
 Para **cada push** que altera comportamento observável da aplicação (features, endpoints, fluxos, contratos, performance relevante):
 
@@ -262,7 +527,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
 
 ---
 
-## 10.1. Regras para Branches e Histórias
+## 11.1. Regras para Branches e Histórias
 
 **Toda implementação deve seguir o fluxo de branches vinculadas às histórias:**
 
@@ -303,7 +568,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
 
 ---
 
-## 11. Regras Específicas para Agents Automatizados
+## 12. Regras Específicas para Agents Automatizados
 
 Agents (como este) **devem SEMPRE**:
 
