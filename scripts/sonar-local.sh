@@ -90,19 +90,19 @@ wait_sonarqube() {
 generate_token() {
     echo -e "${YELLOW}[4/6] Gerando token de autenticação...${NC}"
     
-    # Credenciais padrão do SonarQube
+    # Credenciais configuradas
     local admin_user="admin"
-    local admin_pass="admin"
+    local admin_pass="d3l1v3ry#Pr0j3ct"
     
     # Tenta gerar token
     SONAR_TOKEN=$(curl -s -u ${admin_user}:${admin_pass} \
-        -X POST "${SONAR_HOST}/api/user_tokens/generate?name=local-analysis" \
+        -X POST "${SONAR_HOST}/api/user_tokens/generate?name=local-analysis-$(date +%s)" \
         | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
     
     if [ -z "$SONAR_TOKEN" ]; then
         echo -e "${YELLOW}⚠️  Não foi possível gerar token automaticamente${NC}"
         echo "Acesse ${SONAR_HOST} e gere um token manualmente:"
-        echo "  1. Login: admin / admin"
+        echo "  1. Login: admin / d3l1v3ry#Pr0j3ct"
         echo "  2. My Account > Security > Generate Token"
         echo ""
         read -p "Cole o token aqui: " SONAR_TOKEN
@@ -169,25 +169,38 @@ run_sonar_analysis() {
 configure_quality_gate() {
     echo -e "${YELLOW}Configurando Quality Gate rigoroso...${NC}"
     
-    # Criar Quality Gate customizado via API
+    local admin_user="admin"
+    local admin_pass="d3l1v3ry#Pr0j3ct"
     local qg_name="Zero Tolerance"
     
-    # Criar Quality Gate
-    curl -s -u admin:admin -X POST "${SONAR_HOST}/api/qualitygates/create?name=${qg_name}" > /dev/null
+    # Verificar se Quality Gate já existe
+    local existing_qg=$(curl -s -u ${admin_user}:${admin_pass} "${SONAR_HOST}/api/qualitygates/list" | grep -o "\"name\":\"${qg_name}\"")
     
-    # Obter ID do Quality Gate
-    local qg_id=$(curl -s -u admin:admin "${SONAR_HOST}/api/qualitygates/list" | grep -o "\"id\":[0-9]*" | head -1 | cut -d':' -f2)
+    if [ -n "$existing_qg" ]; then
+        echo -e "${GREEN}✅ Quality Gate '${qg_name}' já existe${NC}"
+        echo ""
+        return 0
+    fi
+    
+    # Criar Quality Gate
+    local create_response=$(curl -s -u ${admin_user}:${admin_pass} -X POST "${SONAR_HOST}/api/qualitygates/create?name=${qg_name}")
+    
+    # Obter ID do Quality Gate criado
+    local qg_id=$(echo "$create_response" | grep -o '"id":"[^"]*"' | cut -d'"' -f4)
     
     if [ -n "$qg_id" ]; then
         # Adicionar condições
-        curl -s -u admin:admin -X POST "${SONAR_HOST}/api/qualitygates/create_condition?gateId=${qg_id}&metric=coverage&op=LT&error=100" > /dev/null
-        curl -s -u admin:admin -X POST "${SONAR_HOST}/api/qualitygates/create_condition?gateId=${qg_id}&metric=bugs&op=GT&error=0" > /dev/null
-        curl -s -u admin:admin -X POST "${SONAR_HOST}/api/qualitygates/create_condition?gateId=${qg_id}&metric=code_smells&op=GT&error=0" > /dev/null
+        curl -s -u ${admin_user}:${admin_pass} -X POST "${SONAR_HOST}/api/qualitygates/create_condition?gateId=${qg_id}&metric=coverage&op=LT&error=100" > /dev/null
+        curl -s -u ${admin_user}:${admin_pass} -X POST "${SONAR_HOST}/api/qualitygates/create_condition?gateId=${qg_id}&metric=bugs&op=GT&error=0" > /dev/null
+        curl -s -u ${admin_user}:${admin_pass} -X POST "${SONAR_HOST}/api/qualitygates/create_condition?gateId=${qg_id}&metric=code_smells&op=GT&error=0" > /dev/null
         
         # Definir como padrão
-        curl -s -u admin:admin -X POST "${SONAR_HOST}/api/qualitygates/set_as_default?id=${qg_id}" > /dev/null
+        curl -s -u ${admin_user}:${admin_pass} -X POST "${SONAR_HOST}/api/qualitygates/set_as_default?id=${qg_id}" > /dev/null
         
-        echo -e "${GREEN}✅ Quality Gate configurado${NC}"
+        echo -e "${GREEN}✅ Quality Gate configurado com sucesso${NC}"
+    else
+        echo -e "${YELLOW}⚠️  Não foi possível configurar Quality Gate automaticamente${NC}"
+        echo "Configure manualmente em: ${SONAR_HOST}/quality_gates"
     fi
     echo ""
 }

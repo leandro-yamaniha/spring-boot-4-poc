@@ -39,6 +39,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Atualizado script sonar-local.sh com nova senha do SonarQube
+  - Senha alterada para d3l1v3ry#Pr0j3ct
+  - Melhorada verificação de Quality Gate existente
+  - Adicionado timestamp ao nome do token gerado
+- Adicionado plugin org.sonarqube ao build.gradle (versão 6.0.1.5171)
 - Adicionada regra obrigatória no agents.md: executar análise SonarQube antes de commit
   - Executar ./scripts/sonar-local.sh antes de cada commit
   - Quality Gate "Zero Tolerance" deve passar (cobertura 100%, bugs 0, code smells 0)
