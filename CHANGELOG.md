@@ -45,6 +45,17 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Added
 
+- README.md na raiz do projeto
+  - Visão geral completa do projeto
+  - Badges de tecnologias e quality gate
+  - Índice navegável
+  - Instruções de instalação e execução
+  - Documentação de qualidade de código (Checkstyle, JaCoCo, SonarQube)
+  - Guia de testes e cobertura
+  - Documentação da API (Swagger, OpenAPI, Actuator)
+  - Estrutura do projeto
+  - Regras de contribuição e commit
+  - Links úteis e referências
 - Regra obrigatória no agents.md: verificar e atualizar README.md antes de commit
   - Item 9 na seção "Regras Mínimas para Cada Commit"
   - Avaliar se mudanças impactam documentação do usuário
