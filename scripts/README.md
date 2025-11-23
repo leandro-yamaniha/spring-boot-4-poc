@@ -125,3 +125,50 @@ SONAR_PORT=9001 ./scripts/sonar-local.sh
 # Usar token existente
 SONAR_TOKEN=seu-token ./scripts/sonar-local.sh
 ```
+
+## 📈 version-bump.sh
+
+Script para atualizar a **versão** do backend em `app/build.gradle` seguindo o versionamento semântico definido no `agents.md`.
+
+### O que o script faz
+
+- Lê a linha `version = 'X.Y.Z[-SNAPSHOT]'` em `app/build.gradle`.
+- Calcula a nova versão de acordo com o tipo de bump (`major`, `minor` ou `patch`).
+- Mantém o sufixo `-SNAPSHOT`, se presente.
+- Atualiza o arquivo `app/build.gradle` com a nova versão.
+
+### Mapeamento com o agents.md
+
+- `major` → mudanças com **BREAKING CHANGE**.
+- `minor` → commits do tipo **feat:** (novas funcionalidades compatíveis).
+- `patch` → commits do tipo **fix:** (correções compatíveis).
+
+> Observação: commits `chore:`, `docs:`, `style:`, `refactor:`, `test:` em geral **não** exigem bump de versão.
+
+### Como usar
+
+Dar permissão de execução (uma única vez):
+
+```bash
+chmod +x scripts/version-bump.sh
+```
+
+Depois, de acordo com o tipo de mudança:
+
+```bash
+# BREAKING CHANGE (MAJOR)
+./scripts/version-bump.sh major
+
+# Nova feature compatível (MINOR)
+./scripts/version-bump.sh minor
+
+# Bugfix compatível (PATCH)
+./scripts/version-bump.sh patch
+```
+
+Exemplo: se a versão atual for `0.0.1-SNAPSHOT`:
+
+- `./scripts/version-bump.sh minor` → `0.1.0-SNAPSHOT`
+- `./scripts/version-bump.sh patch` → `0.0.2-SNAPSHOT`
+
+Após rodar o script, revise o `CHANGELOG.md` e o `README.md` conforme orientações do `agents.md` antes de criar o commit.
