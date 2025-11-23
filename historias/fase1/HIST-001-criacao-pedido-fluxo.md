@@ -6,7 +6,7 @@
 sequenceDiagram
     actor Cliente
     participant API as OrderController
-    participant Service as OrderService
+    participant UseCase as CreateOrderUseCase
     participant Validator as OrderValidator
     participant Calculator as PriceCalculator
     participant Repo as OrderRepository
@@ -15,34 +15,34 @@ sequenceDiagram
     Cliente->>API: POST /api/v1/orders
     Note over Cliente,API: Request Body:<br/>{clienteId, lojaId,<br/>enderecoId, itens[]}
     
-    API->>Service: createOrder(request)
+    API->>UseCase: execute(request)
     
-    Service->>Validator: validateClient(clienteId)
-    Validator-->>Service: Cliente válido
+    UseCase->>Validator: validateClient(clienteId)
+    Validator-->>UseCase: Cliente válido
     
-    Service->>Validator: validateLoja(lojaId)
-    Validator-->>Service: Loja válida
+    UseCase->>Validator: validateLoja(lojaId)
+    Validator-->>UseCase: Loja válida
     
-    Service->>Validator: validateEndereco(enderecoId, clienteId)
-    Validator-->>Service: Endereço válido
+    UseCase->>Validator: validateEndereco(enderecoId, clienteId)
+    Validator-->>UseCase: Endereço válido
     
-    Service->>Validator: validateItens(itens)
-    Validator-->>Service: Itens válidos
+    UseCase->>Validator: validateItens(itens)
+    Validator-->>UseCase: Itens válidos
     
-    Service->>Calculator: calculateTotal(itens, lojaId)
+    UseCase->>Calculator: calculateTotal(itens, lojaId)
     Note over Calculator: Soma itens<br/>+ taxa entrega<br/>- descontos
-    Calculator-->>Service: Total calculado
+    Calculator-->>UseCase: Total calculado
     
-    Service->>Service: createPedidoDomain()
-    Note over Service: Status: CRIADO<br/>Timestamp: now()
+    UseCase->>UseCase: createPedidoDomain()
+    Note over UseCase: Status: CRIADO<br/>Timestamp: now()
     
-    Service->>Repo: save(pedido)
+    UseCase->>Repo: save(pedido)
     Repo->>DB: INSERT INTO pedidos
     Repo->>DB: INSERT INTO itens_pedido
     DB-->>Repo: Pedido salvo
-    Repo-->>Service: Pedido persistido
+    Repo-->>UseCase: Pedido persistido
     
-    Service-->>API: PedidoResponse
+    UseCase-->>API: PedidoResponse
     API-->>Cliente: 201 Created
     Note over Cliente,API: Response Body:<br/>{id, status, total,<br/>createdAt, itens[]}
 ```
@@ -53,15 +53,15 @@ sequenceDiagram
 sequenceDiagram
     actor Cliente
     participant API as OrderController
-    participant Service as OrderService
+    participant UseCase as CreateOrderUseCase
     participant Validator as OrderValidator
     participant Handler as GlobalExceptionHandler
 
     Cliente->>API: POST /api/v1/orders
-    API->>Service: createOrder(request)
-    Service->>Validator: validateClient(clienteId)
-    Validator-->>Service: ClienteNotFoundException
-    Service-->>API: throw ClienteNotFoundException
+    API->>UseCase: execute(request)
+    UseCase->>Validator: validateClient(clienteId)
+    Validator-->>UseCase: ClienteNotFoundException
+    UseCase-->>API: throw ClienteNotFoundException
     API->>Handler: handleClienteNotFound()
     Handler-->>API: ApiErrorResponse
     API-->>Cliente: 404 Not Found
@@ -74,20 +74,20 @@ sequenceDiagram
 sequenceDiagram
     actor Cliente
     participant API as OrderController
-    participant Service as OrderService
+    participant UseCase as CreateOrderUseCase
     participant Validator as OrderValidator
     participant Handler as GlobalExceptionHandler
 
     Cliente->>API: POST /api/v1/orders
-    API->>Service: createOrder(request)
-    Service->>Validator: validateClient(clienteId)
-    Validator-->>Service: OK
-    Service->>Validator: validateLoja(lojaId)
-    Validator-->>Service: OK
-    Service->>Validator: validateItens(itens)
+    API->>UseCase: execute(request)
+    UseCase->>Validator: validateClient(clienteId)
+    Validator-->>UseCase: OK
+    UseCase->>Validator: validateLoja(lojaId)
+    Validator-->>UseCase: OK
+    UseCase->>Validator: validateItens(itens)
     Note over Validator: Produto não existe<br/>ou quantidade <= 0
-    Validator-->>Service: ValidationException
-    Service-->>API: throw ValidationException
+    Validator-->>UseCase: ValidationException
+    UseCase-->>API: throw ValidationException
     API->>Handler: handleValidation()
     Handler-->>API: ApiErrorResponse
     API-->>Cliente: 400 Bad Request
@@ -100,19 +100,19 @@ sequenceDiagram
 sequenceDiagram
     actor Cliente
     participant API as OrderController
-    participant Service as OrderService
+    participant UseCase as CreateOrderUseCase
     participant Repo as OrderRepository
     participant DB as PostgreSQL
     participant Handler as GlobalExceptionHandler
 
     Cliente->>API: POST /api/v1/orders
-    API->>Service: createOrder(request)
-    Note over Service: Validações OK<br/>Cálculo OK<br/>Domínio criado
-    Service->>Repo: save(pedido)
+    API->>UseCase: execute(request)
+    Note over UseCase: Validações OK<br/>Cálculo OK<br/>Domínio criado
+    UseCase->>Repo: save(pedido)
     Repo->>DB: INSERT INTO pedidos
     DB-->>Repo: Constraint Violation
-    Repo-->>Service: DataIntegrityException
-    Service-->>API: throw DataIntegrityException
+    Repo-->>UseCase: DataIntegrityException
+    UseCase-->>API: throw DataIntegrityException
     API->>Handler: handleDataIntegrity()
     Handler-->>API: ApiErrorResponse
     API-->>Cliente: 422 Unprocessable Entity
@@ -122,10 +122,10 @@ sequenceDiagram
 ## Componentes Envolvidos
 
 ### Controller Layer
-- **OrderController**: Recebe requisição HTTP, delega para service, retorna response
+- **OrderController**: Recebe requisição HTTP, delega para use case, retorna response
 
-### Service Layer
-- **OrderService**: Orquestra validações, cálculos e persistência
+### Use Cases Layer
+- **CreateOrderUseCase**: Orquestra validações, cálculos e persistência (Single Responsibility)
 - **OrderValidator**: Valida cliente, loja, endereço e itens
 - **PriceCalculator**: Calcula total do pedido
 

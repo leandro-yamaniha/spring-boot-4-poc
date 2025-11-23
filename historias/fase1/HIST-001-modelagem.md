@@ -166,8 +166,8 @@ graph TB
         A[OrderController]
     end
 
-    subgraph "Service Layer"
-        B[OrderService]
+    subgraph "Use Cases Layer"
+        B[CreateOrderUseCase]
         C[OrderValidator]
         D[PriceCalculator]
     end
@@ -278,8 +278,8 @@ com.poc.delivery
 │   │   ├── Pedido.java
 │   │   ├── ItemDePedido.java
 │   │   └── StatusPedido.java
-│   ├── service
-│   │   ├── OrderService.java
+│   ├── usecase
+│   │   ├── CreateOrderUseCase.java
 │   │   ├── OrderValidator.java
 │   │   └── PriceCalculator.java
 │   └── exception
