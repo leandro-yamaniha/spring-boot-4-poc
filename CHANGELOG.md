@@ -70,6 +70,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Changed
 
+- Atualizado .gitignore para ignorar arquivos do SonarQube
+  - .scannerwork/ (diretório de trabalho do scanner)
+  - .sonar/ (cache do SonarQube)
+  - .sonar_lock (arquivo de lock)
+  - **/report-task.txt (relatórios de análise)
 - Atualizado script sonar-local.sh para usar SonarScanner CLI
   - Substituído plugin Gradle por SonarScanner CLI (compatibilidade Gradle 9.x)
   - Download e instalação automática do SonarScanner em ~/.sonar-scanner

@@ -52,6 +52,12 @@ application-*.yml
 .jacoco/
 jacoco.exec
 
+# SonarQube
+.scannerwork/
+.sonar/
+.sonar_lock
+**/report-task.txt
+
 # Package Files
 *.jar
 *.war
