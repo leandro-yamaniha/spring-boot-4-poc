@@ -24,6 +24,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Added
 
+- Script sonar-local.sh para análise SonarQube local com Docker
+  - Inicia container SonarQube automaticamente
+  - Configura Quality Gate "Zero Tolerance" (cobertura 100%, bugs 0, code smells 0)
+  - Executa build e análise completa
+  - Aguarda resultado do Quality Gate
+  - Documentação completa em scripts/README.md
 - Testes unitários para GlobalExceptionHandler (2 testes, 100% cobertura)
 - Arquivo sonar-project.properties para integração com SonarQube
   - Exclusões alinhadas com JaCoCo (DeliveryApplication)
