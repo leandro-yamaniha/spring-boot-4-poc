@@ -149,9 +149,14 @@ Toda contribuição deve respeitar, no mínimo, os princípios básicos do **OWA
 
 Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens abaixo** **antes de ser criado**:
 
-1. **Projeto compila e roda**
+**⚠️ CRÍTICO: Executar `./gradlew clean build` (ou comando equivalente) e garantir sucesso ANTES de criar o commit.**
+
+1. **Build completo com sucesso**
+   - Executar build completo do projeto (`./gradlew clean build` ou equivalente).
+   - Build deve completar sem erros (exit code 0).
    - Todos os módulos impactados devem compilar com sucesso.  
    - Aplicação (ou serviços afetados) devem iniciar sem erros em ambiente local ou de teste configurado.
+   - **Nunca commitar código que não builda com sucesso.**
 
 2. **Testes passando**
    - Testes unitários relevantes executam com sucesso.  

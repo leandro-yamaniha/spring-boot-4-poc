@@ -7,6 +7,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+### Changed
+
+- Reforçada regra crítica no agents.md: build completo deve passar antes de qualquer commit
+- Adicionado aviso explícito para executar `./gradlew clean build` antes de commitar
+
 ### Added
 
 - Scaffold inicial do backend Spring Boot 4.0.0 com Java 25
