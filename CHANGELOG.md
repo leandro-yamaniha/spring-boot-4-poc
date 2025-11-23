@@ -43,6 +43,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Adicionado comentário explicativo sobre o propósito do smoke test
   - Resolve issue S1186 do SonarQube (método vazio sem explicação)
 
+### Added
+
+- Validação de 0 issues no script sonar-local.sh
+  - Verifica issues não resolvidos após análise
+  - Falha o build se houver qualquer issue (bugs, code smells, vulnerabilities)
+  - Exibe contagem de issues encontrados
+  - Adiciona "Issues: 0 ✓" no relatório de sucesso
+
 ### Changed
 
 - Atualizado script sonar-local.sh para usar SonarScanner CLI

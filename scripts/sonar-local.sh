@@ -176,6 +176,33 @@ run_sonar_analysis() {
     local exit_code=$?
     
     if [ $exit_code -eq 0 ]; then
+        # Verificar se há issues não resolvidos
+        echo ""
+        echo -e "${YELLOW}Verificando issues não resolvidos...${NC}"
+        
+        local admin_user="admin"
+        local admin_pass="d3l1v3ry#Pr0j3ct"
+        local issues_count=$(curl -s -u ${admin_user}:${admin_pass} \
+            "${SONAR_HOST}/api/issues/search?componentKeys=${SONAR_PROJECT_KEY}&resolved=false" \
+            | grep -o '"total":[0-9]*' | head -1 | cut -d':' -f2)
+        
+        if [ "$issues_count" != "0" ]; then
+            echo ""
+            echo -e "${RED}========================================${NC}"
+            echo -e "${RED}  ❌ Análise falhou!${NC}"
+            echo -e "${RED}========================================${NC}"
+            echo ""
+            echo -e "${RED}Issues encontrados: ${issues_count}${NC}"
+            echo ""
+            echo "Quality Gate exige:"
+            echo "  - Issues: 0 (encontrado: ${issues_count})"
+            echo ""
+            echo -e "📊 Veja detalhes em: ${BLUE}${SONAR_HOST}/dashboard?id=${SONAR_PROJECT_KEY}${NC}"
+            echo ""
+            exit 1
+        fi
+        
+        echo -e "${GREEN}✅ Nenhum issue encontrado${NC}"
         echo ""
         echo -e "${GREEN}========================================${NC}"
         echo -e "${GREEN}  ✅ Análise concluída com sucesso!${NC}"
@@ -187,6 +214,7 @@ run_sonar_analysis() {
         echo -e "  - Cobertura: 100% ✓"
         echo -e "  - Bugs: 0 ✓"
         echo -e "  - Code Smells: 0 ✓"
+        echo -e "  - Issues: 0 ✓"
         echo ""
     else
         echo ""
@@ -199,6 +227,7 @@ run_sonar_analysis() {
         echo "  - Cobertura < 100%"
         echo "  - Code Smells > 0"
         echo "  - Bugs > 0"
+        echo "  - Issues > 0"
         echo ""
         echo -e "📊 Veja detalhes em: ${BLUE}${SONAR_HOST}/dashboard?id=${SONAR_PROJECT_KEY}${NC}"
         echo ""
