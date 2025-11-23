@@ -61,9 +61,6 @@ public class PedidoEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
     
-    public PedidoEntity() {
-    }
-    
     public UUID getId() {
         return id;
     }

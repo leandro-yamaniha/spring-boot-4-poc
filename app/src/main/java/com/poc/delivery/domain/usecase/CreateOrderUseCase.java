@@ -3,6 +3,9 @@ package com.poc.delivery.domain.usecase;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.poc.delivery.api.dto.ItemPedidoRequest;
 import com.poc.delivery.api.dto.ItemPedidoResponse;
 import com.poc.delivery.api.dto.PedidoRequest;
@@ -13,33 +16,44 @@ import com.poc.delivery.infrastructure.persistence.entity.PedidoEntity;
 import com.poc.delivery.infrastructure.persistence.mapper.PedidoMapper;
 import com.poc.delivery.infrastructure.persistence.repository.PedidoRepository;
 
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 @Component
 public class CreateOrderUseCase {
     
     private final PedidoRepository repository;
     private final PedidoMapper mapper;
+    private final OrderValidator validator;
+    private final PriceCalculator priceCalculator;
     
-    public CreateOrderUseCase(PedidoRepository repository, PedidoMapper mapper) {
+    public CreateOrderUseCase(
+        PedidoRepository repository,
+        PedidoMapper mapper,
+        OrderValidator validator,
+        PriceCalculator priceCalculator
+    ) {
         this.repository = repository;
         this.mapper = mapper;
+        this.validator = validator;
+        this.priceCalculator = priceCalculator;
     }
     
     @Transactional
     public PedidoResponse execute(PedidoRequest request) {
+        validator.validate(request);
+
         List<ItemDePedido> itens = request.itens().stream()
             .map(this::toItemDomain)
             .toList();
+
+        BigDecimal taxaEntrega = priceCalculator.calculateTaxaEntrega(itens);
+        BigDecimal desconto = priceCalculator.calculateDesconto(itens);
         
         Pedido pedido = Pedido.builder()
             .clienteId(request.clienteId())
             .lojaId(request.lojaId())
             .enderecoId(request.enderecoId())
             .itens(itens)
-            .taxaEntrega(BigDecimal.ZERO)
-            .desconto(BigDecimal.ZERO)
+            .taxaEntrega(taxaEntrega)
+            .desconto(desconto)
             .build();
         
         PedidoEntity entity = mapper.toEntity(pedido);

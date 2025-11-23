@@ -7,17 +7,6 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-
-/**
- * Configuração do SpringDoc OpenAPI 3.
- * <p>
- * Gera documentação automática da API REST com Swagger UI integrado.
- * <p>
- * Endpoints disponíveis:
- * - /v3/api-docs (JSON da especificação OpenAPI)
- * - /v3/api-docs.yaml (YAML da especificação OpenAPI)
- * - /swagger-ui.html (Interface Swagger UI)
- */
 @Configuration
 public class OpenApiConfig {
 

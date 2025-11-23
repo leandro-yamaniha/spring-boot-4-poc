@@ -167,6 +167,13 @@ public class CreateOrderUseCase {
 - Apenas dados, sem lógica de negócio
 - Validações básicas (@NotNull, @Size, etc)
 
+**Uso de record vs class:**
+- `record` para DTOs de entrada/saída e projeções de leitura sem comportamento
+- `class` para:
+  - Entidades e agregados de domínio ricos (com comportamento e invariantes)
+  - Value Objects com validações mais complexas
+  - Entidades JPA/anotações de infraestrutura (requer construtor padrão, setters, proxies)
+
 **Value Objects (VOs):**
 - Representam conceitos de domínio imutáveis
 - Exemplo: `Email`, `CPF`, `Money`, `Address`
@@ -189,6 +196,9 @@ public class CreateOrderUseCase {
 - Conversão entre camadas (Entity ↔ DTO, Domain ↔ Entity)
 - Exemplo: `PedidoMapper.toResponse(Pedido)`
 - Sem lógica de negócio, apenas transformação de estrutura
+- Preferir **MapStruct** para mapeamentos estruturais sem regra de negócio
+- componentModel padrão: `spring`
+- Se a conversão envolver regra de negócio, manter essa lógica no domínio/use case, não no mapper
 
 ### Evitar IFs Excessivos - Design Patterns
 

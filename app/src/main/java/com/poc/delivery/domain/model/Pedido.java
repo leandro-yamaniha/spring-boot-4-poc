@@ -23,6 +23,7 @@ public class Pedido {
     private LocalDateTime updatedAt;
     
     private Pedido(Builder builder) {
+        this.id = builder.id;
         this.clienteId = Objects.requireNonNull(builder.clienteId, "clienteId não pode ser nulo");
         this.lojaId = Objects.requireNonNull(builder.lojaId, "lojaId não pode ser nulo");
         this.enderecoId = Objects.requireNonNull(builder.enderecoId, "enderecoId não pode ser nulo");
@@ -184,12 +185,18 @@ public class Pedido {
     }
     
     public static class Builder {
+        private UUID id;
         private UUID clienteId;
         private UUID lojaId;
         private UUID enderecoId;
         private List<ItemDePedido> itens = new ArrayList<>();
         private BigDecimal taxaEntrega;
         private BigDecimal desconto;
+        
+        public Builder id(UUID id) {
+            this.id = id;
+            return this;
+        }
         
         public Builder clienteId(UUID clienteId) {
             this.clienteId = clienteId;
