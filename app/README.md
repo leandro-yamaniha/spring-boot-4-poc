@@ -156,11 +156,25 @@ Gera relatório de cobertura de código:
 **Visualizar relatórios:**
 
 ```bash
-# Relatório HTML (navegável)
+# Relatório HTML (navegável) - macOS
 open app/build/reports/jacoco/test/html/index.html
+
+# Relatório HTML (navegável) - Linux
+xdg-open app/build/reports/jacoco/test/html/index.html
+
+# Ou abra diretamente no navegador:
+# file:///caminho-completo/spring-boot-4-poc/app/build/reports/jacoco/test/html/index.html
+
+# Verificar se o relatório foi gerado
+ls -la app/build/reports/jacoco/test/html/index.html
 
 # Relatório XML (para CI/CD e SonarQube)
 cat app/build/reports/jacoco/test/jacocoTestReport.xml
+```
+
+**⚠️ Importante:** O relatório só é gerado após executar os testes. Se o arquivo não existir, execute:
+```bash
+./gradlew clean test jacocoTestReport
 ```
 
 **Métricas disponíveis:**

@@ -27,6 +27,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Atualizado README com instruções para visualizar relatórios de qualidade
   - Comandos para executar Checkstyle e JaCoCo
   - Como abrir relatórios HTML (main.html, index.html)
+  - Comandos para macOS (open) e Linux (xdg-open)
+  - Comando para verificar se relatório foi gerado
+  - URL file:// para abrir diretamente no navegador
   - Descrição das 35 regras ativas do Checkstyle
   - Métricas disponíveis no JaCoCo (linhas, branches, métodos, classes)
 - Adicionadas regras avançadas de Clean Code ao Checkstyle
