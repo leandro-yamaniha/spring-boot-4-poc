@@ -76,7 +76,7 @@ Com o container `postgres` em execução e o perfil `local` ativo, é possível 
 ./gradlew bootRun --args='--spring.profiles.active=local'
 ```
 
-A aplicação estará disponível em: **http://localhost:8080**
+A aplicação estará disponível em: **[http://localhost:8080](http://localhost:8080)**
 
 ### 2. Criar um pedido (exemplo funcional)
 
