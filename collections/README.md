@@ -116,7 +116,7 @@ meta {
 }
 
 get {
-  url: {{ _.base_url }}/endpoint
+  url: {{base_url}}/endpoint
   body: none
   auth: none
 }
