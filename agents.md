@@ -155,6 +155,7 @@ public class CreateOrderUseCase {
 ```
 
 **Benefícios:**
+
 - ✅ Testabilidade: cada use case testado independentemente
 - ✅ Manutenibilidade: mudanças isoladas, sem efeitos colaterais
 - ✅ Legibilidade: código auto-documentado
@@ -162,6 +163,7 @@ public class CreateOrderUseCase {
 - ✅ Alinhamento com Clean Architecture e DDD
 
 **Referências:**
+
 - Ver `planejamento/analise-arquiteturas-backend.md` para detalhes da decisão arquitetural
 - Ver `historias/fase1/HIST-001-modelagem.md` para exemplos práticos
 
@@ -172,12 +174,14 @@ public class CreateOrderUseCase {
 ### Quando Usar Cada Tipo de Classe
 
 **DTOs (Data Transfer Objects):**
+
 - Transferência de dados entre camadas (API ↔ Use Cases)
 - Exemplo: `PedidoRequest`, `PedidoResponse`
 - Apenas dados, sem lógica de negócio
 - Validações básicas (@NotNull, @Size, etc)
 
 **Uso de record vs class:**
+
 - `record` para DTOs de entrada/saída e projeções de leitura sem comportamento
 - `class` para:
   - Entidades e agregados de domínio ricos (com comportamento e invariantes)
@@ -185,24 +189,28 @@ public class CreateOrderUseCase {
   - Entidades JPA/anotações de infraestrutura (requer construtor padrão, setters, proxies)
 
 **Value Objects (VOs):**
+
 - Representam conceitos de domínio imutáveis
 - Exemplo: `Email`, `CPF`, `Money`, `Address`
 - Contêm validações e comportamentos relacionados ao conceito
 - Igualdade baseada em valor, não em identidade
 
 **Entities:**
+
 - Representam conceitos com identidade única
 - Exemplo: `Pedido`, `Cliente`, `Produto`
 - Contêm lógica de negócio relevante
 - Igualdade baseada em ID
 
 **Helpers/Utils:**
+
 - ⚠️ **Usar com moderação** - podem indicar falta de coesão
 - Apenas para funções verdadeiramente utilitárias e genéricas
 - Exemplo: `DateUtils.formatBrazilianDate()`, `StringUtils.removeAccents()`
 - ❌ Evitar: `PedidoHelper` com lógica de negócio → mover para o domínio
 
 **Mappers:**
+
 - Conversão entre camadas (Entity ↔ DTO, Domain ↔ Entity)
 - Exemplo: `PedidoMapper.toResponse(Pedido)`
 - Sem lógica de negócio, apenas transformação de estrutura
@@ -215,6 +223,7 @@ public class CreateOrderUseCase {
 **Quando encontrar múltiplos IFs, considerar:**
 
 **1. Strategy Pattern**
+
 ```java
 // ❌ Evitar
 if (tipoPagamento.equals("CREDITO")) {
@@ -236,6 +245,7 @@ class PixStrategy implements PaymentStrategy { ... }
 ```
 
 **2. Polymorphism (OOP básico)**
+
 ```java
 // ❌ Evitar
 if (pedido.getStatus() == Status.CRIADO) {
@@ -254,6 +264,7 @@ class ConfirmadoState extends PedidoState { ... }
 ```
 
 **3. Factory Pattern**
+
 ```java
 // ❌ Evitar
 if (tipo.equals("LOJA")) {
@@ -275,6 +286,7 @@ class ValidatorFactory {
 ```
 
 **4. Chain of Responsibility**
+
 ```java
 // Para validações sequenciais
 class ValidationChain {
@@ -288,6 +300,7 @@ class ValidationChain {
 ```
 
 **5. Specification Pattern**
+
 ```java
 // Para regras de negócio complexas
 interface Specification<T> {
@@ -305,6 +318,7 @@ class PedidoPodeSerCanceladoSpec implements Specification<Pedido> {
 ### Princípios Gerais
 
 **Tell, Don't Ask:**
+
 ```java
 // ❌ Evitar (perguntando)
 if (pedido.getStatus() == Status.CRIADO) {
@@ -316,6 +330,7 @@ pedido.confirmar();
 ```
 
 **Evitar Anemia de Domínio:**
+
 ```java
 // ❌ Modelo anêmico
 class Pedido {
@@ -336,6 +351,7 @@ class Pedido {
 ```
 
 **Composição sobre Herança:**
+
 - Preferir composição quando possível
 - Herança apenas quando há relação "é um" clara
 - Evitar hierarquias profundas (> 2-3 níveis)
@@ -502,10 +518,12 @@ Qualquer commit (manual ou criado por agents) **deve obedecer a todos os itens a
 Para **cada push** que altera comportamento observável da aplicação (features, endpoints, fluxos, contratos, performance relevante):
 
 1. **Atualizar README**
+
    - Documentar novos recursos importantes.  
    - Atualizar seções de instalação, execução, endpoints, ambientes ou pré-requisitos, se forem impactados.
 
 2. **Atualizar Versão**
+
    - Seguir Versionamento Semântico conforme descrito na seção 8:
      - **feat:** → incrementa MINOR (0.1.0 → 0.2.0)
      - **fix:** → incrementa PATCH (0.1.0 → 0.1.1)
@@ -517,6 +535,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
    - Versões de desenvolvimento usam sufixo `-SNAPSHOT`
 
 3. **Atualizar CHANGELOG**
+
    - Adicionar entrada descrevendo as mudanças mais relevantes desde a última versão/entrada.  
    - Seguir um formato consistente (por exemplo: data, tipo da mudança, breve descrição).
    - **Focar no valor para o usuário**: Descrever o que o usuário ganha, não detalhes técnicos.
@@ -589,6 +608,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
 **Resultado**: CHANGELOG que comunica valor real para stakeholders!
 
 4. **Verificar conclusão de histórias**
+
    - **Obrigatório**: A cada push, verificar se alguma fase/história foi completada
    - Revisar documentação em [`historias/`](historias/):
      - Marcar histórias como concluídas se todos os critérios de aceitação foram atendidos
@@ -600,6 +620,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
    - Garantir rastreabilidade entre código e histórias
 
 5. **Sincronia com código**
+
    - O que está no README e no CHANGELOG deve refletir o estado atual do repositório.  
    - Não deixar documentação desatualizada após merges significativos.
 
@@ -610,6 +631,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
 **Toda implementação deve seguir o fluxo de branches vinculadas às histórias:**
 
 1. **Criar branch a partir da história**
+
    - Nomenclatura: `feature/HIST-XXX-descricao-curta` ou `fix/HIST-XXX-descricao-curta`
    - Exemplos:
      - `feature/HIST-001-criacao-pedido`
@@ -618,11 +640,13 @@ Para **cada push** que altera comportamento observável da aplicação (features
    - Branch deve referenciar a história em [`historias/`](historias/)
 
 2. **Desenvolvimento na branch**
+
    - Commits devem referenciar a história: `feat(HIST-001): adicionar endpoint de criação de pedido`
    - Seguir todas as regras de commit da seção 8
    - Manter branch atualizada com `main`
 
 3. **Pull Request**
+
    - Título deve incluir referência à história: `[HIST-001] Implementar criação de pedido`
    - Descrição deve incluir:
      - Link para a história
@@ -633,6 +657,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
    - Passar em todos os quality gates
 
 4. **Merge para main**
+
    - Apenas após aprovação do PR
    - Squash commits se necessário para manter histórico limpo
    - Atualizar status da história como concluída
@@ -643,12 +668,14 @@ Para **cada push** que altera comportamento observável da aplicação (features
 **Toda história DEVE manter a configuração para execução local sempre atualizada:**
 
 #### **Na Fase de Testes**
+
 - ✅ **Atualizar collections**: Sempre que a API mudar, atualizar Bruno/Postman collections
 - ✅ **Scripts automatizados**: Garantir que scripts de execução local funcionem
 - ✅ **Ambiente Docker**: Verificar se containers estão configurados corretamente
 - ✅ **Documentação de execução**: Instruções em `infra/local/README.md` atualizadas
 
 #### **Antes de Gerar PR**
+
 - ✅ **Último commit dedicado**: Criar commit específico com updates finais
 - ✅ **Versionamento**: Atualizar versão no `build.gradle` conforme regras semânticas
 - ✅ **CHANGELOG**: Documentar mudanças seguindo guia da seção 10.1
