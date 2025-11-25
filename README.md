@@ -386,25 +386,25 @@ O build falha automaticamente se a cobertura for inferior a 95%:
 
 Acesse a documentação interativa em:
 
-**http://localhost:8080/swagger-ui.html**
+**[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
 
 ### OpenAPI Spec
 
 Especificação OpenAPI disponível em:
 
-**http://localhost:8080/v3/api-docs**
+**[http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)**
 
 ### Actuator
 
 Endpoints de monitoramento:
 
-- **Health:** http://localhost:8080/actuator/health
-- **Info:** http://localhost:8080/actuator/info
-- **Metrics:** http://localhost:8080/actuator/metrics
+- **Health:** [http://localhost:8080/actuator/health](http://localhost:8080/actuator/health)
+- **Info:** [http://localhost:8080/actuator/info](http://localhost:8080/actuator/info)
+- **Metrics:** [http://localhost:8080/actuator/metrics](http://localhost:8080/actuator/metrics)
 
 ## 📁 Estrutura do Projeto
 
-```
+```bash
 spring-boot-4-poc/
 ├── app/                          # Módulo principal da aplicação
 │   ├── src/

@@ -154,9 +154,9 @@ curl -X POST http://localhost:8080/api/v1/orders \
 
 ### 6. Documentação da API
 
-- **Swagger UI**: http://localhost:8080/swagger-ui.html
-- **OpenAPI Spec**: http://localhost:8080/v3/api-docs
-- **Actuator**: http://localhost:8080/actuator/health
+- **Swagger UI**: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+- **OpenAPI Spec**: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+- **Actuator**: [http://localhost:8080/actuator/health](http://localhost:8080/actuator/health)
 
 ## Próximos Passos
 
