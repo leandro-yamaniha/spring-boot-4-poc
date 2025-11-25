@@ -78,7 +78,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Relatórios de testes e checkstyle
 - Cache do Gradle
 
-### Added
+### Enhanced
 
 - Arquivo .gitignore configurado para projetos Spring Boot com Gradle
   - Ignora diretórios de build e cache (.gradle/, build/)
