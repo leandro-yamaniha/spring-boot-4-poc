@@ -17,17 +17,20 @@ collections/
 ├── bruno.json                    # Configuração da collection
 ├── environments/
 │   └── Local.bru                 # Ambiente local (base_url)
-├── Actuator/
-│   ├── Health Check.bru
-│   ├── Health - Liveness.bru
-│   ├── Health - Readiness.bru
-│   └── Application Info.bru
-├── Orders/                       # HIST-001: Criação de pedidos
-│   ├── Criar Pedido - Exemplo Completo.bru
+├── Delivery Backend - Spring Boot 4/
+│   ├── bruno.json                # Configuração da sub-collection
+│   ├── Actuator/
+│   │   ├── Health Check.bru
+│   │   ├── Health - Liveness.bru
+│   │   ├── Health - Readiness.bru
+│   │   └── Application Info.bru
+│   ├── Criar Pedido - Exemplo Completo.bru  # HIST-001: Criação de pedidos
 │   ├── Criar Pedido - Frete Grátis.bru
 │   ├── Criar Pedido - Com Desconto.bru
 │   ├── Criar Pedido - Mínimo.bru
-│   └── Criar Pedido - Erro Validação.bru
+│   ├── Criar Pedido - Erro Validação.bru
+│   └── environments/
+│       └── Local.bru
 └── API Documentation/
     ├── OpenAPI Spec (JSON).bru
     ├── OpenAPI Spec (YAML).bru
