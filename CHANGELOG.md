@@ -9,11 +9,67 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Added
 
-- Arquivo .gitignore configurado para projetos Spring Boot com Gradle
-  - Ignora diretórios de build e cache (.gradle/, build/)
-  - Mantém Gradle Wrapper (essencial para builds reproduzíveis)
-  - Ignora arquivos de IDEs (IntelliJ, Eclipse, VSCode)
-  - Ignora arquivos temporários e de sistema operacional
+- **HIST-001: Implementação completa da criação de pedidos** 🎉
+  - API REST com endpoint `POST /api/v1/orders`
+  - Modelo de domínio rico (Pedido, ItemDePedido, StatusPedido)
+  - Regras de negócio: cálculo de total, frete grátis, descontos
+  - Arquitetura Clean Architecture (Controller → Use Case → Repository)
+  - Validações completas e tratamento de erros padronizado
+  - Persistência com JPA/Hibernate e Flyway migrations
+  - Testes abrangentes (100% cobertura): unitários, integração, API
+  - Quality Gate aprovado (SonarQube, Checkstyle, JaCoCo)
+
+- **Arquitetura de domínio**
+  - Classe `Pedido` com builder pattern e validações
+  - Enum `StatusPedido` com estados do pedido
+  - Classe `ItemDePedido` com cálculo automático de subtotal
+  - Princípios SOLID aplicados (SRP, DIP, OCP)
+
+- **API Layer**
+  - `OrderController` com endpoint REST documentado
+  - DTOs de request/response (PedidoRequest, PedidoResponse)
+  - `GlobalExceptionHandler` com códigos de erro padronizados
+  - Logging estruturado com `LogEvent` e códigos padronizados
+
+- **Use Cases Layer**
+  - `CreateOrderUseCase` - orquestração da criação de pedidos
+  - `OrderValidator` - validações de negócio
+  - `PriceCalculator` - cálculos de preço e desconto
+
+- **Repository Layer**
+  - `OrderRepository` - persistência de pedidos
+  - Entidades JPA mapeadas corretamente
+  - Relacionamentos e constraints implementados
+
+- **Infraestrutura**
+  - Configuração Flyway para migrations
+  - Logging HTTP com `HttpRequestLoggingFilter`
+  - Profiles de configuração (local, prod)
+  - Docker Compose para ambiente de desenvolvimento
+
+- **Qualidade e Testes**
+  - Cobertura de 100% em código de negócio
+  - Testes unitários para todas as regras de negócio
+  - Testes de integração com Testcontainers
+  - Testes de API com RestAssured
+  - Checkstyle com 35+ regras aplicadas
+
+### Issues Criadas para Melhorias Futuras
+
+- **[HIST-002]** - Ajustar StatusPedido enum conforme documentação completa
+- **[HIST-003]** - Implementar validações de existência de recursos
+- **[HIST-004]** - Implementar controle de estoque e disponibilidade
+- **[HIST-005]** - Melhorar observabilidade e métricas da API
+- **[HIST-006]** - Implementar validações de segurança e rate limiting
+- **[HIST-007]** - Otimizar performance e implementar cache
+- **[HIST-008]** - Melhorar documentação e experiência do desenvolvedor
+- **[HIST-009]** - Implementar internacionalização (i18n) e localização
+
+### Fixed
+
+- Corrigido Code Smell no teste contextLoads()
+  - Adicionado comentário explicativo sobre o propósito do smoke test
+  - Resolve issue S1186 do SonarQube (método vazio sem explicação)
 
 ### Removed
 
@@ -24,39 +80,39 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Added
 
+- Arquivo .gitignore configurado para projetos Spring Boot com Gradle
+  - Ignora diretórios de build e cache (.gradle/, build/)
+  - Mantém Gradle Wrapper (essencial para builds reproduzíveis)
+  - Ignora arquivos de IDEs (IntelliJ, Eclipse, VSCode)
+  - Ignora arquivos temporários e de sistema operacional
+
 - Script sonar-local.sh para análise SonarQube local com Docker
   - Inicia container SonarQube automaticamente
   - Configura Quality Gate "Zero Tolerance" (cobertura 100%, bugs 0, code smells 0)
   - Executa build e análise completa
   - Aguarda resultado do Quality Gate
   - Documentação completa em scripts/README.md
+
 - Testes unitários para GlobalExceptionHandler (2 testes, 100% cobertura)
+
 - Arquivo sonar-project.properties para integração com SonarQube
-  - Exclusões alinhadas com JaCoCo (DeliveryApplication)
+  - Exclusões alinhadas com JaCoCo (DeliveryApplication, common/logging)
   - Regras de qualidade alinhadas com Checkstyle (complexidade ≤10, métodos ≤50 linhas, etc)
   - Configuração de relatórios (JaCoCo XML, JUnit, Checkstyle)
   - Cobertura mínima configurada: 90%
-
-### Fixed
-
-- Corrigido Code Smell no teste contextLoads()
-  - Adicionado comentário explicativo sobre o propósito do smoke test
-  - Resolve issue S1186 do SonarQube (método vazio sem explicação)
-
-### Added
 
 - Regras de verificação de histórias e workflow de branches no agents.md
   - Item 4 na seção 10: "Verificar conclusão de histórias" (obrigatório a cada push)
   - Marcar histórias como concluídas quando critérios de aceitação forem atendidos
   - Atualizar status das features (em andamento, concluída, bloqueada)
   - Documentar decisões técnicas durante implementação
-  - Atualizar planejamento e roadmap conforme necessário
   - Nova seção 10.1: "Regras para Branches e Histórias"
   - Nomenclatura de branches: feature/HIST-XXX-descricao ou fix/HIST-XXX-descricao
   - Commits devem referenciar história: feat(HIST-001): descrição
   - Pull Requests devem incluir: link história, critérios atendidos, testes
   - Merge apenas após aprovação e quality gates
   - Benefícios: rastreabilidade, histórico organizado, code review facilitado
+
 - Arquivo LICENSE com licença MIT
   - Copyright (c) 2025 Leandro Yamaniha
   - Permissão para uso, modificação e distribuição

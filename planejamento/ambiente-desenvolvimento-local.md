@@ -57,9 +57,9 @@ Uso típico:
 
 ---
 
-## 4. Docker Compose (Visão Conceitual)
+## 4. Docker Compose (Ambiente Local)
 
-Um `docker-compose.yml` (a ser definido em detalhe na fase de implementação) deve conter, no mínimo, serviços como:
+O arquivo [`infra/local/docker-compose.yml`](../infra/local/docker-compose.yml) define os serviços mínimos para o ambiente local. Ele contém, no mínimo, serviços como:
 
 - Serviço `backend-app`:
   - Build da imagem a partir do código do projeto (Gradle + Dockerfile).

@@ -43,9 +43,9 @@ Thumbs.db
 *~
 
 # Application
-application-local.yml
 application-*.yml
 !application.yml
+!application-local.yml
 !application-local.yml.example
 
 # Test coverage

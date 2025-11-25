@@ -3,6 +3,8 @@ package com.poc.delivery.domain.usecase;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +12,7 @@ import com.poc.delivery.api.dto.ItemPedidoRequest;
 import com.poc.delivery.api.dto.ItemPedidoResponse;
 import com.poc.delivery.api.dto.PedidoRequest;
 import com.poc.delivery.api.dto.PedidoResponse;
+import com.poc.delivery.common.logging.LogEvent;
 import com.poc.delivery.domain.model.ItemDePedido;
 import com.poc.delivery.domain.model.Pedido;
 import com.poc.delivery.infrastructure.persistence.entity.PedidoEntity;
@@ -18,6 +21,8 @@ import com.poc.delivery.infrastructure.persistence.repository.PedidoRepository;
 
 @Component
 public class CreateOrderUseCase {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CreateOrderUseCase.class);
     
     private final PedidoRepository repository;
     private final PedidoMapper mapper;
@@ -59,7 +64,9 @@ public class CreateOrderUseCase {
         PedidoEntity entity = mapper.toEntity(pedido);
         PedidoEntity saved = repository.save(entity);
         Pedido savedPedido = mapper.toDomain(saved);
-        
+
+        LOGGER.info("[{}] Pedido persistido com id={}", LogEvent.ORDER_CREATED.code(), savedPedido.getId());
+
         return toResponse(savedPedido);
     }
     

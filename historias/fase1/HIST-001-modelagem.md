@@ -227,6 +227,35 @@ flowchart LR
     B -->|201 Created| A
 ```
 
+### Eventos de logging neste fluxo
+
+Este fluxo está instrumentado com códigos de log padronizados definidos em `LogEvent` e descritos em `LOGGING.md`. O mapeamento principal é:
+
+- **[HTTP-001]** – Logging de HTTP via `HttpRequestLoggingFilter`
+  - **Request**: quando o cliente chama `POST /api/v1/orders`, o filtro registra
+    - método, path, headers (com dados sensíveis mascarados) e body (truncado), usando `HTTP-001`.
+  - **Response**: após o processamento e retorno do `201 Created`, o filtro registra
+    - status, duração em ms, headers (com `Set-Cookie` mascarado) e body, também com `HTTP-001`.
+
+- **[ORD-001]** – Criação/persistência de pedido
+  - No passo `G[Criar Domínio]`/`H[OrderRepository]` (pedido persistido), o `CreateOrderUseCase` registra
+    - `[ORD-001] Pedido persistido com id=...`.
+  - No passo `C -->|PedidoResponse| B` / `B -->|201 Created| A`, o `OrderController` registra
+    - `[ORD-001] Pedido criado com sucesso, id=...`.
+
+- **[ORD-010]** – Erros de validação
+  - Se o passo `D{Dados Válidos?}` resultar em "Não" (erro de validação de negócio ou entrada), o `GlobalExceptionHandler` registra
+    - `[ORD-010] Erro de validacao de negocio: ...` para `IllegalArgumentException`.
+    - `[ORD-010] Erro de validacao de entrada: ...` para `MethodArgumentNotValidException`.
+  - A resposta HTTP correspondente é `400 Bad Request`.
+
+- **[ORD-500]** – Erros inesperados
+  - Qualquer exceção não tratada que ocorra em `OrderController` ou `CreateOrderUseCase` é interceptada pelo `GlobalExceptionHandler`, que registra
+    - `[ORD-500] Erro inesperado no processamento da requisicao` (nível `ERROR`, com stacktrace).
+  - A resposta HTTP correspondente é `500 Internal Server Error`.
+
+Esses códigos permitem rastrear, nos logs, cada passo crítico do fluxo acima (requisição HTTP, criação de pedido, erros de validação e erros inesperados), mantendo alinhamento direto entre modelagem (diagrama) e implementação.
+
 ## Regras de Negócio
 
 ### Validações

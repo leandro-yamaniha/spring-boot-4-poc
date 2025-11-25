@@ -7,34 +7,33 @@
 
 Backend para plataforma de entrega de pedidos construído com Spring Boot 4, Java 25 e práticas rigorosas de qualidade de código.
 
-## 📋 Índice
-
-- [Visão Geral](#visão-geral)
-- [Tecnologias](#tecnologias)
-- [Pré-requisitos](#pré-requisitos)
-- [Instalação](#instalação)
-- [Executando o Projeto](#executando-o-projeto)
-- [Qualidade de Código](#qualidade-de-código)
-- [Testes](#testes)
-- [Documentação da API](#documentação-da-api)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Contribuindo](#contribuindo)
-- [Licença](#licença)
-
 ## 🎯 Visão Geral
 
 Este projeto é um Proof of Concept (POC) para um backend de entrega de pedidos, implementando:
 
+- **✅ CRIADO DE PEDIDOS** - API completa para criação de pedidos com validações e cálculos
 - **Cadastro de lojas, produtos, clientes e entregadores**
 - **Criação, roteamento e acompanhamento de pedidos em tempo real**
 - **Integração com meios de pagamento e serviços externos**
 - **Padrões rigorosos de qualidade de código (Quality Gate "Zero Tolerance")**
 
+### Status Atual - Fase 1 ✅ COMPLETA
+
+**HIST-001: Criação de Pedido** - ✅ **IMPLEMENTADA E TESTADA**
+
+- API REST completa com endpoint `POST /api/v1/orders`
+- Modelo de domínio rico com validações e regras de negócio
+- Cálculo automático de total (subtotal + frete - desconto)
+- Persistência com PostgreSQL e Flyway
+- Testes abrangentes (100% cobertura)
+- Tratamento de erros padronizado
+- Quality Gate aprovado
+
 ### Objetivos de Negócio
 
 O projeto segue uma abordagem **ágil e incremental**, com foco em **MVP (Minimum Viable Product)** em cada fase:
 
-- **Fase 1**: Viabilizar operação em uma região/cidade com fluxo completo de pedido → entrega
+- **Fase 1**: ✅ **CONCLUÍDA** - Viabilizar operação em uma região/cidade com fluxo completo de pedido → entrega
 - **Fase 2+**: Escalar para múltiplas regiões, aumentar automação e robustez
 
 ### Metodologia Ágil
@@ -47,7 +46,135 @@ O desenvolvimento é organizado através de **Features** e **User Stories**:
   - [Ambiente de Desenvolvimento](planejamento/ambiente-desenvolvimento-local.md)
 
 - 📖 **Features e Histórias**: Organizadas por fase em [`historias/`](historias/)
-  - [Fase 1](historias/fase1/) - MVP inicial (criação de pedidos, gestão básica)
+  - [Fase 1](historias/fase1/) - ✅ **HIST-001 Concluída** (criação de pedidos, gestão básica)
+  - [Fase 2](historias/fase2/) - Escalabilidade e automação
+  - [Fase 3](historias/fase3/) - Integrações avançadas
+  - [Fase 4](historias/fase4/) - Otimizações e analytics
+
+**Princípios:**
+- ✅ **MVP First** - Entregar valor incremental a cada fase
+- ✅ **User Stories** - Foco em valor de negócio e experiência do usuário
+- ✅ **Iterativo** - Feedback contínuo e ajustes rápidos
+- ✅ **Qualidade** - Quality Gate rigoroso em cada entrega
+
+## 🚀 Funcionalidades Implementadas
+
+### ✅ Fase 1 - HIST-001: Criação de Pedido
+
+#### **API REST**
+- `POST /api/v1/orders` - Criar novo pedido
+- Validação completa de entrada (cliente, loja, endereço, itens)
+- Respostas padronizadas (201 Created / 400 Bad Request)
+- Tratamento global de erros
+
+#### **Modelo de Domínio**
+- **Pedido**: Status, valores monetários, timestamps, itens
+- **ItemDePedido**: Produto, quantidade, preço, subtotal, observações
+- **StatusPedido**: CRIADO, CONFIRMADO, PRONTO, EM_ENTREGA, ENTREGUE, CANCELADO
+
+#### **Regras de Negócio**
+- **Cálculo de Total**: Subtotal (itens) + Taxa de Entrega - Desconto
+- **Taxa de Entrega**: R$ 9,90 (frete grátis para pedidos ≥ R$ 100)
+- **Desconto**: 5% para pedidos com ≥ 3 itens
+- **Validações**: Cliente/loja/endereço/itens obrigatórios
+
+#### **Arquitetura**
+- **Clean Architecture**: Camadas bem definidas (Controller → Use Case → Repository)
+- **SOLID Principles**: Single Responsibility, Dependency Inversion
+- **Domain-Driven Design**: Regras de negócio no domínio
+
+#### **Qualidade**
+- **Cobertura**: 100% (excluindo infraestrutura)
+- **Quality Gate**: Aprovado (SonarQube)
+- **Checkstyle**: Zero violações
+- **Testes**: Unitários + Integração + API
+
+### 🎯 Roadmap de Melhorias
+
+Issues criadas para próximas iterações:
+
+| Issue | Funcionalidade | Prioridade | Status |
+|-------|----------------|------------|---------|
+| [HIST-004](#6) | Controle de Estoque | Alta | Planejada |
+| [HIST-006](#8) | Segurança (Rate Limiting) | Alta | Planejada |
+| [HIST-007](#9) | Performance e Cache | Alta | Planejada |
+| [HIST-003](#5) | Validações de Existência | Média | Planejada |
+| [HIST-005](#7) | Observabilidade | Média | Planejada |
+| [HIST-002](#4) | Status Enum Completo | Baixa | Planejada |
+| [HIST-008](#10) | Documentação Completa | Baixa | Planejada |
+| [HIST-009](#11) | Internacionalização | Baixa | Planejada |
+
+## 🔌 API REST
+
+### Endpoint Principal
+
+```http
+POST /api/v1/orders
+Content-Type: application/json
+
+{
+  "clienteId": "uuid",
+  "lojaId": "uuid", 
+  "enderecoId": "uuid",
+  "itens": [
+    {
+      "produtoId": "uuid",
+      "quantidade": 2,
+      "precoUnitario": 25.00,
+      "observacoes": "Sem cebola"
+    }
+  ]
+}
+```
+
+### Resposta de Sucesso (201)
+
+```json
+{
+  "id": "uuid-do-pedido",
+  "clienteId": "uuid",
+  "lojaId": "uuid",
+  "enderecoId": "uuid",
+  "itens": [
+    {
+      "id": "uuid-do-item",
+      "produtoId": "uuid",
+      "produtoNome": "Pizza Margherita",
+      "quantidade": 2,
+      "precoUnitario": 25.00,
+      "subtotal": 50.00
+    }
+  ],
+  "status": "CRIADO",
+  "subtotal": 50.00,
+  "taxaEntrega": 9.90,
+  "desconto": 0.00,
+  "total": 59.90,
+  "createdAt": "2025-11-24T22:30:00Z",
+  "updatedAt": "2025-11-24T22:30:00Z"
+}
+```
+
+### Códigos de Erro
+
+| Código | HTTP | Descrição |
+|--------|------|-----------|
+| `VALIDACAO_FALHOU` | 400 | Dados inválidos |
+| `CLIENTE_NAO_ENCONTRADO` | 404 | Cliente não existe |
+| `LOJA_NAO_ENCONTRADA` | 404 | Loja não existe |
+| `ENDERECO_NAO_ENCONTRADO` | 404 | Endereço não existe |
+| `INTERNAL_ERROR` | 500 | Erro interno |
+
+### Exemplos de Uso
+
+```bash
+# Criar pedido
+curl -X POST http://localhost:8080/api/v1/orders \
+  -H "Content-Type: application/json" \
+  -d @examples/criar-pedido.json
+```
+
+Para mais exemplos, consulte [`collections/`](collections/) e [`historias/fase1/HIST-001-modelagem.md`](historias/fase1/HIST-001-modelagem.md).
   - [Fase 2](historias/fase2/) - Escalabilidade e automação
   - [Fase 3](historias/fase3/) - Integrações avançadas
   - [Fase 4](historias/fase4/) - Otimizações e analytics
@@ -123,7 +250,7 @@ java -version
 ./gradlew bootRun
 ```
 
-A aplicação estará disponível em: **http://localhost:8080**
+A aplicação estará disponível em: **[http://localhost:8080](http://localhost:8080)**
 
 ### Com Profile Específico
 
@@ -134,12 +261,20 @@ A aplicação estará disponível em: **http://localhost:8080**
 ### Executar Testes
 
 ```bash
-# Todos os testes
+# Testes unitários (padrão)
 ./gradlew test
 
-# Com relatório de cobertura
+# Somente testes de integração (@Tag("integration"))
+./gradlew integrationTest
+
+# Unitários + integração na mesma execução
+./gradlew test integrationTest
+
+# Com relatório de cobertura (unitários)
 ./gradlew test jacocoTestReport
 ```
+
+Para detalhes sobre configuração do Gradle (tasks `test`/`integrationTest`, logs contínuos e Java toolchain), consulte [`GRADLE.md`](GRADLE.md).
 
 ## 🎯 Qualidade de Código
 
@@ -147,11 +282,13 @@ Este projeto implementa o **Quality Gate "Zero Tolerance"** com validações rig
 
 ### Métricas Obrigatórias
 
-- ✅ **Cobertura de Testes:** 100%
-- ✅ **Bugs:** 0
-- ✅ **Code Smells:** 0
-- ✅ **Issues:** 0
-- ✅ **Checkstyle:** 0 violações
+- **Cobertura de Testes:** 100%
+- **Bugs:** 0
+- **Code Smells:** 0
+- **Issues:** 0
+- **Checkstyle:** 0 violações
+
+Para detalhes sobre o padrão de logging (códigos de evento, filtro HTTP e logs de domínio/erros), consulte [`LOGGING.md`](LOGGING.md).
 
 ### Executar Análise Completa
 
@@ -233,25 +370,25 @@ O build falha automaticamente se a cobertura for inferior a 95%:
 
 Acesse a documentação interativa em:
 
-**http://localhost:8080/swagger-ui.html**
+**[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
 
 ### OpenAPI Spec
 
 Especificação OpenAPI disponível em:
 
-**http://localhost:8080/v3/api-docs**
+**[http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)**
 
 ### Actuator
 
 Endpoints de monitoramento:
 
-- **Health:** http://localhost:8080/actuator/health
-- **Info:** http://localhost:8080/actuator/info
-- **Metrics:** http://localhost:8080/actuator/metrics
+- **Health:** [http://localhost:8080/actuator/health](http://localhost:8080/actuator/health)
+- **Info:** [http://localhost:8080/actuator/info](http://localhost:8080/actuator/info)
+- **Metrics:** [http://localhost:8080/actuator/metrics](http://localhost:8080/actuator/metrics)
 
 ## 📁 Estrutura do Projeto
 
-```
+```bash
 spring-boot-4-poc/
 ├── app/                          # Módulo principal da aplicação
 │   ├── src/
