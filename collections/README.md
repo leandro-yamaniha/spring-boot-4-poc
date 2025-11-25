@@ -30,8 +30,6 @@ collections/
 │   │   ├── Criar Pedido - Com Desconto.bru
 │   │   ├── Criar Pedido - Mínimo.bru
 │   │   └── Criar Pedido - Erro Validação.bru
-│   └── environments/
-│       └── Local.bru
 └── API Documentation/
     ├── OpenAPI Spec (JSON).bru
     ├── OpenAPI Spec (YAML).bru
