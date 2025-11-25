@@ -1,0 +1,41 @@
+meta {
+  name: Criar Pedido - Frete Grátis
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/api/v1/orders
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  "clienteId": "550e8400-e29b-41d4-a716-446655440000",
+  "lojaId": "660e8400-e29b-41d4-a716-446655440001",
+  "enderecoId": "770e8400-e29b-41d4-a716-446655440002",
+  "itens": [
+    {
+      "produtoId": "880e8400-e29b-41d4-a716-446655440003",
+      "quantidade": 5,
+      "precoUnitario": 25.00,
+      "observacoes": "Pedido grande para frete grátis"
+    }
+  ]
+}
+
+docs {
+  Teste para criação de pedido que qualifica para frete grátis.
+
+  **Cenário**: Pedido com 5 hambúrgueres (R$ 125) ≥ R$ 100
+  **Frete**: Grátis
+  **Total esperado**: R$ 125 + frete grátis = R$ 125
+
+  **Regras aplicadas**:
+  - Subtotal ≥ R$ 100 → frete grátis
+  - 3+ itens → 5% desconto (não se aplica aqui)
+}

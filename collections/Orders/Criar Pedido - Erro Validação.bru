@@ -1,0 +1,57 @@
+meta {
+  name: Criar Pedido - Erro Validação
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/api/v1/orders
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  "clienteId": "550e8400-e29b-41d4-a716-446655440000",
+  "enderecoId": "770e8400-e29b-41d4-a716-446655440002",
+  "itens": [
+    {
+      "produtoId": "880e8400-e29b-41d4-a716-446655440003",
+      "quantidade": 0,
+      "precoUnitario": 25.00
+    }
+  ]
+}
+
+docs {
+  Teste para erro de validação - campos obrigatórios faltando e dados inválidos.
+
+  **Cenário**: Pedido sem lojaId e com quantidade = 0
+  **Erro esperado (400 Bad Request)**:
+
+  ```json
+  {
+    "timestamp": "2025-11-24T...",
+    "status": 400,
+    "error": "Bad Request",
+    "path": "/api/v1/orders",
+    "message": "Validation failed",
+    "errors": [
+      "lojaId: must not be null",
+      "itens[0].quantidade: must be greater than 0"
+    ]
+  }
+  ```
+
+  **Campos obrigatórios**:
+  - clienteId
+  - lojaId
+  - enderecoId
+  - itens (não vazio)
+  - itens[].produtoId
+  - itens[].quantidade (> 0)
+  - itens[].precoUnitario (> 0)
+}

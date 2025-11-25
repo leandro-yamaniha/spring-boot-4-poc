@@ -1,0 +1,51 @@
+meta {
+  name: Criar Pedido - Com Desconto
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/v1/orders
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  "clienteId": "550e8400-e29b-41d4-a716-446655440000",
+  "lojaId": "660e8400-e29b-41d4-a716-446655440001",
+  "enderecoId": "770e8400-e29b-41d4-a716-446655440002",
+  "itens": [
+    {
+      "produtoId": "880e8400-e29b-41d4-a716-446655440003",
+      "quantidade": 2,
+      "precoUnitario": 20.00
+    },
+    {
+      "produtoId": "990e8400-e29b-41d4-a716-446655440004",
+      "quantidade": 1,
+      "precoUnitario": 20.00
+    },
+    {
+      "produtoId": "aa0e8400-e29b-41d4-a716-446655440005",
+      "quantidade": 1,
+      "precoUnitario": 20.00
+    }
+  ]
+}
+
+docs {
+  Teste para criação de pedido com desconto de 5% (3+ itens).
+
+  **Cenário**: Pedido com 3 itens de R$ 20 cada = R$ 60
+  **Desconto**: 5% sobre R$ 60 = R$ 3
+  **Frete**: Normal (R$ 60 < R$ 100)
+  **Total esperado**: R$ 60 - R$ 3 + frete = R$ 62
+
+  **Regras aplicadas**:
+  - 3+ itens → 5% desconto sobre subtotal
+  - Subtotal < R$ 100 → frete normal
+}

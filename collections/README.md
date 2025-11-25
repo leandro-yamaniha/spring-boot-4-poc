@@ -22,7 +22,16 @@ collections/
 │   ├── Health - Liveness.bru
 │   ├── Health - Readiness.bru
 │   └── Application Info.bru
-└── Orders/                       # Será criado na HIST-001
+├── Orders/                       # HIST-001: Criação de pedidos
+│   ├── Criar Pedido - Exemplo Completo.bru
+│   ├── Criar Pedido - Frete Grátis.bru
+│   ├── Criar Pedido - Com Desconto.bru
+│   ├── Criar Pedido - Mínimo.bru
+│   └── Criar Pedido - Erro Validação.bru
+└── API Documentation/
+    ├── OpenAPI Spec (JSON).bru
+    ├── OpenAPI Spec (YAML).bru
+    └── Swagger UI.bru
 ```
 
 ## 🔧 Como usar
@@ -58,10 +67,25 @@ brew install bruno
 
 ### 4. Executar Requisições
 
-1. Navegue pela árvore de pastas (Actuator, Orders, etc.)
+1. Navegue pela árvore de pastas (Actuator, Orders, API Documentation, etc.)
 2. Clique em uma requisição
 3. Clique em **Send** ou pressione `Ctrl+Enter` / `Cmd+Enter`
 4. Veja a resposta no painel direito
+
+#### 📋 Testes Disponíveis
+
+**Orders** (HIST-001):
+- **Criar Pedido - Exemplo Completo**: Pedido com múltiplos itens e observações
+- **Criar Pedido - Frete Grátis**: Pedido ≥ R$ 100 (sem frete)
+- **Criar Pedido - Com Desconto**: Pedido com 3+ itens (5% desconto)
+- **Criar Pedido - Mínimo**: Pedido mais simples possível
+- **Criar Pedido - Erro Validação**: Teste de campos obrigatórios
+
+**Actuator**:
+- Health checks e informações da aplicação
+
+**API Documentation**:
+- OpenAPI specs e interface Swagger
 
 ## 🌍 Ambientes
 

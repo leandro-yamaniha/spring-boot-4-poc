@@ -1,0 +1,61 @@
+meta {
+  name: Criar Pedido - Exemplo Completo
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/v1/orders
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body {
+  "clienteId": "550e8400-e29b-41d4-a716-446655440000",
+  "lojaId": "660e8400-e29b-41d4-a716-446655440001",
+  "enderecoId": "770e8400-e29b-41d4-a716-446655440002",
+  "itens": [
+    {
+      "produtoId": "880e8400-e29b-41d4-a716-446655440003",
+      "quantidade": 2,
+      "precoUnitario": 25.00,
+      "observacoes": "Sem cebola"
+    },
+    {
+      "produtoId": "990e8400-e29b-41d4-a716-446655440004",
+      "quantidade": 1,
+      "precoUnitario": 15.00,
+      "observacoes": "Extra queijo"
+    }
+  ]
+}
+
+docs {
+  Teste para criação de pedido com múltiplos itens.
+
+  **Cenário**: Pedido com 2 hambúrgueres (R$ 50) + 1 refrigerante (R$ 15) = R$ 65
+  **Frete**: Grátis (pedido ≥ R$ 100? Não → frete normal)
+  **Total esperado**: R$ 65 + frete
+
+  **Resposta esperada (201 Created)**:
+  ```json
+  {
+    "id": "uuid-gerado",
+    "clienteId": "550e8400-e29b-41d4-a716-446655440000",
+    "lojaId": "660e8400-e29b-41d4-a716-446655440001",
+    "enderecoId": "770e8400-e29b-41d4-a716-446655440002",
+    "status": "CRIADO",
+    "total": 65.00,
+    "frete": 5.00,
+    "subtotal": 65.00,
+    "desconto": 0.00,
+    "createdAt": "2025-11-24T...",
+    "updatedAt": "2025-11-24T...",
+    "itens": [...]
+  }
+  ```
+}
