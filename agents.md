@@ -73,6 +73,16 @@ Este documento define regras mínimas para qualquer alteração automatizada ou 
   - Se sentir necessidade de comentar, refatore o código para ser mais claro
   - Comentários mentem com o tempo; código bem escrito não
 
+- **Programação Defensiva - Robustez e Segurança**
+  - **Validações de entrada obrigatórias**: Sempre validar parâmetros de métodos públicos
+  - **Null checks preventivos**: Evitar NullPointerException com verificações adequadas
+  - **Tipos imutáveis**: Preferir records e collections imutáveis para evitar efeitos colaterais
+  - **Fail-fast**: Detectar problemas o mais cedo possível, não deixar propagar
+  - **Asserções defensivas**: Usar `Objects.requireNonNull()` para contratos claros
+  - **Limites de recursos**: Validar tamanhos de listas, strings e uploads
+  - **Tratamento de exceções específicas**: Não usar Exception genérica, criar tipos específicos
+  - **Logs de auditoria**: Registrar operações críticas para rastreamento
+
 ---
 
 ## 4. Princípios SOLID e Arquitetura
