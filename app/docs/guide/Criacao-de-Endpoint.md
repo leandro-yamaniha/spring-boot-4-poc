@@ -38,6 +38,7 @@ com.poc.delivery
 ### 2. Criar DTOs (Data Transfer Objects)
 
 #### Request DTO (se aplicável)
+
 ```java
 package com.poc.delivery.api.dto;
 
@@ -49,6 +50,7 @@ public record GetOrderRequest(
 ```
 
 #### Response DTO
+
 ```java
 package com.poc.delivery.api.dto;
 
@@ -330,6 +332,7 @@ public class GlobalExceptionHandler {
 ## 🧪 TDD - Testes Primeiro
 
 ### 1. Teste de Use Case
+
 ```java
 @SpringBootTest
 class GetOrderUseCaseTest {
@@ -363,6 +366,7 @@ class GetOrderUseCaseTest {
 ```
 
 ### 2. Teste de Controller (Integração)
+
 ```java
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class OrderControllerTest {
