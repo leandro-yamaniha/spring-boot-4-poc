@@ -509,6 +509,74 @@ Para **cada push** que altera comportamento observável da aplicação (features
 3. **Atualizar CHANGELOG**
    - Adicionar entrada descrevendo as mudanças mais relevantes desde a última versão/entrada.  
    - Seguir um formato consistente (por exemplo: data, tipo da mudança, breve descrição).
+   - **Focar no valor para o usuário**: Descrever o que o usuário ganha, não detalhes técnicos.
+   - **Usar linguagem acessível**: Evitar jargões técnicos excessivos.
+   - **Destacar funcionalidades**: O que o usuário pode fazer agora que não podia antes.
+   - **Manter seções padrão**: Added, Changed, Fixed, Removed (seguir Keep a Changelog).
+
+### 10.1. Guia de Escrita de CHANGELOG Focado no Usuário
+
+**Princípios fundamentais para escrever um CHANGELOG que importa:**
+
+#### 🎯 **Foco no Valor Entregue**
+- **O que mudou para o usuário?** Não "implementei API REST", mas "agora você pode criar pedidos facilmente"
+- **Benefícios claros**: "Cálculo automático de preços", "Respostas claras de erro"
+- **Funcionalidades destacadas**: O que o usuário ganha de novo
+
+#### 📝 **Estrutura Recomendada por Versão**
+
+```markdown
+## [0.1.0] - 2025-11-24
+
+### Added
+- 🎉 **Sistema de Criação de Pedidos Completo**
+  - **Criar pedidos facilmente**: API intuitiva para registrar pedidos
+  - **Cálculo automático**: Total + frete grátis + descontos
+  - **Validação inteligente**: Dados verificados automaticamente
+
+- 🚀 **Melhoria na Experiência do Desenvolvedor**
+  - **Documentação interativa**: Interface Swagger para testar
+  - **Ambiente local**: Docker configurado para desenvolvimento
+
+### Fixed
+- 🔧 **Problemas de qualidade resolvidos**: Correções automáticas aplicadas
+
+### Removed
+- 🧹 **Limpeza**: Arquivos temporários removidos
+```
+
+#### ✅ **Boas Práticas**
+- **Evitar detalhes técnicos**: Não mencionar "arquitetura Clean", "SOLID", "testes unitários"
+- **Usar emojis**: Para tornar visualmente atraente e organizado
+- **Ser conciso**: Descrições diretas e impactantes
+- **Pensar no usuário final**: O que ele ganha, não como foi implementado
+- **Seguir padrão Keep a Changelog**: Added, Changed, Fixed, Removed
+
+#### ❌ **Evitar**
+- Detalhes de implementação ("Controller → Use Case → Repository")
+- Jargões técnicos ("SOLID principles", "Domain-Driven Design")
+- Nomes de classes/componentes ("CreateOrderUseCase", "PedidoEntity")
+- Métricas técnicas ("100% cobertura", "Quality Gate aprovado")
+- Informações irrelevantes para o usuário ("Stack Tecnológica", "Endpoints")
+
+#### 📊 **Exemplo Real da HIST-001**
+
+**Antes (técnico):**
+```
+- API REST com endpoint POST /api/v1/orders
+- Modelo de domínio rico (Pedido, ItemDePedido, StatusPedido)
+- Arquitetura Clean Architecture (Controller → Use Case → Repository)
+```
+
+**Depois (user-centric):**
+```
+🎉 Sistema de Criação de Pedidos Completo
+  ✓ Criar pedidos facilmente: API intuitiva para registrar pedidos
+  ✓ Cálculo automático de preços: Total, frete grátis, descontos
+  ✓ Validação inteligente: Verificação automática de dados
+```
+
+**Resultado**: CHANGELOG que comunica valor real para stakeholders!
 
 4. **Verificar conclusão de histórias**
    - **Obrigatório**: A cada push, verificar se alguma fase/história foi completada
@@ -527,7 +595,7 @@ Para **cada push** que altera comportamento observável da aplicação (features
 
 ---
 
-## 11.1. Regras para Branches e Histórias
+## 12. Regras para Branches e Histórias
 
 **Toda implementação deve seguir o fluxo de branches vinculadas às histórias:**
 
