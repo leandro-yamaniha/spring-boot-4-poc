@@ -628,15 +628,54 @@ Para **cada push** que altera comportamento observável da aplicação (features
    - Atualizar status da história como concluída
    - Deletar branch após merge
 
+### 12.1. Configuração Local Sempre Atualizada
+
+**Toda história DEVE manter a configuração para execução local sempre atualizada:**
+
+#### **Na Fase de Testes**
+- ✅ **Atualizar collections**: Sempre que a API mudar, atualizar Bruno/Postman collections
+- ✅ **Scripts automatizados**: Garantir que scripts de execução local funcionem
+- ✅ **Ambiente Docker**: Verificar se containers estão configurados corretamente
+- ✅ **Documentação de execução**: Instruções em `infra/local/README.md` atualizadas
+
+#### **Antes de Gerar PR**
+- ✅ **Último commit dedicado**: Criar commit específico com updates finais
+- ✅ **Versionamento**: Atualizar versão no `build.gradle` conforme regras semânticas
+- ✅ **CHANGELOG**: Documentar mudanças seguindo guia da seção 10.1
+- ✅ **README**: Atualizar se houver impactos na documentação do usuário
+- ✅ **Collections**: Atualizar com novos endpoints/testes
+- ✅ **Quality Gate**: Garantir que `./scripts/sonar-local.sh` passe
+- ✅ **Build completo**: `./gradlew clean build` com sucesso
+
+**Formato do último commit antes do PR:**
+```
+chore: finalizar HIST-XXX - versionar e atualizar docs
+
+- Atualizar versão para X.Y.Z conforme semantic versioning
+- CHANGELOG.md: documentar mudanças seguindo padrão user-centric
+- README.md: atualizar documentação se necessário
+- infra/local/README.md: atualizar instruções de execução
+- collections: atualizar endpoints e testes
+- Quality Gate: garantir 100% cobertura e 0 issues
+```
+
+#### **Benefícios da Configuração Sempre Atualizada**
+- ✅ **Ambiente local funcional**: Qualquer pessoa pode executar imediatamente
+- ✅ **Testes facilitados**: Collections atualizadas permitem testes rápidos
+- ✅ **Documentação viva**: Sempre reflete o estado atual do código
+- ✅ **Deploy confiável**: Ambiente local = ambiente de produção
+- ✅ **Onboarding rápido**: Novos devs conseguem executar rapidamente
+
 **Benefícios:**
 - ✅ Rastreabilidade completa entre código e requisitos
 - ✅ Histórico organizado e navegável
 - ✅ Facilita code review e auditoria
 - ✅ Permite trabalho paralelo em múltiplas histórias
+- ✅ **Configuração local sempre funcional**: Ambiente atualizado automaticamente
 
 ---
 
-## 12. Regras Específicas para Agents Automatizados
+## 13. Regras Específicas para Agents Automatizados
 
 Agents (como este) **devem SEMPRE**:
 
