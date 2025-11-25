@@ -7,22 +7,6 @@
 
 Backend para plataforma de entrega de pedidos construído com Spring Boot 4, Java 25 e práticas rigorosas de qualidade de código.
 
-## 📋 Índice
-
-- [Visão Geral](#visão-geral)
-- [Funcionalidades Implementadas](#funcionalidades-implementadas)
-- [API REST](#api-rest)
-- [Tecnologias](#tecnologias)
-- [Pré-requisitos](#pré-requisitos)
-- [Instalação](#instalação)
-- [Executando o Projeto](#executando-o-projeto)
-- [Qualidade de Código](#qualidade-de-código)
-- [Testes](#testes)
-- [Documentação da API](#documentação-da-api)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Contribuindo](#contribuindo)
-- [Licença](#licença)
-
 ## 🎯 Visão Geral
 
 Este projeto é um Proof of Concept (POC) para um backend de entrega de pedidos, implementando:
@@ -266,7 +250,7 @@ java -version
 ./gradlew bootRun
 ```
 
-A aplicação estará disponível em: **http://localhost:8080**
+A aplicação estará disponível em: **[http://localhost:8080](http://localhost:8080)**
 
 ### Com Profile Específico
 
