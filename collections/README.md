@@ -24,11 +24,12 @@ collections/
 │   │   ├── Health - Liveness.bru
 │   │   ├── Health - Readiness.bru
 │   │   └── Application Info.bru
-│   ├── Criar Pedido - Exemplo Completo.bru  # HIST-001: Criação de pedidos
-│   ├── Criar Pedido - Frete Grátis.bru
-│   ├── Criar Pedido - Com Desconto.bru
-│   ├── Criar Pedido - Mínimo.bru
-│   ├── Criar Pedido - Erro Validação.bru
+│   ├── Orders/                   # Domínio: Pedidos (HIST-001)
+│   │   ├── Criar Pedido - Exemplo Completo.bru
+│   │   ├── Criar Pedido - Frete Grátis.bru
+│   │   ├── Criar Pedido - Com Desconto.bru
+│   │   ├── Criar Pedido - Mínimo.bru
+│   │   └── Criar Pedido - Erro Validação.bru
 │   └── environments/
 │       └── Local.bru
 └── API Documentation/
