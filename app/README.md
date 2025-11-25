@@ -100,10 +100,16 @@ Para testes de integração, consulte a seção de **Testcontainers** abaixo.
 
 ### Build e testes
 
-- **Compilar e rodar testes unitários/integrados do módulo `app`**
+- **Compilar e rodar testes unitários do módulo `app`**
 
 ```bash
 ./gradlew :app:clean :app:test
+```
+
+- **Rodar apenas testes de integração do módulo `app` (@Tag("integration"))**
+
+```bash
+./gradlew :app:integrationTest
 ```
 
 - **Build completo (compila + checkstyle + testes)**

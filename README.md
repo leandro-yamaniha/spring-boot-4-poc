@@ -134,12 +134,20 @@ A aplicação estará disponível em: **http://localhost:8080**
 ### Executar Testes
 
 ```bash
-# Todos os testes
+# Testes unitários (padrão)
 ./gradlew test
 
-# Com relatório de cobertura
+# Somente testes de integração (@Tag("integration"))
+./gradlew integrationTest
+
+# Unitários + integração na mesma execução
+./gradlew test integrationTest
+
+# Com relatório de cobertura (unitários)
 ./gradlew test jacocoTestReport
 ```
+
+Para detalhes sobre configuração do Gradle (tasks `test`/`integrationTest`, logs contínuos e Java toolchain), consulte [`GRADLE.md`](GRADLE.md).
 
 ## 🎯 Qualidade de Código
 
@@ -147,11 +155,13 @@ Este projeto implementa o **Quality Gate "Zero Tolerance"** com validações rig
 
 ### Métricas Obrigatórias
 
-- ✅ **Cobertura de Testes:** 100%
-- ✅ **Bugs:** 0
-- ✅ **Code Smells:** 0
-- ✅ **Issues:** 0
-- ✅ **Checkstyle:** 0 violações
+- **Cobertura de Testes:** 100%
+- **Bugs:** 0
+- **Code Smells:** 0
+- **Issues:** 0
+- **Checkstyle:** 0 violações
+
+Para detalhes sobre o padrão de logging (códigos de evento, filtro HTTP e logs de domínio/erros), consulte [`LOGGING.md`](LOGGING.md).
 
 ### Executar Análise Completa
 
