@@ -1,0 +1,19 @@
+{
+  "clienteId": "550e8400-e29b-41d4-a716-446655440000",
+  "lojaId": "660e8400-e29b-41d4-a716-446655440001",
+  "enderecoId": "770e8400-e29b-41d4-a716-446655440002",
+  "itens": [
+    {
+      "produtoId": "880e8400-e29b-41d4-a716-446655440003",
+      "quantidade": 2,
+      "precoUnitario": 25.00,
+      "observacoes": "Sem cebola"
+    },
+    {
+      "produtoId": "990e8400-e29b-41d4-a716-446655440004",
+      "quantidade": 1,
+      "precoUnitario": 15.00,
+      "observacoes": "Extra queijo"
+    }
+  ]
+}
