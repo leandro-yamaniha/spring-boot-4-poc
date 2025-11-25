@@ -7,6 +7,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [0.1.0] - 2025-11-24
+
 ### Added
 
 - **HIST-001: Implementação completa da criação de pedidos** 🎉
@@ -52,31 +54,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   - Testes unitários para todas as regras de negócio
   - Testes de integração com Testcontainers
   - Testes de API com RestAssured
+- **Qualidade e Testes**
+  - Cobertura de 100% em código de negócio
+  - Testes unitários para todas as regras de negócio
+  - Testes de integração com Testcontainers
+  - Testes de API com RestAssured
   - Checkstyle com 35+ regras aplicadas
-
-### Issues Criadas para Melhorias Futuras
-
-- **[HIST-002]** - Ajustar StatusPedido enum conforme documentação completa
-- **[HIST-003]** - Implementar validações de existência de recursos
-- **[HIST-004]** - Implementar controle de estoque e disponibilidade
-- **[HIST-005]** - Melhorar observabilidade e métricas da API
-- **[HIST-006]** - Implementar validações de segurança e rate limiting
-- **[HIST-007]** - Otimizar performance e implementar cache
-- **[HIST-008]** - Melhorar documentação e experiência do desenvolvedor
-- **[HIST-009]** - Implementar internacionalização (i18n) e localização
-
-### Fixed
-
-- Corrigido Code Smell no teste contextLoads()
-  - Adicionado comentário explicativo sobre o propósito do smoke test
-  - Resolve issue S1186 do SonarQube (método vazio sem explicação)
-
-### Removed
-
-- Arquivos de build commitados por engano (app/build/, .gradle/)
-- Artefatos compilados (.class, .jar)
-- Relatórios de testes e checkstyle
-- Cache do Gradle
 
 ### Enhanced
 
@@ -263,10 +246,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - `http://localhost:8080/swagger-ui.html` - Documentação Swagger UI
 - `http://localhost:8080/v3/api-docs` - Especificação OpenAPI JSON
 - `http://localhost:8080/actuator/*` - Endpoints do Spring Boot Actuator
-
----
-
-## [0.0.1-SNAPSHOT] - 2025-11-23
 
 ### Inicial
 
