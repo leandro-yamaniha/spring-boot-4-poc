@@ -19,6 +19,8 @@ collections/
 │   └── Local.bru                 # Ambiente local (base_url)
 ├── Delivery Backend - Spring Boot 4/
 │   ├── bruno.json                # Configuração da sub-collection
+│   ├── environments/
+│   │   └── Local.bru             # Ambiente local da sub-collection
 │   ├── Actuator/
 │   │   ├── Health Check.bru
 │   │   ├── Health - Liveness.bru
