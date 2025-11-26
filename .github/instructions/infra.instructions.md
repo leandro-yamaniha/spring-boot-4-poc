@@ -1,3 +1,7 @@
+---
+applyTo: "scripts/**/*.sh,infra/**"
+---
+
 # Infra Instructions
 
 Regras para o Copilot ao sugerir scripts e infraestrutura neste repositório.

@@ -1,3 +1,7 @@
+---
+applyTo: "app/src/main/java/**/*.java"
+---
+
 # Backend Instructions
 
 Regras para o Copilot ao sugerir código Java/Spring Boot neste repositório.

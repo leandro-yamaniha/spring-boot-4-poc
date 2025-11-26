@@ -1,3 +1,7 @@
+---
+applyTo: "app/src/test/java/**/*.java"
+---
+
 # Test Instructions
 
 Diretrizes para o Copilot ao sugerir testes neste repositório.
