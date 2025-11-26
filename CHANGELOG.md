@@ -7,6 +7,33 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-11-25
+
+### Added
+
+- 🔍 **Consulta de Pedido por ID**
+  - Novo endpoint `GET /api/v1/orders/{id}` para buscar um pedido específico.
+  - Use case dedicado `GetOrderUseCase` com `OrderNotFoundException` para pedidos inexistentes.
+  - Tratamento de erro padronizado: 404 com `error.code = ORDER_NOT_FOUND` e mensagem clara.
+  - Testes unitários de use case e controller (MockMvc) cobrindo cenários 200 e 404.
+
+- 🧪 **Melhorias no Fluxo de Qualidade Local**
+  - Script `scripts/sonar-local.sh` agora:
+    - Sobe o SonarQube em Docker automaticamente.
+    - Executa `gradlew clean build` antes da análise.
+    - Consulta a API do Sonar e lista issues diretamente no terminal (arquivo, linha, severidade, tipo).
+    - Faz o pipeline falhar se houver qualquer issue aberta (Zero Tolerance).
+
+- 📚 **Documentação Aprimorada**
+  - Guia `Criacao-de-Endpoint.md` atualizado com exemplo completo do GET por ID.
+  - Nova seção de *Troubleshooting* com cenários 400, 404 e 500 e como investigar.
+
+### Changed
+
+- ♻️ **Organização e Padrões de Código**
+  - `checkstyle.xml` atualizado para usar `CustomImportOrder` com grupos explícitos de imports.
+  - Ajuste da ordem de imports em classes-chave (`OrderController`, `OrderControllerTest`, `HttpRequestLoggingFilter`, `PedidoEntity`, `OpenApiConfig`) para manter consistência e legibilidade.
+
 ## [0.1.0] - 2025-11-24
 
 ### Added

@@ -1,0 +1,31 @@
+meta {
+  name: Consultar Pedido por ID
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{base_url}}/api/v1/orders/{{order_id}}
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Request para consultar um pedido existente por ID.
+
+  **Cenário sugerido:**
+  - Primeiro, use uma das requisições "Criar Pedido" para criar um pedido.
+  - Copie o campo `id` retornado na resposta.
+  - Defina a variável `order_id` no ambiente do Bruno com esse valor.
+
+  **Parâmetros:**
+  - `{{base_url}}`: URL base da API (por exemplo, http://localhost:8080)
+  - `{{order_id}}`: UUID do pedido retornado pela criação (ex: 550e8400-e29b-41d4-a716-446655440000)
+
+  **Respostas esperadas:**
+  - 200 OK: retorna o `PedidoResponse` completo.
+  - 404 Not Found: quando o pedido não existir, com `error.code = ORDER_NOT_FOUND`.
+}
