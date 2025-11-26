@@ -5,6 +5,10 @@
 
 set -e  # Para na primeira falha
 
+# Diretórios base
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="${SCRIPT_DIR}/.."
+
 # Cores para output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -116,15 +120,36 @@ generate_token() {
 run_build() {
     echo -e "${YELLOW}[5/6] Executando build do projeto...${NC}"
     
-    cd "$(dirname "$0")/.."
+    cd "${PROJECT_DIR}"
     
     ./gradlew clean build
+    local exit_code=$?
     
-    if [ $? -eq 0 ]; then
+    if [ ${exit_code} -eq 0 ]; then
         echo -e "${GREEN}✅ Build executado com sucesso${NC}"
     else
         echo -e "${RED}❌ Build falhou${NC}"
-        exit 1
+        
+        # Se houver relatórios do Checkstyle, listar rapidamente os arquivos com violações
+        local main_report="app/build/reports/checkstyle/main.xml"
+        local test_report="app/build/reports/checkstyle/test.xml"
+
+        if [ -f "${main_report}" ] || [ -f "${test_report}" ]; then
+            echo ""
+            echo -e "${YELLOW}Arquivos com violações de Checkstyle:${NC}"
+            for report in "${main_report}" "${test_report}"; do
+                if [ -f "${report}" ]; then
+                    awk -F'"' '/<file name=/{file=$2} /<error /{print "- " file}' "${report}" | sort -u
+                fi
+            done
+            echo ""
+            echo "Relatórios completos:" 
+            echo "  - app/build/reports/checkstyle/main.html"
+            echo "  - app/build/reports/checkstyle/test.html"
+            echo ""
+        fi
+
+        exit ${exit_code}
     fi
     echo ""
 }
@@ -161,10 +186,9 @@ run_sonar_analysis() {
     install_sonar_scanner
     
     local scanner_bin="$HOME/.sonar-scanner/bin/sonar-scanner"
-    local project_dir="$(dirname "$0")/.."
     
     # Voltar para o diretório do projeto
-    cd "${project_dir}"
+    cd "${PROJECT_DIR}"
     
     # Executar análise usando SonarScanner CLI
     ${scanner_bin} \
@@ -182,9 +206,9 @@ run_sonar_analysis() {
         
         local admin_user="admin"
         local admin_pass="d3l1v3ry#Pr0j3ct"
-        local issues_count=$(curl -s -u ${admin_user}:${admin_pass} \
-            "${SONAR_HOST}/api/issues/search?componentKeys=${SONAR_PROJECT_KEY}&resolved=false" \
-            | grep -o '"total":[0-9]*' | head -1 | cut -d':' -f2)
+        local issues_response=$(curl -s -u ${admin_user}:${admin_pass} \
+            "${SONAR_HOST}/api/issues/search?componentKeys=${SONAR_PROJECT_KEY}&resolved=false")
+        local issues_count=$(echo "$issues_response" | grep -o '"total":[0-9]*' | head -1 | cut -d':' -f2)
         
         if [ "$issues_count" != "0" ]; then
             echo ""
@@ -194,10 +218,21 @@ run_sonar_analysis() {
             echo ""
             echo -e "${RED}Issues encontrados: ${issues_count}${NC}"
             echo ""
+            
+            if command -v jq >/dev/null 2>&1; then
+                echo -e "${YELLOW}Lista de issues:${NC}"
+                echo ""
+                echo "$issues_response" | jq -r '.issues[] | "- [\(.severity)] [\(.type)] \(.component):\(.line // 0) - \(.message)"'
+                echo ""
+            else
+                echo -e "${YELLOW}Instale 'jq' para ver a lista formatada de issues no terminal.${NC}"
+                echo ""
+            fi
+            
             echo "Quality Gate exige:"
             echo "  - Issues: 0 (encontrado: ${issues_count})"
             echo ""
-            echo -e "📊 Veja detalhes em: ${BLUE}${SONAR_HOST}/dashboard?id=${SONAR_PROJECT_KEY}${NC}"
+            echo -e "📊 Veja detalhes em: ${BLUE}${SONAR_HOST}/project/issues?id=${SONAR_PROJECT_KEY}&resolved=false${NC}"
             echo ""
             exit 1
         fi

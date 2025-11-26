@@ -18,6 +18,7 @@ class DeliveryApplicationTests {
     private static final String DEFAULT_DELIVERY_STRING = "delivery";
 
     @Container
+    @SuppressWarnings("resource")
     private static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:16-alpine")
         .withDatabaseName(DEFAULT_DELIVERY_STRING)
         .withUsername(DEFAULT_DELIVERY_STRING)
