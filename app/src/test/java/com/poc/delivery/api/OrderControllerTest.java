@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,17 +14,19 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poc.delivery.api.dto.ItemPedidoRequest;
 import com.poc.delivery.api.dto.PedidoRequest;
 import com.poc.delivery.api.dto.PedidoResponse;
 import com.poc.delivery.domain.model.StatusPedido;
 import com.poc.delivery.domain.usecase.CreateOrderUseCase;
+import com.poc.delivery.domain.usecase.GetOrderUseCase;
+import com.poc.delivery.domain.usecase.OrderNotFoundException;
 
 class OrderControllerTest {
 
     private MockMvc mockMvc;
-    private CreateOrderUseCase useCase;
+    private CreateOrderUseCase createOrderUseCase;
+    private GetOrderUseCase getOrderUseCase;
     private ObjectMapper objectMapper;
     private static final String ORDERS_URL = "/api/v1/orders";
     private static final String ERROR_CODE_PATH = "$.error.code";
@@ -32,8 +35,9 @@ class OrderControllerTest {
 
     @BeforeEach
     void setUp() {
-        useCase = Mockito.mock(CreateOrderUseCase.class);
-        OrderController controller = new OrderController(useCase);
+        createOrderUseCase = Mockito.mock(CreateOrderUseCase.class);
+        getOrderUseCase = Mockito.mock(GetOrderUseCase.class);
+        OrderController controller = new OrderController(createOrderUseCase, getOrderUseCase);
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
             .setControllerAdvice(new GlobalExceptionHandler())
             .build();
@@ -74,7 +78,7 @@ class OrderControllerTest {
             null
         );
 
-        Mockito.when(useCase.execute(Mockito.any(PedidoRequest.class))).thenReturn(response);
+        Mockito.when(createOrderUseCase.execute(Mockito.any(PedidoRequest.class))).thenReturn(response);
 
         String json = objectMapper.writeValueAsString(request);
 
@@ -87,7 +91,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.lojaId").value(lojaId.toString()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.enderecoId").value(enderecoId.toString()));
 
-        Mockito.verify(useCase).execute(Mockito.any(PedidoRequest.class));
+        Mockito.verify(createOrderUseCase).execute(Mockito.any(PedidoRequest.class));
     }
 
     @Test
@@ -109,7 +113,7 @@ class OrderControllerTest {
             ))
         );
 
-        Mockito.when(useCase.execute(Mockito.any(PedidoRequest.class)))
+        Mockito.when(createOrderUseCase.execute(Mockito.any(PedidoRequest.class)))
             .thenThrow(new RuntimeException("erro inesperado"));
 
         String json = objectMapper.writeValueAsString(request);
@@ -121,7 +125,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_CODE_PATH).value("INTERNAL_ERROR"))
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH).value("An unexpected error occurred"));
 
-        Mockito.verify(useCase).execute(Mockito.any(PedidoRequest.class));
+        Mockito.verify(createOrderUseCase).execute(Mockito.any(PedidoRequest.class));
     }
 
     @Test
@@ -145,7 +149,7 @@ class OrderControllerTest {
 
         IllegalArgumentException exception = new IllegalArgumentException("pedidoInvalido");
 
-        Mockito.when(useCase.execute(Mockito.any(PedidoRequest.class)))
+        Mockito.when(createOrderUseCase.execute(Mockito.any(PedidoRequest.class)))
             .thenThrow(exception);
 
         String json = objectMapper.writeValueAsString(request);
@@ -157,7 +161,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_CODE_PATH).value(BAD_REQUEST_CODE))
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH).value("pedidoInvalido"));
 
-        Mockito.verify(useCase).execute(Mockito.any(PedidoRequest.class));
+        Mockito.verify(createOrderUseCase).execute(Mockito.any(PedidoRequest.class));
     }
 
     @Test
@@ -187,7 +191,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_CODE_PATH).value(BAD_REQUEST_CODE))
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH).value("clienteId é obrigatório"));
 
-        Mockito.verifyNoInteractions(useCase);
+        Mockito.verifyNoInteractions(createOrderUseCase);
     }
 
     @Test
@@ -217,7 +221,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_CODE_PATH).value(BAD_REQUEST_CODE))
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH).value("lojaId é obrigatório"));
 
-        Mockito.verifyNoInteractions(useCase);
+        Mockito.verifyNoInteractions(createOrderUseCase);
     }
 
     @Test
@@ -247,7 +251,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_CODE_PATH).value(BAD_REQUEST_CODE))
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH).value("enderecoId é obrigatório"));
 
-        Mockito.verifyNoInteractions(useCase);
+        Mockito.verifyNoInteractions(createOrderUseCase);
     }
 
     @Test
@@ -272,7 +276,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_CODE_PATH).value(BAD_REQUEST_CODE))
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH).value("itens não pode ser vazio"));
 
-        Mockito.verifyNoInteractions(useCase);
+        Mockito.verifyNoInteractions(createOrderUseCase);
     }
 
     @Test
@@ -303,7 +307,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_CODE_PATH).value(BAD_REQUEST_CODE))
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH).value("quantidade deve ser maior que zero"));
 
-        Mockito.verifyNoInteractions(useCase);
+        Mockito.verifyNoInteractions(createOrderUseCase);
     }
 
     @Test
@@ -333,7 +337,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_CODE_PATH).value(BAD_REQUEST_CODE))
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH).value("produtoId é obrigatório"));
 
-        Mockito.verifyNoInteractions(useCase);
+        Mockito.verifyNoInteractions(createOrderUseCase);
     }
 
     @Test
@@ -364,7 +368,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_CODE_PATH).value(BAD_REQUEST_CODE))
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH).value("precoUnitario é obrigatório"));
 
-        Mockito.verifyNoInteractions(useCase);
+        Mockito.verifyNoInteractions(createOrderUseCase);
     }
 
     @Test
@@ -396,7 +400,7 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH)
                 .value("precoUnitario deve ser maior ou igual a zero"));
 
-        Mockito.verifyNoInteractions(useCase);
+        Mockito.verifyNoInteractions(createOrderUseCase);
     }
 
     @Test
@@ -429,6 +433,56 @@ class OrderControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH)
                 .value("observacoes deve ter no máximo 500 caracteres"));
 
-        Mockito.verifyNoInteractions(useCase);
+        Mockito.verifyNoInteractions(createOrderUseCase);
+    }
+
+    @Test
+    void deveRetornarPedidoQuandoIdExistir() throws Exception {
+        UUID pedidoId = UUID.randomUUID();
+        UUID clienteId = UUID.randomUUID();
+        UUID lojaId = UUID.randomUUID();
+        UUID enderecoId = UUID.randomUUID();
+
+        PedidoResponse response = new PedidoResponse(
+            pedidoId,
+            clienteId,
+            lojaId,
+            enderecoId,
+            List.of(),
+            StatusPedido.CRIADO,
+            BigDecimal.TEN,
+            BigDecimal.ZERO,
+            BigDecimal.ZERO,
+            null,
+            null
+        );
+
+        Mockito.when(getOrderUseCase.execute(pedidoId)).thenReturn(response);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(ORDERS_URL + "/{id}", pedidoId))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(pedidoId.toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.clienteId").value(clienteId.toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.lojaId").value(lojaId.toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.enderecoId").value(enderecoId.toString()));
+
+        Mockito.verify(getOrderUseCase).execute(pedidoId);
+        Mockito.verifyNoInteractions(createOrderUseCase);
+    }
+
+    @Test
+    void deveRetornar404QuandoPedidoNaoExistir() throws Exception {
+        UUID pedidoId = UUID.randomUUID();
+
+        Mockito.when(getOrderUseCase.execute(pedidoId))
+            .thenThrow(new OrderNotFoundException("Pedido não encontrado: " + pedidoId));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(ORDERS_URL + "/{id}", pedidoId))
+            .andExpect(MockMvcResultMatchers.status().isNotFound())
+            .andExpect(MockMvcResultMatchers.jsonPath(ERROR_CODE_PATH).value("ORDER_NOT_FOUND"))
+            .andExpect(MockMvcResultMatchers.jsonPath(ERROR_MESSAGE_PATH).value("Pedido não encontrado: " + pedidoId));
+
+        Mockito.verify(getOrderUseCase).execute(pedidoId);
+        Mockito.verifyNoInteractions(createOrderUseCase);
     }
 }

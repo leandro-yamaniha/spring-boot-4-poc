@@ -309,20 +309,33 @@ public class OrderNotFoundException extends RuntimeException {
 ```java
 package com.poc.delivery.api;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.poc.delivery.domain.exception.OrderNotFoundException;
+import com.poc.delivery.common.logging.LogEvent;
+import com.poc.delivery.domain.usecase.OrderNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(OrderNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleOrderNotFound(OrderNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(new ErrorResponse("Pedido não encontrado", ex.getMessage()));
+    public ResponseEntity<ApiErrorResponse> handleOrderNotFoundException(OrderNotFoundException ex) {
+        LOGGER.warn("[{}] Pedido nao encontrado: {}", LogEvent.ORDER_NOT_FOUND.code(), ex.getMessage());
+        ApiError error = new ApiError("ORDER_NOT_FOUND", ex.getMessage());
+        ApiErrorResponse body = new ApiErrorResponse(error);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
+    public record ApiError(String code, String message) {
+    }
+
+    public record ApiErrorResponse(ApiError error) {
     }
 }
 ```
@@ -385,6 +398,23 @@ class OrderControllerTest {
     }
 }
 ```
+
+## 🔧 Troubleshooting
+
+- **Pedido retornando 404 (ORDER_NOT_FOUND)**  
+  - Verifique se o `GetOrderUseCase` está lançando `OrderNotFoundException` quando o pedido não existe.  
+  - Confirme se o `GlobalExceptionHandler` possui um `@ExceptionHandler(OrderNotFoundException.class)` retornando `HttpStatus.NOT_FOUND`.  
+  - Cheque os logs para o evento `LogEvent.ORDER_NOT_FOUND`.
+
+- **Requisições retornando 400 (BAD_REQUEST)**  
+  - Revise as anotações de validação nos DTOs (`@NotNull`, `@Size`, etc.).  
+  - Use o campo `error.message` da resposta para identificar qual campo falhou.  
+  - Garanta que o `GlobalExceptionHandler` trate `IllegalArgumentException` e `MethodArgumentNotValidException` corretamente.
+
+- **Erros 500 (INTERNAL_ERROR)**  
+  - Verifique se exceções de domínio estão sendo lançadas com tipos específicos (como `OrderNotFoundException`), e não `RuntimeException` genérica.  
+  - Veja os logs com `LogEvent.ORDER_UNEXPECTED_ERROR` para entender o stack trace.  
+  - Confirme se integrações externas (banco, outros serviços) estão acessíveis no ambiente local.
 
 ## ✅ Checklist de Qualidade
 

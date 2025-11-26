@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.poc.delivery.common.logging.LogEvent;
+import com.poc.delivery.domain.usecase.OrderNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -29,6 +30,14 @@ public class GlobalExceptionHandler {
         ApiError error = new ApiError("BAD_REQUEST", ex.getMessage());
         ApiErrorResponse body = new ApiErrorResponse(error);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleOrderNotFoundException(OrderNotFoundException ex) {
+        LOGGER.warn("[{}] Pedido nao encontrado: {}", LogEvent.ORDER_NOT_FOUND.code(), ex.getMessage());
+        ApiError error = new ApiError("ORDER_NOT_FOUND", ex.getMessage());
+        ApiErrorResponse body = new ApiErrorResponse(error);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
