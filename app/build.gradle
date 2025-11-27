@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'com.poc'
-version = '0.2.0'
+version = '0.3.0'
 
 java {
     toolchain {
@@ -33,6 +33,12 @@ tasks.register('integrationTest', Test) {
 
 repositories {
     mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.junit:junit-bom:6.0.1"
+    }
 }
 
 def testcontainersVersion = '1.21.3'
@@ -113,7 +119,8 @@ jacocoTestCoverageVerification {
             excludes = [
                 'com.poc.delivery.DeliveryApplication',  // Exclui entry point
                 'com.poc.delivery.common.FlywayConfig',  // Exclui configuração de infra
-                'com.poc.delivery.common.logging.HttpRequestLoggingFilter'  // Exclui filtro de logging
+                'com.poc.delivery.common.logging.HttpRequestLoggingFilter',  // Exclui filtro de logging
+                'com.poc.delivery.api.OpenApiConfig'  // Exclui configuração de OpenAPI (infra)
             ]
         }
     }

@@ -7,6 +7,31 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2025-11-26
+
+### Added
+
+- ✅ **Guia de Migração e Uso do JUnit 6**
+  - Novo documento `app/docs/guide/JUnit6.md` explicando objetivos, vantagens e principais novidades do JUnit 6.
+  - Passo a passo para migrar projetos existentes de JUnit 5 para JUnit 6, com foco em Java 17+.
+  - Exemplos práticos de configuração com Gradle (BOM do JUnit, tasks e tags).
+
+- 📚 **Documentação aprimorada de assertions**
+  - Guia `assertThat-vs-junit-assertions.md` atualizado para comparar AssertJ com as assertions nativas do JUnit 5/6.
+  - Tabelas detalhadas mostrando o que cada abordagem oferece (coleções, mensagens de erro, soft assertions, BDD, etc.).
+
+### Changed
+
+- 🧪 **Stack de testes atualizada para JUnit 6**
+  - Projeto agora utiliza o BOM `org.junit:junit-bom:6.0.1`, alinhando Platform, Jupiter e Vintage na mesma versão.
+  - Testes existentes migrados para rodar sobre JUnit 6 sem quebra de regras de negócio.
+
+- 🔀 **Separação clara entre testes unitários e de integração**
+  - Configuração Gradle ajustada para usar tags do JUnit Jupiter:
+    - `:app:test` executa apenas testes sem `@Tag("integration")`.
+    - `:app:integrationTest` executa somente testes anotados com `@Tag("integration")` (por exemplo, `OrderControllerIT` e `DeliveryApplicationTests`).
+  - Testes de integração utilizam Testcontainers e dependem explicitamente de Docker, evitando falhas locais em execuções unitárias.
+
 ## [0.2.0] - 2025-11-25
 
 ### Added
