@@ -47,5 +47,5 @@ Permitir que um cliente selecione uma loja, escolha produtos, informe endereço 
   - Retornar códigos HTTP apropriados (400/404/422) conforme o caso.
 
 - **T1.7 – Testes**
-  - Testes unitários (JUnit 5 + Instancio) para regras de negócio.
+  - Testes unitários (JUnit 6 + Instancio) para regras de negócio.
   - Testes de integração (Cucumber + Testcontainers + RestAssured) cobrindo fluxo de criação de pedido com sucesso e falhas de validação.

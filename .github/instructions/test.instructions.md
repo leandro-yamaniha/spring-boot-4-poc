@@ -16,7 +16,7 @@ Diretrizes para o Copilot ao sugerir testes neste repositório.
 
 ## Ferramentas e Stack
 
-- **JUnit 5** (`@Test`, `@BeforeEach`, tags quando necessário).
+- **JUnit 6 (Jupiter)** (`@Test`, `@BeforeEach`, tags quando necessário).
 - **Mockito** para mocks e stubs.
 - **Instancio** para geração de dados em testes complexos.
 - **Spring Boot Test + Testcontainers** para testes de integração (já configurados em `DeliveryApplicationTests` e `OrderControllerIT`).

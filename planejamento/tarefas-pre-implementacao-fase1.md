@@ -78,7 +78,7 @@ Objetivo: garantir que o entendimento do domínio e das decisões técnicas este
 ## 6. Configurar Dependências de Testes
 
 - [ ] Adicionar dependências de testes no Gradle:
-  - [ ] **JUnit 5 (Jupiter)**.
+  - [ ] **JUnit 6 (Jupiter)**.
   - [ ] **Testcontainers** (PostgreSQL, Redis e outros necessários).
   - [ ] **Cucumber** (para testes BDD de integração, quando for utilizado).
   - [ ] **RestAssured** (para testes de API HTTP, quando fizer sentido).
@@ -113,7 +113,7 @@ Objetivo: garantir que o entendimento do domínio e das decisões técnicas este
 ## 9. Organizar Testes Iniciais (TDD)
 
 - [ ] Definir o primeiro conjunto de **casos de teste de negócio** para o domínio de pedidos (ex.: criação de pedido, mudança de status).
-- [ ] Criar **esqueleto de teste unitário** com JUnit 5 para pelo menos um caso crítico (por exemplo, cálculo de total do pedido com taxa de entrega e desconto).
+- [ ] Criar **esqueleto de teste unitário** com JUnit 6 para pelo menos um caso crítico (por exemplo, cálculo de total do pedido com taxa de entrega e desconto).
 - [ ] Criar **esqueleto de teste de integração** (Cucumber + Testcontainers + RestAssured) para um fluxo simples de criação e consulta de pedido (mesmo que ainda não implementado).
 
 ---

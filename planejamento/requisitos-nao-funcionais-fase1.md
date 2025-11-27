@@ -196,8 +196,8 @@
   - Utilizar **Instancio** para criação de instâncias de objetos em testes automatizados, reduzindo boilerplate de montagem de dados.
   - Aplicar principalmente em testes de unidade e integração para gerar dados de entrada variados e focar a escrita do teste na lógica de negócio, e não na construção manual de objetos complexos.
 
-- **Framework de testes – JUnit 5**
-  - Utilizar **JUnit 5** como framework padrão para testes de unidade e integração.
+- **Framework de testes – JUnit 6**
+  - Utilizar **JUnit 6** como framework padrão para testes de unidade e integração.
   - Evitar misturar versões antigas (JUnit 4); novos testes devem seguir o modelo Jupiter (anotações `@Test`, `@Nested`, `@DisplayName`, etc.).
 
 ## 10. Ambiente de Desenvolvimento Local (Containers)
