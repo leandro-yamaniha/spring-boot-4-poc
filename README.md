@@ -207,7 +207,7 @@ Para mais exemplos, consulte [`collections/`](collections/) e [`historias/fase1/
 
 ### Testes
 
-- **JUnit 5** - Framework de testes
+- **JUnit 6 (Jupiter)** - Framework de testes
 - **AssertJ** - Assertions fluentes
 - **Testcontainers** - Testes de integração com containers
 - **Cucumber** - BDD (Behavior-Driven Development)
@@ -340,7 +340,7 @@ open app/build/reports/jacoco/test/html/index.html
 
 - **Testes Unitários:** `app/src/test/java`
 - **Cobertura Atual:** 100%
-- **Framework:** JUnit 5 + AssertJ
+- **Framework:** JUnit 6 + AssertJ
 
 ### Executar Testes
 

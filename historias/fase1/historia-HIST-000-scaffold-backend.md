@@ -14,7 +14,7 @@ Criar a base técnica do projeto backend, alinhada às decisões de stack e às 
 - Estrutura mínima de pacotes definida (api, application, domain, infrastructure).
 - Profile **`local`** configurado com `application-local.yml`.
 - Dependências principais adicionadas (Spring Web, Spring Data JPA, PostgreSQL, Redis, Actuator).
-- Ferramentas de qualidade configuradas (Checkstyle, JaCoCo, JUnit 5, Testcontainers, MapStruct, Instancio).
+- Ferramentas de qualidade configuradas (Checkstyle, JaCoCo, JUnit 6, Testcontainers, MapStruct, Instancio).
 - Projeto compila e sobe localmente (mesmo que com endpoints mínimos/health check).
 
 ## Tasks Técnicas
@@ -41,7 +41,7 @@ Criar a base técnica do projeto backend, alinhada às decisões de stack e às 
 - **T0.4 – Adicionar dependências principais**
   - Spring Web, Spring Data JPA, PostgreSQL, Spring Cache/Redis, Actuator.
   - MapStruct (API + annotation processor).
-  - JUnit 5, Testcontainers, RestAssured (se aplicável), Cucumber, Instancio.
+  - JUnit 6, Testcontainers, RestAssured (se aplicável), Cucumber, Instancio.
 
 - **T0.5 – Configurar ferramentas de qualidade**
   - Checkstyle (plugin Gradle + `checkstyle.xml`).
