@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Pedido {
-    
+
     private UUID id;
     private final UUID clienteId;
     private final UUID lojaId;
@@ -21,7 +21,7 @@ public class Pedido {
     private BigDecimal desconto;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    
+
     private Pedido(Builder builder) {
         this.id = builder.id;
         this.clienteId = Objects.requireNonNull(builder.clienteId, "clienteId não pode ser nulo");
@@ -33,11 +33,11 @@ public class Pedido {
         this.desconto = builder.desconto != null ? builder.desconto : BigDecimal.ZERO;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        
+
         validar();
         this.total = calcularTotal();
     }
-    
+
     private void validar() {
         if (itens.isEmpty()) {
             throw new IllegalArgumentException("Pedido deve ter pelo menos um item");
@@ -49,17 +49,17 @@ public class Pedido {
             throw new IllegalArgumentException("Desconto não pode ser negativo");
         }
     }
-    
+
     private BigDecimal calcularTotal() {
         BigDecimal subtotalItens = itens.stream()
-            .map(ItemDePedido::getSubtotal)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
-        
+                .map(ItemDePedido::getSubtotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         return subtotalItens
-            .add(taxaEntrega)
-            .subtract(desconto);
+                .add(taxaEntrega)
+                .subtract(desconto);
     }
-    
+
     public void confirmar() {
         if (status != StatusPedido.CRIADO) {
             throw new IllegalStateException("Apenas pedidos criados podem ser confirmados");
@@ -67,7 +67,40 @@ public class Pedido {
         this.status = StatusPedido.CONFIRMADO;
         this.updatedAt = LocalDateTime.now();
     }
-    
+
+    public void iniciarPreparo() {
+        if (status != StatusPedido.CONFIRMADO) {
+            throw new IllegalStateException("Apenas pedidos confirmados podem iniciar preparo");
+        }
+        this.status = StatusPedido.EM_PREPARO;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+
+    public void marcarComoPronto() {
+        if (status != StatusPedido.EM_PREPARO) {
+            throw new IllegalStateException("Apenas pedidos em preparo podem ser marcados como prontos para entrega");
+        }
+        this.status = StatusPedido.PRONTO_PARA_ENTREGA;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void iniciarEntrega() {
+        if (status != StatusPedido.PRONTO_PARA_ENTREGA) {
+            throw new IllegalStateException("Apenas pedidos prontos para entrega podem iniciar entrega");
+        }
+        this.status = StatusPedido.EM_ENTREGA;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void finalizarEntrega() {
+        if (status != StatusPedido.EM_ENTREGA) {
+            throw new IllegalStateException("Apenas pedidos em entrega podem ser finalizados");
+        }
+        this.status = StatusPedido.ENTREGUE;
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public void cancelar() {
         if (status == StatusPedido.ENTREGUE) {
             throw new IllegalStateException("Pedido já entregue não pode ser cancelado");
@@ -78,79 +111,55 @@ public class Pedido {
         this.status = StatusPedido.CANCELADO;
         this.updatedAt = LocalDateTime.now();
     }
-    
-    public void marcarComoPronto() {
-        if (status != StatusPedido.CONFIRMADO) {
-            throw new IllegalStateException("Apenas pedidos confirmados podem ser marcados como prontos");
-        }
-        this.status = StatusPedido.PRONTO;
-        this.updatedAt = LocalDateTime.now();
-    }
-    
-    public void iniciarEntrega() {
-        if (status != StatusPedido.PRONTO) {
-            throw new IllegalStateException("Apenas pedidos prontos podem iniciar entrega");
-        }
-        this.status = StatusPedido.EM_ENTREGA;
-        this.updatedAt = LocalDateTime.now();
-    }
-    
-    public void finalizarEntrega() {
-        if (status != StatusPedido.EM_ENTREGA) {
-            throw new IllegalStateException("Apenas pedidos em entrega podem ser finalizados");
-        }
-        this.status = StatusPedido.ENTREGUE;
-        this.updatedAt = LocalDateTime.now();
-    }
-    
+
     public UUID getId() {
         return id;
     }
-    
+
     public UUID getClienteId() {
         return clienteId;
     }
-    
+
     public UUID getLojaId() {
         return lojaId;
     }
-    
+
     public UUID getEnderecoId() {
         return enderecoId;
     }
-    
+
     public List<ItemDePedido> getItens() {
         return Collections.unmodifiableList(itens);
     }
-    
+
     public StatusPedido getStatus() {
         return status;
     }
-    
+
     public BigDecimal getTotal() {
         return total;
     }
-    
+
     public BigDecimal getTaxaEntrega() {
         return taxaEntrega;
     }
-    
+
     public BigDecimal getDesconto() {
         return desconto;
     }
-    
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-    
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
-    
+
     public void setId(UUID id) {
         this.id = id;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -162,28 +171,28 @@ public class Pedido {
         Pedido pedido = (Pedido) o;
         return Objects.equals(id, pedido.id);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
-    
+
     @Override
     public String toString() {
         return "Pedido{" +
-               "id=" + id +
-               ", clienteId=" + clienteId +
-               ", lojaId=" + lojaId +
-               ", status=" + status +
-               ", total=" + total +
-               ", createdAt=" + createdAt +
-               '}';
+                "id=" + id +
+                ", clienteId=" + clienteId +
+                ", lojaId=" + lojaId +
+                ", status=" + status +
+                ", total=" + total +
+                ", createdAt=" + createdAt +
+                '}';
     }
-    
+
     public static Builder builder() {
         return new Builder();
     }
-    
+
     public static class Builder {
         private UUID id;
         private UUID clienteId;
@@ -192,47 +201,47 @@ public class Pedido {
         private List<ItemDePedido> itens = new ArrayList<>();
         private BigDecimal taxaEntrega;
         private BigDecimal desconto;
-        
+
         public Builder id(UUID id) {
             this.id = id;
             return this;
         }
-        
+
         public Builder clienteId(UUID clienteId) {
             this.clienteId = clienteId;
             return this;
         }
-        
+
         public Builder lojaId(UUID lojaId) {
             this.lojaId = lojaId;
             return this;
         }
-        
+
         public Builder enderecoId(UUID enderecoId) {
             this.enderecoId = enderecoId;
             return this;
         }
-        
+
         public Builder itens(List<ItemDePedido> itens) {
             this.itens = itens;
             return this;
         }
-        
+
         public Builder adicionarItem(ItemDePedido item) {
             this.itens.add(item);
             return this;
         }
-        
+
         public Builder taxaEntrega(BigDecimal taxaEntrega) {
             this.taxaEntrega = taxaEntrega;
             return this;
         }
-        
+
         public Builder desconto(BigDecimal desconto) {
             this.desconto = desconto;
             return this;
         }
-        
+
         public Pedido build() {
             return new Pedido(this);
         }

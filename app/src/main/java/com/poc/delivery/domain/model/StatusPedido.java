@@ -3,7 +3,8 @@ package com.poc.delivery.domain.model;
 public enum StatusPedido {
     CRIADO,
     CONFIRMADO,
-    PRONTO,
+    EM_PREPARO,
+    PRONTO_PARA_ENTREGA,
     EM_ENTREGA,
     ENTREGUE,
     CANCELADO
