@@ -14,24 +14,24 @@ class PedidoTest {
     @Test
     void deveCalcularTotalComTaxaEDesconto() {
         ItemDePedido item = ItemDePedido.builder()
-            .produtoId(UUID.randomUUID())
-            .nomeProduto(PRODUTO_NOME)
-            .quantidade(2)
-            .precoUnitario(BigDecimal.TEN)
-            .observacoes(null)
-            .build();
+                .produtoId(UUID.randomUUID())
+                .nomeProduto(PRODUTO_NOME)
+                .quantidade(2)
+                .precoUnitario(BigDecimal.TEN)
+                .observacoes(null)
+                .build();
 
         BigDecimal taxa = BigDecimal.valueOf(5);
         BigDecimal desconto = BigDecimal.valueOf(3);
 
         Pedido pedido = Pedido.builder()
-            .clienteId(UUID.randomUUID())
-            .lojaId(UUID.randomUUID())
-            .enderecoId(UUID.randomUUID())
-            .itens(List.of(item))
-            .taxaEntrega(taxa)
-            .desconto(desconto)
-            .build();
+                .clienteId(UUID.randomUUID())
+                .lojaId(UUID.randomUUID())
+                .enderecoId(UUID.randomUUID())
+                .itens(List.of(item))
+                .taxaEntrega(taxa)
+                .desconto(desconto)
+                .build();
 
         BigDecimal esperado = item.getSubtotal().add(taxa).subtract(desconto);
         Assertions.assertThat(pedido.getTotal()).isEqualTo(esperado);
@@ -40,12 +40,12 @@ class PedidoTest {
     @Test
     void deveLancarExcecaoQuandoSemItens() {
         Assertions.assertThatThrownBy(() -> Pedido.builder()
-                .clienteId(UUID.randomUUID())
-                .lojaId(UUID.randomUUID())
-                .enderecoId(UUID.randomUUID())
-                .itens(List.of())
-                .build())
-            .isInstanceOf(IllegalArgumentException.class);
+                        .clienteId(UUID.randomUUID())
+                        .lojaId(UUID.randomUUID())
+                        .enderecoId(UUID.randomUUID())
+                        .itens(List.of())
+                        .build())
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -57,8 +57,11 @@ class PedidoTest {
         pedido.confirmar();
         Assertions.assertThat(pedido.getStatus()).isEqualTo(StatusPedido.CONFIRMADO);
 
+        pedido.iniciarPreparo();
+        Assertions.assertThat(pedido.getStatus()).isEqualTo(StatusPedido.EM_PREPARO);
+
         pedido.marcarComoPronto();
-        Assertions.assertThat(pedido.getStatus()).isEqualTo(StatusPedido.PRONTO);
+        Assertions.assertThat(pedido.getStatus()).isEqualTo(StatusPedido.PRONTO_PARA_ENTREGA);
 
         pedido.iniciarEntrega();
         Assertions.assertThat(pedido.getStatus()).isEqualTo(StatusPedido.EM_ENTREGA);
@@ -73,19 +76,20 @@ class PedidoTest {
         pedido.confirmar();
 
         Assertions.assertThatThrownBy(pedido::confirmar)
-            .isInstanceOf(IllegalStateException.class);
+                .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void deveLancarExcecaoAoCancelarPedidoEntregue() {
         Pedido pedido = pedidoBasico();
         pedido.confirmar();
+        pedido.iniciarPreparo();
         pedido.marcarComoPronto();
         pedido.iniciarEntrega();
         pedido.finalizarEntrega();
 
         Assertions.assertThatThrownBy(pedido::cancelar)
-            .isInstanceOf(IllegalStateException.class);
+                .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -94,49 +98,49 @@ class PedidoTest {
         pedido.cancelar();
 
         Assertions.assertThatThrownBy(pedido::cancelar)
-            .isInstanceOf(IllegalStateException.class);
+                .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void deveLancarExcecaoQuandoTaxaEntregaNegativa() {
         ItemDePedido item = ItemDePedido.builder()
-            .produtoId(UUID.randomUUID())
-            .nomeProduto(PRODUTO_NOME)
-            .quantidade(1)
-            .precoUnitario(BigDecimal.TEN)
-            .observacoes(null)
-            .build();
+                .produtoId(UUID.randomUUID())
+                .nomeProduto(PRODUTO_NOME)
+                .quantidade(1)
+                .precoUnitario(BigDecimal.TEN)
+                .observacoes(null)
+                .build();
 
         Assertions.assertThatThrownBy(() -> Pedido.builder()
-                .clienteId(UUID.randomUUID())
-                .lojaId(UUID.randomUUID())
-                .enderecoId(UUID.randomUUID())
-                .itens(List.of(item))
-                .taxaEntrega(BigDecimal.valueOf(-1))
-                .desconto(BigDecimal.ZERO)
-                .build())
-            .isInstanceOf(IllegalArgumentException.class);
+                        .clienteId(UUID.randomUUID())
+                        .lojaId(UUID.randomUUID())
+                        .enderecoId(UUID.randomUUID())
+                        .itens(List.of(item))
+                        .taxaEntrega(BigDecimal.valueOf(-1))
+                        .desconto(BigDecimal.ZERO)
+                        .build())
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void deveLancarExcecaoQuandoDescontoNegativo() {
         ItemDePedido item = ItemDePedido.builder()
-            .produtoId(UUID.randomUUID())
-            .nomeProduto(PRODUTO_NOME)
-            .quantidade(1)
-            .precoUnitario(BigDecimal.TEN)
-            .observacoes(null)
-            .build();
+                .produtoId(UUID.randomUUID())
+                .nomeProduto(PRODUTO_NOME)
+                .quantidade(1)
+                .precoUnitario(BigDecimal.TEN)
+                .observacoes(null)
+                .build();
 
         Assertions.assertThatThrownBy(() -> Pedido.builder()
-                .clienteId(UUID.randomUUID())
-                .lojaId(UUID.randomUUID())
-                .enderecoId(UUID.randomUUID())
-                .itens(List.of(item))
-                .taxaEntrega(BigDecimal.ZERO)
-                .desconto(BigDecimal.valueOf(-1))
-                .build())
-            .isInstanceOf(IllegalArgumentException.class);
+                        .clienteId(UUID.randomUUID())
+                        .lojaId(UUID.randomUUID())
+                        .enderecoId(UUID.randomUUID())
+                        .itens(List.of(item))
+                        .taxaEntrega(BigDecimal.ZERO)
+                        .desconto(BigDecimal.valueOf(-1))
+                        .build())
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -144,40 +148,40 @@ class PedidoTest {
         Pedido pedido = pedidoBasico();
 
         Assertions.assertThatThrownBy(() -> pedido.getItens().add(null))
-            .isInstanceOf(UnsupportedOperationException.class);
+                .isInstanceOf(UnsupportedOperationException.class);
     }
 
     @Test
     void deveConstruirPedidoComBuilderAdicionarItem() {
         ItemDePedido item1 = ItemDePedido.builder()
-            .produtoId(UUID.randomUUID())
-            .nomeProduto("produto1")
-            .quantidade(1)
-            .precoUnitario(BigDecimal.TEN)
-            .observacoes(null)
-            .build();
+                .produtoId(UUID.randomUUID())
+                .nomeProduto("produto1")
+                .quantidade(1)
+                .precoUnitario(BigDecimal.TEN)
+                .observacoes(null)
+                .build();
 
         ItemDePedido item2 = ItemDePedido.builder()
-            .produtoId(UUID.randomUUID())
-            .nomeProduto("produto2")
-            .quantidade(2)
-            .precoUnitario(BigDecimal.TEN)
-            .observacoes(null)
-            .build();
+                .produtoId(UUID.randomUUID())
+                .nomeProduto("produto2")
+                .quantidade(2)
+                .precoUnitario(BigDecimal.TEN)
+                .observacoes(null)
+                .build();
 
         Pedido pedido = Pedido.builder()
-            .clienteId(UUID.randomUUID())
-            .lojaId(UUID.randomUUID())
-            .enderecoId(UUID.randomUUID())
-            .adicionarItem(item1)
-            .adicionarItem(item2)
-            .taxaEntrega(BigDecimal.ZERO)
-            .desconto(BigDecimal.ZERO)
-            .build();
+                .clienteId(UUID.randomUUID())
+                .lojaId(UUID.randomUUID())
+                .enderecoId(UUID.randomUUID())
+                .adicionarItem(item1)
+                .adicionarItem(item2)
+                .taxaEntrega(BigDecimal.ZERO)
+                .desconto(BigDecimal.ZERO)
+                .build();
 
         Assertions.assertThat(pedido.getItens())
-            .hasSize(2)
-            .containsExactly(item1, item2);
+                .hasSize(2)
+                .containsExactly(item1, item2);
     }
 
     @Test
@@ -192,27 +196,27 @@ class PedidoTest {
         pedido3.setId(UUID.randomUUID());
 
         Assertions.assertThat(pedido1)
-            .isEqualTo(pedido2)
-            .hasSameHashCodeAs(pedido2)
-            .isNotEqualTo(pedido3);
+                .isEqualTo(pedido2)
+                .hasSameHashCodeAs(pedido2)
+                .isNotEqualTo(pedido3);
     }
 
     private Pedido pedidoBasico() {
         ItemDePedido item = ItemDePedido.builder()
-            .produtoId(UUID.randomUUID())
-            .nomeProduto(PRODUTO_NOME)
-            .quantidade(1)
-            .precoUnitario(BigDecimal.TEN)
-            .observacoes(null)
-            .build();
+                .produtoId(UUID.randomUUID())
+                .nomeProduto(PRODUTO_NOME)
+                .quantidade(1)
+                .precoUnitario(BigDecimal.TEN)
+                .observacoes(null)
+                .build();
 
         return Pedido.builder()
-            .clienteId(UUID.randomUUID())
-            .lojaId(UUID.randomUUID())
-            .enderecoId(UUID.randomUUID())
-            .itens(List.of(item))
-            .taxaEntrega(BigDecimal.ZERO)
-            .desconto(BigDecimal.ZERO)
-            .build();
+                .clienteId(UUID.randomUUID())
+                .lojaId(UUID.randomUUID())
+                .enderecoId(UUID.randomUUID())
+                .itens(List.of(item))
+                .taxaEntrega(BigDecimal.ZERO)
+                .desconto(BigDecimal.ZERO)
+                .build();
     }
 }
